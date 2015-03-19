@@ -35,6 +35,9 @@ tmp/**/*
 .loadpath
 .codepro/
 
+# Android studio / IntelliJ config files
+.idea/
+*.iml
 
 # Gradle files
 .gradle/
@@ -54,6 +57,3 @@ proguard/
 
 # OSX files
 .DS_Store
-
-# Android studio / IntelliJ config files
-.idea/
