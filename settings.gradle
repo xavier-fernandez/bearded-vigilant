@@ -1,0 +1,2 @@
+include ':mod-common'
+include ':mod-ble-common', ':mod-ble-discovery'

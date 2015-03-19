@@ -1,0 +1,15 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.0"
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 22
+    }
+
+    dependencies {
+        compile project (':mod-common')
+    }
+}
