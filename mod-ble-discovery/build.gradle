@@ -11,5 +11,6 @@ android {
 
     dependencies {
         compile project (':mod-common')
+        compile 'de.greenrobot:greendao:1.3.0'
     }
 }
