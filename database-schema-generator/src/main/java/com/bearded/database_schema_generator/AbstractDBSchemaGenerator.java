@@ -1,5 +1,7 @@
+package com.bearded.database_schema_generator;
+
 /*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
+ * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +18,18 @@
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-abstract class Main {
 
-    public static void main (final String ... args){
-        System.out.println("Creating DB schemas");
+import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Schema;
+
+abstract class AbstractDbSchemaGenerator {
+
+    private static final String ENTITY_SUFFIX = "Entity";
+
+    protected static Entity createEntity(final Schema dbSchema, final String tableName) {
+        final String entityName = String.format("%s%s", tableName, ENTITY_SUFFIX);
+        final Entity entity = dbSchema.addEntity(entityName);
+        entity.setTableName(tableName);
+        return entity;
     }
 }
