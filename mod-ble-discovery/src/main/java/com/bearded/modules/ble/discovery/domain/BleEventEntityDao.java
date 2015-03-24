@@ -49,7 +49,7 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'BleEvent' (" + //
-                "'_id' INTEGER PRIMARY KEY ," + // 0: id
+                "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'BLE_DEVICE' INTEGER," + // 1: bleDevice
                 "'EVENT_SERIES' INTEGER," + // 2: eventSeries
                 "'START_TIMESTAMP' INTEGER NOT NULL ," + // 3: startTimestamp

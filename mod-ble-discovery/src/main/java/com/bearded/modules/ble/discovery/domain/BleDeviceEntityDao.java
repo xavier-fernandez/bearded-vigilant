@@ -41,7 +41,7 @@ public class BleDeviceEntityDao extends AbstractDao<BleDeviceEntity, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'BleDevice' (" + //
-                "'_id' INTEGER PRIMARY KEY ," + // 0: id
+                "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'DEVICE_ADDRESS' TEXT NOT NULL ," + // 1: deviceAddress
                 "'ADVERTISE_NAME' TEXT);"); // 2: advertiseName
     }
