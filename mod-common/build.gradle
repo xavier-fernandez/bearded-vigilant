@@ -21,5 +21,6 @@ android {
         apt "org.androidannotations:androidannotations:3.2"
         compile "org.androidannotations:androidannotations-api:3.2"
         compile 'com.android.support:support-v4:22.0.0'
+        compile 'net.sourceforge.streamsupport:streamsupport:1.1.5'
     }
 }
