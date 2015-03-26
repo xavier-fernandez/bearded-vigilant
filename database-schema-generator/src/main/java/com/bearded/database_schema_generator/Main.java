@@ -20,7 +20,7 @@ package com.bearded.database_schema_generator;
  */
 abstract class Main {
 
-    public static void main (final String ... args) throws Exception {
+    public static void main(final String... args) throws Exception {
         BleDiscoveryDbSchemaGenerator.generateBleDatabaseSchema();
     }
 }
