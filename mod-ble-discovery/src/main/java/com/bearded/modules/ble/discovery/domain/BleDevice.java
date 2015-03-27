@@ -5,9 +5,9 @@ package com.bearded.modules.ble.discovery.domain;
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
 /**
- * Entity mapped to table BleDevice.
+ * Entity mapped to table BLE_DEVICE.
  */
-public class BleDeviceEntity {
+public class BleDevice {
 
     private Long id;
     /** Not-null value. */
@@ -17,14 +17,14 @@ public class BleDeviceEntity {
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    public BleDeviceEntity() {
+    public BleDevice() {
     }
 
-    public BleDeviceEntity(Long id) {
+    public BleDevice(Long id) {
         this.id = id;
     }
 
-    public BleDeviceEntity(Long id, String deviceAddress, String advertiseName) {
+    public BleDevice(Long id, String deviceAddress, String advertiseName) {
         this.id = id;
         this.deviceAddress = deviceAddress;
         this.advertiseName = advertiseName;

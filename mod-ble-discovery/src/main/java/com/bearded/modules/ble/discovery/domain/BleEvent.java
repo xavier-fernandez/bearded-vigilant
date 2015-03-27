@@ -8,9 +8,9 @@ import de.greenrobot.dao.DaoException;
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
 /**
- * Entity mapped to table BleEvent.
+ * Entity mapped to table BLE_EVENT.
  */
-public class BleEventEntity {
+public class BleEvent {
 
     private Long id;
     private Long bleDevice;
@@ -23,26 +23,26 @@ public class BleEventEntity {
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
-    private transient BleEventEntityDao myDao;
+    private transient BleEventDao myDao;
 
-    private BleDeviceEntity bleDeviceEntity;
-    private Long bleDeviceEntity__resolvedKey;
+    private BleDevice bleDevice;
+    private Long bleDevice__resolvedKey;
 
-    private BleEventSeriesEntity bleEventSeriesEntity;
-    private Long bleEventSeriesEntity__resolvedKey;
+    private BleEventSeries bleEventSeries;
+    private Long bleEventSeries__resolvedKey;
 
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    public BleEventEntity() {
+    public BleEvent() {
     }
 
-    public BleEventEntity(Long id) {
+    public BleEvent(Long id) {
         this.id = id;
     }
 
-    public BleEventEntity(Long id, Long bleDevice, Long eventSeries, java.util.Date startTimestamp, java.util.Date endTimestamp) {
+    public BleEvent(Long id, Long bleDevice, Long eventSeries, java.util.Date startTimestamp, java.util.Date endTimestamp) {
         this.id = id;
         this.bleDevice = bleDevice;
         this.eventSeries = eventSeries;
@@ -53,7 +53,7 @@ public class BleEventEntity {
     /** called by internal mechanisms, do not call yourself. */
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getBleEventEntityDao() : null;
+        myDao = daoSession != null ? daoSession.getBleEventDao() : null;
     }
 
     public Long getId() {
@@ -99,52 +99,52 @@ public class BleEventEntity {
     }
 
     /** To-one relationship, resolved on first access. */
-    public BleDeviceEntity getBleDeviceEntity() {
+    public BleDevice getBleDevice() {
         Long __key = this.bleDevice;
-        if (bleDeviceEntity__resolvedKey == null || !bleDeviceEntity__resolvedKey.equals(__key)) {
+        if (bleDevice__resolvedKey == null || !bleDevice__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            BleDeviceEntityDao targetDao = daoSession.getBleDeviceEntityDao();
-            BleDeviceEntity bleDeviceEntityNew = targetDao.load(__key);
+            BleDeviceDao targetDao = daoSession.getBleDeviceDao();
+            BleDevice bleDeviceNew = targetDao.load(__key);
             synchronized (this) {
-                bleDeviceEntity = bleDeviceEntityNew;
-            	bleDeviceEntity__resolvedKey = __key;
+                bleDevice = bleDeviceNew;
+            	bleDevice__resolvedKey = __key;
             }
         }
-        return bleDeviceEntity;
+        return bleDevice;
     }
 
-    public void setBleDeviceEntity(BleDeviceEntity bleDeviceEntity) {
+    public void setBleDevice(BleDevice bleDevice) {
         synchronized (this) {
-            this.bleDeviceEntity = bleDeviceEntity;
-            bleDevice = bleDeviceEntity == null ? null : bleDeviceEntity.getId();
-            bleDeviceEntity__resolvedKey = bleDevice;
+            this.bleDevice = bleDevice;
+            bleDevice = bleDevice == null ? null : bleDevice.getId();
+            bleDevice__resolvedKey = bleDevice;
         }
     }
 
     /** To-one relationship, resolved on first access. */
-    public BleEventSeriesEntity getBleEventSeriesEntity() {
+    public BleEventSeries getBleEventSeries() {
         Long __key = this.eventSeries;
-        if (bleEventSeriesEntity__resolvedKey == null || !bleEventSeriesEntity__resolvedKey.equals(__key)) {
+        if (bleEventSeries__resolvedKey == null || !bleEventSeries__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            BleEventSeriesEntityDao targetDao = daoSession.getBleEventSeriesEntityDao();
-            BleEventSeriesEntity bleEventSeriesEntityNew = targetDao.load(__key);
+            BleEventSeriesDao targetDao = daoSession.getBleEventSeriesDao();
+            BleEventSeries bleEventSeriesNew = targetDao.load(__key);
             synchronized (this) {
-                bleEventSeriesEntity = bleEventSeriesEntityNew;
-            	bleEventSeriesEntity__resolvedKey = __key;
+                bleEventSeries = bleEventSeriesNew;
+            	bleEventSeries__resolvedKey = __key;
             }
         }
-        return bleEventSeriesEntity;
+        return bleEventSeries;
     }
 
-    public void setBleEventSeriesEntity(BleEventSeriesEntity bleEventSeriesEntity) {
+    public void setBleEventSeries(BleEventSeries bleEventSeries) {
         synchronized (this) {
-            this.bleEventSeriesEntity = bleEventSeriesEntity;
-            eventSeries = bleEventSeriesEntity == null ? null : bleEventSeriesEntity.getId();
-            bleEventSeriesEntity__resolvedKey = eventSeries;
+            this.bleEventSeries = bleEventSeries;
+            eventSeries = bleEventSeries == null ? null : bleEventSeries.getId();
+            bleEventSeries__resolvedKey = eventSeries;
         }
     }
 

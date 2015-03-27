@@ -5,9 +5,9 @@ package com.bearded.modules.ble.discovery.domain;
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
 /**
- * Entity mapped to table BleEventSeries.
+ * Entity mapped to table BLE_EVENT_SERIES.
  */
-public class BleEventSeriesEntity {
+public class BleEventSeries {
 
     private Long id;
     /** Not-null value. */
@@ -17,14 +17,14 @@ public class BleEventSeriesEntity {
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    public BleEventSeriesEntity() {
+    public BleEventSeries() {
     }
 
-    public BleEventSeriesEntity(Long id) {
+    public BleEventSeries(Long id) {
         this.id = id;
     }
 
-    public BleEventSeriesEntity(Long id, java.util.Date startTimestamp, java.util.Date endTimestamp) {
+    public BleEventSeries(Long id, java.util.Date startTimestamp, java.util.Date endTimestamp) {
         this.id = id;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;

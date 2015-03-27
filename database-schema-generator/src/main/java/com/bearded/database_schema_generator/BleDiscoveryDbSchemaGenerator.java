@@ -22,7 +22,7 @@ import de.greenrobot.daogenerator.Schema;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
+abstract class BleDiscoveryDbSchemaGenerator {
 
     private static final String MODULE_PACKAGE = "com.bearded.modules.ble.discovery";
 
@@ -55,8 +55,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     private static Entity createBleDeviceEntity(final Schema dbSchema) {
-        final String tableName = "BleDevice";
-        final Entity deviceEntity = createEntity(dbSchema, tableName);
+        final Entity deviceEntity = dbSchema.addEntity("BleDevice");
         deviceEntity.addIdProperty().primaryKey().autoincrement();
         deviceEntity.addStringProperty("deviceAddress").notNull();
         deviceEntity.addStringProperty("advertiseName");
@@ -71,8 +70,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     private static Entity createBleEventSeriesEntity(final Schema dbSchema) {
-        final String tableName = "BleEventSeries";
-        final Entity seriesEntity = createEntity(dbSchema, tableName);
+        final Entity seriesEntity = dbSchema.addEntity("BleEventSeries");
         seriesEntity.addIdProperty().primaryKey().autoincrement();
         seriesEntity.addDateProperty("startTimestamp").notNull();
         seriesEntity.addDateProperty("endTimestamp");
@@ -89,8 +87,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     private static void createBleEventEntity(final Schema dbSchema, final Entity deviceEntity, final Entity eventSeriesEntity) {
-        final String tableName = "BleEvent";
-        final Entity eventEntity = createEntity(dbSchema, tableName);
+        final Entity eventEntity = dbSchema.addEntity("BleEvent");
         eventEntity.addIdProperty().primaryKey().autoincrement();
         eventEntity.addToOne(deviceEntity, eventEntity.addLongProperty("bleDevice").getProperty());
         eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeries").getProperty());
