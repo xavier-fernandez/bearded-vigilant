@@ -4,13 +4,16 @@ package com.bearded.modules.ble.discovery.domain;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
+
 /**
  * Entity mapped to table BLE_DEVICE.
  */
 public class BleDevice {
 
     private Long id;
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     private String deviceAddress;
     private String advertiseName;
 
@@ -38,12 +41,16 @@ public class BleDevice {
         this.id = id;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getDeviceAddress() {
         return deviceAddress;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
     public void setDeviceAddress(String deviceAddress) {
         this.deviceAddress = deviceAddress;
     }
