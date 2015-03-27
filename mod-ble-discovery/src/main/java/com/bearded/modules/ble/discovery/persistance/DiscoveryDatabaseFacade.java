@@ -41,7 +41,7 @@ class DiscoveryDatabaseFacade {
     private static final String DATABASE_NAME = DiscoveryDatabaseFacade.class.getCanonicalName();
 
     @RootContext
-    private Context mContext;
+    Context mContext;
 
     @Nullable
     private SQLiteDatabase mDatabase = null;
