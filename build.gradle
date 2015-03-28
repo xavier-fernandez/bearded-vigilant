@@ -13,6 +13,15 @@ buildscript {
 
 apply plugin: 'retrolambda'
 
+apply plugin: 'idea'
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 allprojects {
     repositories {
         jcenter()
