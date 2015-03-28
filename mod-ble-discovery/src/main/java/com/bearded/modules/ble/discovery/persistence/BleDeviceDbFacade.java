@@ -1,11 +1,11 @@
-package com.bearded.modules.ble.discovery.persistance;
+package com.bearded.modules.ble.discovery.persistence;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.bearded.modules.ble.discovery.domain.BleDevice;
-import com.bearded.modules.ble.discovery.domain.BleDeviceDao;
-import com.bearded.modules.ble.discovery.domain.DaoSession;
+import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceDao;
+import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;

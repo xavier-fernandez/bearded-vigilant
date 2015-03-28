@@ -1,8 +1,10 @@
-package com.bearded.modules.ble.discovery.domain;
+package com.bearded.modules.ble.discovery.persistence.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+
+import com.bearded.modules.ble.discovery.domain.BleDevice;
 
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;

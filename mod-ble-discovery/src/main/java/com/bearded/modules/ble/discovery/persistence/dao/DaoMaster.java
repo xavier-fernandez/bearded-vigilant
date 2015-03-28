@@ -1,4 +1,4 @@
-package com.bearded.modules.ble.discovery.domain;
+package com.bearded.modules.ble.discovery.persistence.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

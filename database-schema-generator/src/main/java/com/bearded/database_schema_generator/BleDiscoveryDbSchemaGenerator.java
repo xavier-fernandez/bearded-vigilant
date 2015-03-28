@@ -26,7 +26,8 @@ abstract class BleDiscoveryDbSchemaGenerator {
 
     private static final String MODULE_PACKAGE = "com.bearded.modules.ble.discovery";
 
-    private static final String TARGET_PACKAGE = MODULE_PACKAGE + ".domain";
+    private static final String ENTITY_PACKAGE = String.format("%s.domain", MODULE_PACKAGE);
+    private static final String DAO_PACKAGE = String.format("%s.persistence.dao", MODULE_PACKAGE);
 
     private static final int SCHEMA_VERSION = 1;
 
@@ -34,7 +35,8 @@ abstract class BleDiscoveryDbSchemaGenerator {
 
     static void generateBleDatabaseSchema() throws Exception {
         System.out.println(String.format("Creating database schema with name: %s", MODULE_PACKAGE));
-        final Schema dbSchema = new Schema(SCHEMA_VERSION, TARGET_PACKAGE);
+        final Schema dbSchema = new Schema(SCHEMA_VERSION, ENTITY_PACKAGE);
+        dbSchema.setDefaultJavaPackageDao(DAO_PACKAGE);
         // Initializes the database schema.
         // The database schema will have 'keep' sections that will not be overridden when executing this class.
         dbSchema.enableKeepSectionsByDefault();

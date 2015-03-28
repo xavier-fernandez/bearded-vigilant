@@ -1,4 +1,4 @@
-package com.bearded.modules.ble.discovery.persistance;
+package com.bearded.modules.ble.discovery.persistence;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -25,8 +25,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.bearded.modules.ble.discovery.domain.DaoMaster;
-import com.bearded.modules.ble.discovery.domain.DaoSession;
+import com.bearded.modules.ble.discovery.persistence.dao.DaoMaster;
+import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;

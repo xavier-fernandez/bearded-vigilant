@@ -1,6 +1,10 @@
-package com.bearded.modules.ble.discovery.domain;
+package com.bearded.modules.ble.discovery.persistence.dao;
 
 import android.database.sqlite.SQLiteDatabase;
+
+import com.bearded.modules.ble.discovery.domain.BleDevice;
+import com.bearded.modules.ble.discovery.domain.BleEvent;
+import com.bearded.modules.ble.discovery.domain.BleEventSeries;
 
 import java.util.Map;
 
