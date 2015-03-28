@@ -18,7 +18,7 @@ package com.bearded.database_schema_generator;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-abstract class Main {
+abstract class DatabaseGeneratorMain {
 
     public static void main(final String... args) throws Exception {
         BleDiscoveryDbSchemaGenerator.generateBleDatabaseSchema();

@@ -34,17 +34,17 @@ abstract class BleDiscoveryDbSchemaGenerator {
 
     static void generateBleDatabaseSchema() throws Exception {
         System.out.println(String.format("Creating database schema with name: %s", MODULE_PACKAGE));
-        final Schema mDbSchema = new Schema(SCHEMA_VERSION, TARGET_PACKAGE);
+        final Schema dbSchema = new Schema(SCHEMA_VERSION, TARGET_PACKAGE);
         // Initializes the database schema.
         // The database schema will have 'keep' sections that will not be overridden when executing this class.
-        mDbSchema.enableKeepSectionsByDefault();
+        dbSchema.enableKeepSectionsByDefault();
         // Creates the database table.
-        final Entity deviceEntity = createBleDeviceEntity(mDbSchema);
-        final Entity eventSeriesEntity = createBleEventSeriesEntity(mDbSchema);
-        createBleEventEntity(mDbSchema, deviceEntity, eventSeriesEntity);
+        final Entity deviceEntity = createBleDeviceEntity(dbSchema);
+        final Entity eventSeriesEntity = createBleEventSeriesEntity(dbSchema, deviceEntity);
+        createBleEventEntity(dbSchema, eventSeriesEntity);
         // Creates the DAO classes in the specified folder.
         final DaoGenerator daoGenerator = new DaoGenerator();
-        daoGenerator.generateAll(mDbSchema, OUTPUT_DIR);
+        daoGenerator.generateAll(dbSchema, OUTPUT_DIR);
     }
 
     /**
@@ -65,13 +65,15 @@ abstract class BleDiscoveryDbSchemaGenerator {
     /**
      * CREATE TABLE ble_event_series (
      * _id              INTEGER    PRIMARY KEY   AUTOINCREMENT,
+     * ble_device_id    INTEGER    FOREIGN KEY   REFERENCES  ble_device (_id)  NOT NULL,
      * start_timestamp  DATE       NOTNULL,
-     * end_timestamp    DATE
+     * end_timestamp    DATE,
      * );
      */
-    private static Entity createBleEventSeriesEntity(final Schema dbSchema) {
+    private static Entity createBleEventSeriesEntity(final Schema dbSchema, final Entity deviceEntity) {
         final Entity seriesEntity = dbSchema.addEntity("BleEventSeries");
         seriesEntity.addIdProperty().primaryKey().autoincrement();
+        seriesEntity.addToOne(deviceEntity, seriesEntity.addLongProperty("bleDeviceId").getProperty());
         seriesEntity.addDateProperty("startTimestamp").notNull();
         seriesEntity.addDateProperty("endTimestamp");
         return seriesEntity;
@@ -79,19 +81,19 @@ abstract class BleDiscoveryDbSchemaGenerator {
 
     /**
      * CREATE TABLE ble_event (
-     * _id               INTEGER   PRIMARY KEY   AUTOINCREMENT,
-     * ble_device        INTEGER   FOREIGN KEY   REFERENCES  ble_device (_id)        NOT NULL,
-     * event_series      INTEGER   FOREIGN KEY   REFERENCES  ble_event_series (_id)  NOT NULL,
-     * start_timestamp   DATE      NOT NULL,
-     * end_timestamp     DATE
+     * _id                        INTEGER   PRIMARY KEY   AUTOINCREMENT,
+     * event_series_id            INTEGER   FOREIGN KEY   REFERENCES  ble_event_series (_id)  NOT NULL,
+     * start_timestamp            DATE      NOT NULL,
+     * end_timestamp              DATE,
+     * received_signal_strength   INTEGER   NOT NULL
      * );
      */
-    private static void createBleEventEntity(final Schema dbSchema, final Entity deviceEntity, final Entity eventSeriesEntity) {
+    private static void createBleEventEntity(final Schema dbSchema, final Entity eventSeriesEntity) {
         final Entity eventEntity = dbSchema.addEntity("BleEvent");
         eventEntity.addIdProperty().primaryKey().autoincrement();
-        eventEntity.addToOne(deviceEntity, eventEntity.addLongProperty("bleDevice").getProperty());
-        eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeries").getProperty());
+        eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeriesId").getProperty());
         eventEntity.addDateProperty("startTimestamp").notNull();
         eventEntity.addDateProperty("endTimestamp");
+        eventEntity.addByteProperty("receivedSignalStrength").notNull();
     }
 }

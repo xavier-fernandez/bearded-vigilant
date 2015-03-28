@@ -42,10 +42,10 @@ public class BleEventDao extends AbstractDao<BleEvent, Long> {
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
         db.execSQL("CREATE TABLE " + constraint + "'BLE_EVENT' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "'BLE_DEVICE' INTEGER," + // 1: bleDevice
-                "'EVENT_SERIES' INTEGER," + // 2: eventSeries
-                "'START_TIMESTAMP' INTEGER NOT NULL ," + // 3: startTimestamp
-                "'END_TIMESTAMP' INTEGER);"); // 4: endTimestamp
+                "'EVENT_SERIES_ID' INTEGER," + // 1: eventSeriesId
+                "'START_TIMESTAMP' INTEGER NOT NULL ," + // 2: startTimestamp
+                "'END_TIMESTAMP' INTEGER," + // 3: endTimestamp
+                "'RECEIVED_SIGNAL_STRENGTH' INTEGER NOT NULL );"); // 4: receivedSignalStrength
     }
 
     /**
@@ -68,21 +68,17 @@ public class BleEventDao extends AbstractDao<BleEvent, Long> {
             stmt.bindLong(1, id);
         }
 
-        Long bleDevice = entity.getBleDevice();
-        if (bleDevice != null) {
-            stmt.bindLong(2, bleDevice);
+        Long eventSeriesId = entity.getEventSeriesId();
+        if (eventSeriesId != null) {
+            stmt.bindLong(2, eventSeriesId);
         }
-
-        Long eventSeries = entity.getEventSeries();
-        if (eventSeries != null) {
-            stmt.bindLong(3, eventSeries);
-        }
-        stmt.bindLong(4, entity.getStartTimestamp().getTime());
+        stmt.bindLong(3, entity.getStartTimestamp().getTime());
 
         java.util.Date endTimestamp = entity.getEndTimestamp();
         if (endTimestamp != null) {
-            stmt.bindLong(5, endTimestamp.getTime());
+            stmt.bindLong(4, endTimestamp.getTime());
         }
+        stmt.bindLong(5, entity.getReceivedSignalStrength());
     }
 
     @Override
@@ -106,10 +102,10 @@ public class BleEventDao extends AbstractDao<BleEvent, Long> {
     public BleEvent readEntity(Cursor cursor, int offset) {
         BleEvent entity = new BleEvent( //
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-                cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // bleDevice
-                cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // eventSeries
-                new java.util.Date(cursor.getLong(offset + 3)), // startTimestamp
-                cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)) // endTimestamp
+                cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // eventSeriesId
+                new java.util.Date(cursor.getLong(offset + 2)), // startTimestamp
+                cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // endTimestamp
+                (byte) cursor.getShort(offset + 4) // receivedSignalStrength
         );
         return entity;
     }
@@ -120,10 +116,10 @@ public class BleEventDao extends AbstractDao<BleEvent, Long> {
     @Override
     public void readEntity(Cursor cursor, BleEvent entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setBleDevice(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setEventSeries(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
-        entity.setStartTimestamp(new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setEndTimestamp(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setEventSeriesId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setStartTimestamp(new java.util.Date(cursor.getLong(offset + 2)));
+        entity.setEndTimestamp(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setReceivedSignalStrength((byte) cursor.getShort(offset + 4));
     }
 
     /**
@@ -160,12 +156,9 @@ public class BleEventDao extends AbstractDao<BleEvent, Long> {
             StringBuilder builder = new StringBuilder("SELECT ");
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
-            SqlUtils.appendColumns(builder, "T0", daoSession.getBleDeviceDao().getAllColumns());
-            builder.append(',');
-            SqlUtils.appendColumns(builder, "T1", daoSession.getBleEventSeriesDao().getAllColumns());
+            SqlUtils.appendColumns(builder, "T0", daoSession.getBleEventSeriesDao().getAllColumns());
             builder.append(" FROM BLE_EVENT T");
-            builder.append(" LEFT JOIN BLE_DEVICE T0 ON T.'BLE_DEVICE'=T0.'_id'");
-            builder.append(" LEFT JOIN BLE_EVENT_SERIES T1 ON T.'EVENT_SERIES'=T1.'_id'");
+            builder.append(" LEFT JOIN BLE_EVENT_SERIES T0 ON T.'EVENT_SERIES_ID'=T0.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -175,10 +168,6 @@ public class BleEventDao extends AbstractDao<BleEvent, Long> {
     protected BleEvent loadCurrentDeep(Cursor cursor, boolean lock) {
         BleEvent entity = loadCurrent(cursor, 0, lock);
         int offset = getAllColumns().length;
-
-        BleDevice bleDevice = loadCurrentOther(daoSession.getBleDeviceDao(), cursor, offset);
-        entity.setBleDevice(bleDevice);
-        offset += daoSession.getBleDeviceDao().getAllColumns().length;
 
         BleEventSeries bleEventSeries = loadCurrentOther(daoSession.getBleEventSeriesDao(), cursor, offset);
         entity.setBleEventSeries(bleEventSeries);
@@ -260,10 +249,10 @@ public class BleEventDao extends AbstractDao<BleEvent, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property BleDevice = new Property(1, Long.class, "bleDevice", false, "BLE_DEVICE");
-        public final static Property EventSeries = new Property(2, Long.class, "eventSeries", false, "EVENT_SERIES");
-        public final static Property StartTimestamp = new Property(3, java.util.Date.class, "startTimestamp", false, "START_TIMESTAMP");
-        public final static Property EndTimestamp = new Property(4, java.util.Date.class, "endTimestamp", false, "END_TIMESTAMP");
+        public final static Property EventSeriesId = new Property(1, Long.class, "eventSeriesId", false, "EVENT_SERIES_ID");
+        public final static Property StartTimestamp = new Property(2, java.util.Date.class, "startTimestamp", false, "START_TIMESTAMP");
+        public final static Property EndTimestamp = new Property(3, java.util.Date.class, "endTimestamp", false, "END_TIMESTAMP");
+        public final static Property ReceivedSignalStrength = new Property(4, byte.class, "receivedSignalStrength", false, "RECEIVED_SIGNAL_STRENGTH");
     }
 
 }

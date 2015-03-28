@@ -13,13 +13,13 @@ import de.greenrobot.dao.DaoException;
 public class BleEvent {
 
     private Long id;
-    private Long bleDevice;
-    private Long eventSeries;
+    private Long eventSeriesId;
     /**
      * Not-null value.
      */
     private java.util.Date startTimestamp;
     private java.util.Date endTimestamp;
+    private byte receivedSignalStrength;
 
     /**
      * Used to resolve relations
@@ -30,9 +30,6 @@ public class BleEvent {
      * Used for active entity operations.
      */
     private transient BleEventDao myDao;
-
-    private BleDevice bleDevice;
-    private Long bleDevice__resolvedKey;
 
     private BleEventSeries bleEventSeries;
     private Long bleEventSeries__resolvedKey;
@@ -48,12 +45,12 @@ public class BleEvent {
         this.id = id;
     }
 
-    public BleEvent(Long id, Long bleDevice, Long eventSeries, java.util.Date startTimestamp, java.util.Date endTimestamp) {
+    public BleEvent(Long id, Long eventSeriesId, java.util.Date startTimestamp, java.util.Date endTimestamp, byte receivedSignalStrength) {
         this.id = id;
-        this.bleDevice = bleDevice;
-        this.eventSeries = eventSeries;
+        this.eventSeriesId = eventSeriesId;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
+        this.receivedSignalStrength = receivedSignalStrength;
     }
 
     /**
@@ -72,20 +69,12 @@ public class BleEvent {
         this.id = id;
     }
 
-    public Long getBleDevice() {
-        return bleDevice;
+    public Long getEventSeriesId() {
+        return eventSeriesId;
     }
 
-    public void setBleDevice(Long bleDevice) {
-        this.bleDevice = bleDevice;
-    }
-
-    public Long getEventSeries() {
-        return eventSeries;
-    }
-
-    public void setEventSeries(Long eventSeries) {
-        this.eventSeries = eventSeries;
+    public void setEventSeriesId(Long eventSeriesId) {
+        this.eventSeriesId = eventSeriesId;
     }
 
     /**
@@ -110,38 +99,19 @@ public class BleEvent {
         this.endTimestamp = endTimestamp;
     }
 
-    /**
-     * To-one relationship, resolved on first access.
-     */
-    public BleDevice getBleDevice() {
-        Long __key = this.bleDevice;
-        if (bleDevice__resolvedKey == null || !bleDevice__resolvedKey.equals(__key)) {
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            BleDeviceDao targetDao = daoSession.getBleDeviceDao();
-            BleDevice bleDeviceNew = targetDao.load(__key);
-            synchronized (this) {
-                bleDevice = bleDeviceNew;
-                bleDevice__resolvedKey = __key;
-            }
-        }
-        return bleDevice;
+    public byte getReceivedSignalStrength() {
+        return receivedSignalStrength;
     }
 
-    public void setBleDevice(BleDevice bleDevice) {
-        synchronized (this) {
-            this.bleDevice = bleDevice;
-            bleDevice = bleDevice == null ? null : bleDevice.getId();
-            bleDevice__resolvedKey = bleDevice;
-        }
+    public void setReceivedSignalStrength(byte receivedSignalStrength) {
+        this.receivedSignalStrength = receivedSignalStrength;
     }
 
     /**
      * To-one relationship, resolved on first access.
      */
     public BleEventSeries getBleEventSeries() {
-        Long __key = this.eventSeries;
+        Long __key = this.eventSeriesId;
         if (bleEventSeries__resolvedKey == null || !bleEventSeries__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -159,8 +129,8 @@ public class BleEvent {
     public void setBleEventSeries(BleEventSeries bleEventSeries) {
         synchronized (this) {
             this.bleEventSeries = bleEventSeries;
-            eventSeries = bleEventSeries == null ? null : bleEventSeries.getId();
-            bleEventSeries__resolvedKey = eventSeries;
+            eventSeriesId = bleEventSeries == null ? null : bleEventSeries.getId();
+            bleEventSeries__resolvedKey = eventSeriesId;
         }
     }
 
