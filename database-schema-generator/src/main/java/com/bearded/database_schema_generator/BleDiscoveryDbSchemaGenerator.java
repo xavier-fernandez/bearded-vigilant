@@ -31,12 +31,14 @@ abstract class BleDiscoveryDbSchemaGenerator {
 
     private static final int SCHEMA_VERSION = 1;
 
-    private static final String OUTPUT_DIR = "./mod-ble-discovery/src/main/java";
+    private static final String OUT_DIR = "./mod-ble-discovery/src/main/java";
+    private static final String TEST_DIR = "./mod-ble-discovery/src/androidTest/java";
 
     static void generateBleDatabaseSchema() throws Exception {
         System.out.println(String.format("Creating database schema with name: %s", MODULE_PACKAGE));
         final Schema dbSchema = new Schema(SCHEMA_VERSION, ENTITY_PACKAGE);
         dbSchema.setDefaultJavaPackageDao(DAO_PACKAGE);
+        dbSchema.setDefaultJavaPackageTest(DAO_PACKAGE);
         // Initializes the database schema.
         // The database schema will have 'keep' sections that will not be overridden when executing this class.
         dbSchema.enableKeepSectionsByDefault();
@@ -46,7 +48,7 @@ abstract class BleDiscoveryDbSchemaGenerator {
         createBleEventEntity(dbSchema, eventSeriesEntity);
         // Creates the DAO classes in the specified folder.
         final DaoGenerator daoGenerator = new DaoGenerator();
-        daoGenerator.generateAll(dbSchema, OUTPUT_DIR);
+        daoGenerator.generateAll(dbSchema, OUT_DIR, TEST_DIR);
     }
 
     /**
