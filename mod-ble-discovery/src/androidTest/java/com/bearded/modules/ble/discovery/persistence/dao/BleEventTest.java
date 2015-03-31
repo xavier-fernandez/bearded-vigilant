@@ -16,6 +16,10 @@ public class BleEventTest extends AbstractDaoTestLongPk<BleEventDao, BleEvent> {
         super(BleEventDao.class);
     }
 
+    private static Date getStartTimestamp() {
+        return new Date(System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
+    }
+
     @Override
     protected BleEvent createEntity(Long key) {
         BleEvent entity = new BleEvent();
@@ -23,10 +27,5 @@ public class BleEventTest extends AbstractDaoTestLongPk<BleEventDao, BleEvent> {
         entity.setStartTimestamp(getStartTimestamp());
         entity.setReceivedSignalStrength((byte) (0 - new Random().nextInt(101)));
         return entity;
-    }
-
-
-    private static Date getStartTimestamp(){
-        return new Date (System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
     }
 }

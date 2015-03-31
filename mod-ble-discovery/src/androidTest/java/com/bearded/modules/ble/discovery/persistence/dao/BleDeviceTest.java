@@ -6,11 +6,11 @@ import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 public class BleDeviceTest extends AbstractDaoTestLongPk<BleDeviceDao, BleDevice> {
 
+    private static final String TEST_DEVICE_ADDRESS = "AA:BB:CC:DD:EE:FF";
+
     public BleDeviceTest() {
         super(BleDeviceDao.class);
     }
-
-    private static final String TEST_DEVICE_ADDRESS = "AA:BB:CC:DD:EE:FF";
 
     @Override
     protected BleDevice createEntity(Long key) {

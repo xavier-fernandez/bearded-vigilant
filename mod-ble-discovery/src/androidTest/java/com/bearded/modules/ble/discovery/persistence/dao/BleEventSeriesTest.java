@@ -8,12 +8,16 @@ import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 public class BleEventSeriesTest extends AbstractDaoTestLongPk<BleEventSeriesDao, BleEventSeries> {
 
+    private static short ONE_SECOND_IN_MILLISECONDS = 1000;
+    private static int EVENT_SERIES_TEST_DURATION_SECONDS = 10 * ONE_SECOND_IN_MILLISECONDS;
+
     public BleEventSeriesTest() {
         super(BleEventSeriesDao.class);
     }
 
-    private static short ONE_SECOND_IN_MILLISECONDS = 1000;
-    private static int EVENT_SERIES_TEST_DURATION_SECONDS = 10 * ONE_SECOND_IN_MILLISECONDS;
+    private static Date getStartTimestamp() {
+        return new Date(System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
+    }
 
     @Override
     protected BleEventSeries createEntity(Long key) {
@@ -21,10 +25,6 @@ public class BleEventSeriesTest extends AbstractDaoTestLongPk<BleEventSeriesDao,
         entity.setId(key);
         entity.setStartTimestamp(getStartTimestamp());
         return entity;
-    }
-
-    private static Date getStartTimestamp(){
-        return new Date (System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
     }
 
 }
