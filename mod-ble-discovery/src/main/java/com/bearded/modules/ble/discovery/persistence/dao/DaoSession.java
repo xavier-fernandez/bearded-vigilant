@@ -2,9 +2,9 @@ package com.bearded.modules.ble.discovery.persistence.dao;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bearded.modules.ble.discovery.domain.BleDevice;
-import com.bearded.modules.ble.discovery.domain.BleEvent;
-import com.bearded.modules.ble.discovery.domain.BleEventSeries;
+import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
+import com.bearded.modules.ble.discovery.domain.BleEventEntity;
+import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
 
 import java.util.Map;
 
@@ -22,52 +22,52 @@ import de.greenrobot.dao.internal.DaoConfig;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig bleDeviceDaoConfig;
-    private final DaoConfig bleEventSeriesDaoConfig;
-    private final DaoConfig bleEventDaoConfig;
+    private final DaoConfig bleDeviceEntityDaoConfig;
+    private final DaoConfig bleEventSeriesEntityDaoConfig;
+    private final DaoConfig bleEventEntityDaoConfig;
 
-    private final BleDeviceDao bleDeviceDao;
-    private final BleEventSeriesDao bleEventSeriesDao;
-    private final BleEventDao bleEventDao;
+    private final BleDeviceEntityDao bleDeviceEntityDao;
+    private final BleEventSeriesEntityDao bleEventSeriesEntityDao;
+    private final BleEventEntityDao bleEventEntityDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
 
-        bleDeviceDaoConfig = daoConfigMap.get(BleDeviceDao.class).clone();
-        bleDeviceDaoConfig.initIdentityScope(type);
+        bleDeviceEntityDaoConfig = daoConfigMap.get(BleDeviceEntityDao.class).clone();
+        bleDeviceEntityDaoConfig.initIdentityScope(type);
 
-        bleEventSeriesDaoConfig = daoConfigMap.get(BleEventSeriesDao.class).clone();
-        bleEventSeriesDaoConfig.initIdentityScope(type);
+        bleEventSeriesEntityDaoConfig = daoConfigMap.get(BleEventSeriesEntityDao.class).clone();
+        bleEventSeriesEntityDaoConfig.initIdentityScope(type);
 
-        bleEventDaoConfig = daoConfigMap.get(BleEventDao.class).clone();
-        bleEventDaoConfig.initIdentityScope(type);
+        bleEventEntityDaoConfig = daoConfigMap.get(BleEventEntityDao.class).clone();
+        bleEventEntityDaoConfig.initIdentityScope(type);
 
-        bleDeviceDao = new BleDeviceDao(bleDeviceDaoConfig, this);
-        bleEventSeriesDao = new BleEventSeriesDao(bleEventSeriesDaoConfig, this);
-        bleEventDao = new BleEventDao(bleEventDaoConfig, this);
+        bleDeviceEntityDao = new BleDeviceEntityDao(bleDeviceEntityDaoConfig, this);
+        bleEventSeriesEntityDao = new BleEventSeriesEntityDao(bleEventSeriesEntityDaoConfig, this);
+        bleEventEntityDao = new BleEventEntityDao(bleEventEntityDaoConfig, this);
 
-        registerDao(BleDevice.class, bleDeviceDao);
-        registerDao(BleEventSeries.class, bleEventSeriesDao);
-        registerDao(BleEvent.class, bleEventDao);
+        registerDao(BleDeviceEntity.class, bleDeviceEntityDao);
+        registerDao(BleEventSeriesEntity.class, bleEventSeriesEntityDao);
+        registerDao(BleEventEntity.class, bleEventEntityDao);
     }
 
     public void clear() {
-        bleDeviceDaoConfig.getIdentityScope().clear();
-        bleEventSeriesDaoConfig.getIdentityScope().clear();
-        bleEventDaoConfig.getIdentityScope().clear();
+        bleDeviceEntityDaoConfig.getIdentityScope().clear();
+        bleEventSeriesEntityDaoConfig.getIdentityScope().clear();
+        bleEventEntityDaoConfig.getIdentityScope().clear();
     }
 
-    public BleDeviceDao getBleDeviceDao() {
-        return bleDeviceDao;
+    public BleDeviceEntityDao getBleDeviceEntityDao() {
+        return bleDeviceEntityDao;
     }
 
-    public BleEventSeriesDao getBleEventSeriesDao() {
-        return bleEventSeriesDao;
+    public BleEventSeriesEntityDao getBleEventSeriesEntityDao() {
+        return bleEventSeriesEntityDao;
     }
 
-    public BleEventDao getBleEventDao() {
-        return bleEventDao;
+    public BleEventEntityDao getBleEventEntityDao() {
+        return bleEventEntityDao;
     }
 
 }

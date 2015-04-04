@@ -19,27 +19,27 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(BleDeviceDao.class);
-        registerDaoClass(BleEventSeriesDao.class);
-        registerDaoClass(BleEventDao.class);
+        registerDaoClass(BleDeviceEntityDao.class);
+        registerDaoClass(BleEventSeriesEntityDao.class);
+        registerDaoClass(BleEventEntityDao.class);
     }
 
     /**
      * Creates underlying database table using DAOs.
      */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
-        BleDeviceDao.createTable(db, ifNotExists);
-        BleEventSeriesDao.createTable(db, ifNotExists);
-        BleEventDao.createTable(db, ifNotExists);
+        BleDeviceEntityDao.createTable(db, ifNotExists);
+        BleEventSeriesEntityDao.createTable(db, ifNotExists);
+        BleEventEntityDao.createTable(db, ifNotExists);
     }
 
     /**
      * Drops underlying database table using DAOs.
      */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
-        BleDeviceDao.dropTable(db, ifExists);
-        BleEventSeriesDao.dropTable(db, ifExists);
-        BleEventDao.dropTable(db, ifExists);
+        BleDeviceEntityDao.dropTable(db, ifExists);
+        BleEventSeriesEntityDao.dropTable(db, ifExists);
+        BleEventEntityDao.dropTable(db, ifExists);
     }
 
     public DaoSession newSession() {

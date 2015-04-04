@@ -3,8 +3,8 @@ package com.bearded.modules.ble.discovery.persistence;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.bearded.modules.ble.discovery.domain.BleDevice;
-import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceDao;
+import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
+import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 
 import org.androidannotations.annotations.Bean;
@@ -37,7 +37,7 @@ import de.greenrobot.dao.query.QueryBuilder;
 @EBean(scope = EBean.Scope.Singleton)
 public class BleDeviceDbFacade {
 
-    private final Map<String, BleDevice> mKnownBleDevices = Collections.synchronizedMap(new HashMap<String, BleDevice>());
+    private final Map<String, BleDeviceEntity> mKnownBleDevices = Collections.synchronizedMap(new HashMap<String, BleDeviceEntity>());
     @Bean
     DiscoveryDatabaseFacade mDatabaseFacade;
 
@@ -46,21 +46,21 @@ public class BleDeviceDbFacade {
      *
      * @param deviceAddress of the BleDevice
      * @param advertiseName of the BleDevice
-     * @return {@link com.bearded.modules.ble.discovery.domain.BleDevice} in case the device is already on the database.
+     * @return {@link com.bearded.modules.ble.discovery.domain.BleDeviceEntity} in case the device is already on the database.
      */
     @Nullable
-    public BleDevice readBleDevice(@NonNull final String deviceAddress, @Nullable final String advertiseName) {
+    public BleDeviceEntity readBleDevice(@NonNull final String deviceAddress, @Nullable final String advertiseName) {
         if (mKnownBleDevices.containsKey(deviceAddress.trim())) {
             return mKnownBleDevices.get(deviceAddress);
         }
         final DaoSession session = mDatabaseFacade.getReadableSession(false);
-        final BleDeviceDao dao = session.getBleDeviceDao();
-        final QueryBuilder<BleDevice> queryBuilder = dao.queryBuilder();
-        queryBuilder.where(BleDeviceDao.Properties.DeviceAddress.eq(deviceAddress.trim()));
+        final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
+        final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
+        queryBuilder.where(BleDeviceEntityDao.Properties.DeviceAddress.eq(deviceAddress.trim()));
         if (advertiseName != null) {
-            queryBuilder.where(BleDeviceDao.Properties.AdvertiseName.eq(deviceAddress.trim()));
+            queryBuilder.where(BleDeviceEntityDao.Properties.AdvertiseName.eq(deviceAddress.trim()));
         }
-        final BleDevice device = queryBuilder.uniqueOrThrow();
+        final BleDeviceEntity device = queryBuilder.uniqueOrThrow();
         mKnownBleDevices.put(device.getDeviceAddress(), device);
         return device;
     }

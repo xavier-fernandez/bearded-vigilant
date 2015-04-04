@@ -1,8 +1,9 @@
 package com.bearded.modules.ble.discovery.domain;
 
-import com.bearded.modules.ble.discovery.persistence.dao.BleEventDao;
-import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesDao;
+import com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao;
+import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
+import com.google.gson.JsonObject;
 
 import de.greenrobot.dao.DaoException;
 
@@ -12,9 +13,9 @@ import de.greenrobot.dao.DaoException;
 // KEEP INCLUDES END
 
 /**
- * Entity mapped to table BLE_EVENT.
+ * Entity mapped to table BleEvent.
  */
-public class BleEvent {
+public class BleEventEntity implements com.bearded.common.ParseableJson {
 
     private Long id;
     private Long eventSeriesId;
@@ -33,23 +34,23 @@ public class BleEvent {
     /**
      * Used for active entity operations.
      */
-    private transient BleEventDao myDao;
+    private transient BleEventEntityDao myDao;
 
-    private BleEventSeries bleEventSeries;
-    private Long bleEventSeries__resolvedKey;
+    private BleEventSeriesEntity bleEventSeriesEntity;
+    private Long bleEventSeriesEntity__resolvedKey;
 
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    public BleEvent() {
+    public BleEventEntity() {
     }
 
-    public BleEvent(Long id) {
+    public BleEventEntity(Long id) {
         this.id = id;
     }
 
-    public BleEvent(Long id, Long eventSeriesId, java.util.Date startTimestamp, java.util.Date endTimestamp, byte receivedSignalStrength) {
+    public BleEventEntity(Long id, Long eventSeriesId, java.util.Date startTimestamp, java.util.Date endTimestamp, byte receivedSignalStrength) {
         this.id = id;
         this.eventSeriesId = eventSeriesId;
         this.startTimestamp = startTimestamp;
@@ -62,7 +63,7 @@ public class BleEvent {
      */
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getBleEventDao() : null;
+        myDao = daoSession != null ? daoSession.getBleEventEntityDao() : null;
     }
 
     public Long getId() {
@@ -114,27 +115,27 @@ public class BleEvent {
     /**
      * To-one relationship, resolved on first access.
      */
-    public BleEventSeries getBleEventSeries() {
+    public BleEventSeriesEntity getBleEventSeriesEntity() {
         Long __key = this.eventSeriesId;
-        if (bleEventSeries__resolvedKey == null || !bleEventSeries__resolvedKey.equals(__key)) {
+        if (bleEventSeriesEntity__resolvedKey == null || !bleEventSeriesEntity__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            BleEventSeriesDao targetDao = daoSession.getBleEventSeriesDao();
-            BleEventSeries bleEventSeriesNew = targetDao.load(__key);
+            BleEventSeriesEntityDao targetDao = daoSession.getBleEventSeriesEntityDao();
+            BleEventSeriesEntity bleEventSeriesEntityNew = targetDao.load(__key);
             synchronized (this) {
-                bleEventSeries = bleEventSeriesNew;
-                bleEventSeries__resolvedKey = __key;
+                bleEventSeriesEntity = bleEventSeriesEntityNew;
+                bleEventSeriesEntity__resolvedKey = __key;
             }
         }
-        return bleEventSeries;
+        return bleEventSeriesEntity;
     }
 
-    public void setBleEventSeries(BleEventSeries bleEventSeries) {
+    public void setBleEventSeriesEntity(BleEventSeriesEntity bleEventSeriesEntity) {
         synchronized (this) {
-            this.bleEventSeries = bleEventSeries;
-            eventSeriesId = bleEventSeries == null ? null : bleEventSeries.getId();
-            bleEventSeries__resolvedKey = eventSeriesId;
+            this.bleEventSeriesEntity = bleEventSeriesEntity;
+            eventSeriesId = bleEventSeriesEntity == null ? null : bleEventSeriesEntity.getId();
+            bleEventSeriesEntity__resolvedKey = eventSeriesId;
         }
     }
 
@@ -169,6 +170,13 @@ public class BleEvent {
     }
 
     // KEEP METHODS - put your custom methods here
-    // KEEP METHODS END
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonObject toJsonObject() {
+        return null;
+    }
+    // KEEP METHODS END
 }

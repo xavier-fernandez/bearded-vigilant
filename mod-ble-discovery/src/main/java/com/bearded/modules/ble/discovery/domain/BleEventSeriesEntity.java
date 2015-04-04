@@ -1,8 +1,9 @@
 package com.bearded.modules.ble.discovery.domain;
 
-import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceDao;
-import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesDao;
+import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
+import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
+import com.google.gson.JsonObject;
 
 import de.greenrobot.dao.DaoException;
 
@@ -12,9 +13,9 @@ import de.greenrobot.dao.DaoException;
 // KEEP INCLUDES END
 
 /**
- * Entity mapped to table BLE_EVENT_SERIES.
+ * Entity mapped to table BleEventSeries.
  */
-public class BleEventSeries {
+public class BleEventSeriesEntity implements com.bearded.common.ParseableJson {
 
     private Long id;
     private Long bleDeviceId;
@@ -32,23 +33,23 @@ public class BleEventSeries {
     /**
      * Used for active entity operations.
      */
-    private transient BleEventSeriesDao myDao;
+    private transient BleEventSeriesEntityDao myDao;
 
-    private BleDevice bleDevice;
-    private Long bleDevice__resolvedKey;
+    private BleDeviceEntity bleDeviceEntity;
+    private Long bleDeviceEntity__resolvedKey;
 
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    public BleEventSeries() {
+    public BleEventSeriesEntity() {
     }
 
-    public BleEventSeries(Long id) {
+    public BleEventSeriesEntity(Long id) {
         this.id = id;
     }
 
-    public BleEventSeries(Long id, Long bleDeviceId, java.util.Date startTimestamp, java.util.Date endTimestamp) {
+    public BleEventSeriesEntity(Long id, Long bleDeviceId, java.util.Date startTimestamp, java.util.Date endTimestamp) {
         this.id = id;
         this.bleDeviceId = bleDeviceId;
         this.startTimestamp = startTimestamp;
@@ -60,7 +61,7 @@ public class BleEventSeries {
      */
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getBleEventSeriesDao() : null;
+        myDao = daoSession != null ? daoSession.getBleEventSeriesEntityDao() : null;
     }
 
     public Long getId() {
@@ -104,27 +105,27 @@ public class BleEventSeries {
     /**
      * To-one relationship, resolved on first access.
      */
-    public BleDevice getBleDevice() {
+    public BleDeviceEntity getBleDeviceEntity() {
         Long __key = this.bleDeviceId;
-        if (bleDevice__resolvedKey == null || !bleDevice__resolvedKey.equals(__key)) {
+        if (bleDeviceEntity__resolvedKey == null || !bleDeviceEntity__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            BleDeviceDao targetDao = daoSession.getBleDeviceDao();
-            BleDevice bleDeviceNew = targetDao.load(__key);
+            BleDeviceEntityDao targetDao = daoSession.getBleDeviceEntityDao();
+            BleDeviceEntity bleDeviceEntityNew = targetDao.load(__key);
             synchronized (this) {
-                bleDevice = bleDeviceNew;
-                bleDevice__resolvedKey = __key;
+                bleDeviceEntity = bleDeviceEntityNew;
+                bleDeviceEntity__resolvedKey = __key;
             }
         }
-        return bleDevice;
+        return bleDeviceEntity;
     }
 
-    public void setBleDevice(BleDevice bleDevice) {
+    public void setBleDeviceEntity(BleDeviceEntity bleDeviceEntity) {
         synchronized (this) {
-            this.bleDevice = bleDevice;
-            bleDeviceId = bleDevice == null ? null : bleDevice.getId();
-            bleDevice__resolvedKey = bleDeviceId;
+            this.bleDeviceEntity = bleDeviceEntity;
+            bleDeviceId = bleDeviceEntity == null ? null : bleDeviceEntity.getId();
+            bleDeviceEntity__resolvedKey = bleDeviceId;
         }
     }
 
@@ -159,6 +160,14 @@ public class BleEventSeries {
     }
 
     // KEEP METHODS - put your custom methods here
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonObject toJsonObject() {
+        return null;
+    }
     // KEEP METHODS END
 
 }

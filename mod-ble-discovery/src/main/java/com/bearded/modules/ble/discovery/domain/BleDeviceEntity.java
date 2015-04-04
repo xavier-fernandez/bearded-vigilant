@@ -4,21 +4,17 @@ package com.bearded.modules.ble.discovery.domain;
 
 // KEEP INCLUDES - put your custom includes here
 
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
-import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceDao;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 // KEEP INCLUDES END
 
 /**
- * Entity mapped to table BLE_DEVICE.
+ * Entity mapped to table BleDevice.
  */
-public class BleDevice {
-
-    // KEEP FIELDS - put your custom fields here
-    // KEEP FIELDS END
+public class BleDeviceEntity implements com.bearded.common.ParseableJson {
 
     private Long id;
     /**
@@ -27,14 +23,17 @@ public class BleDevice {
     private String deviceAddress;
     private String advertiseName;
 
-    public BleDevice() {
+    // KEEP FIELDS - put your custom fields here
+    // KEEP FIELDS END
+
+    public BleDeviceEntity() {
     }
 
-    public BleDevice(Long id) {
+    public BleDeviceEntity(Long id) {
         this.id = id;
     }
 
-    public BleDevice(Long id, String deviceAddress, String advertiseName) {
+    public BleDeviceEntity(Long id, String deviceAddress, String advertiseName) {
         this.id = id;
         this.deviceAddress = deviceAddress;
         this.advertiseName = advertiseName;
@@ -71,12 +70,17 @@ public class BleDevice {
     }
 
     // KEEP METHODS - put your custom methods here
-    @Nullable
-    private JSONObject toJson() throws JSONException {
-        final JSONObject bleDevice = new JSONObject();
-        bleDevice.put(BleDeviceDao.Properties.DeviceAddress.name, this.deviceAddress);
-        bleDevice.put(BleDeviceDao.Properties.AdvertiseName.name, this.advertiseName);
-        return bleDevice;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @NonNull
+    public JsonObject toJsonObject() {
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.add(BleDeviceEntityDao.Properties.DeviceAddress.name, new JsonPrimitive(deviceAddress));
+        jsonObject.add(BleDeviceEntityDao.Properties.AdvertiseName.name, new JsonPrimitive(advertiseName));
+        return jsonObject;
     }
     // KEEP METHODS END
 

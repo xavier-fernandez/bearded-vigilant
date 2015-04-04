@@ -22,7 +22,7 @@ import de.greenrobot.daogenerator.Schema;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-abstract class BleDiscoveryDbSchemaGenerator {
+abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final String MODULE_PACKAGE = "com.bearded.modules.ble.discovery";
 
@@ -59,7 +59,7 @@ abstract class BleDiscoveryDbSchemaGenerator {
      * );
      */
     private static Entity createBleDeviceEntity(final Schema dbSchema) {
-        final Entity deviceEntity = dbSchema.addEntity("BleDevice");
+        final Entity deviceEntity = createEntity(dbSchema, "BleDevice");
         deviceEntity.addIdProperty().primaryKey().autoincrement();
         deviceEntity.addStringProperty("deviceAddress").notNull();
         deviceEntity.addStringProperty("advertiseName");
@@ -75,7 +75,7 @@ abstract class BleDiscoveryDbSchemaGenerator {
      * );
      */
     private static Entity createBleEventSeriesEntity(final Schema dbSchema, final Entity deviceEntity) {
-        final Entity seriesEntity = dbSchema.addEntity("BleEventSeries");
+        final Entity seriesEntity = createEntity(dbSchema, "BleEventSeries");
         seriesEntity.addIdProperty().primaryKey().autoincrement();
         seriesEntity.addToOne(deviceEntity, seriesEntity.addLongProperty("bleDeviceId").getProperty());
         seriesEntity.addDateProperty("startTimestamp").notNull();
@@ -93,7 +93,7 @@ abstract class BleDiscoveryDbSchemaGenerator {
      * );
      */
     private static void createBleEventEntity(final Schema dbSchema, final Entity eventSeriesEntity) {
-        final Entity eventEntity = dbSchema.addEntity("BleEvent");
+        final Entity eventEntity = createEntity(dbSchema, "BleEvent");
         eventEntity.addIdProperty().primaryKey().autoincrement();
         eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeriesId").getProperty());
         eventEntity.addDateProperty("startTimestamp").notNull();
