@@ -60,7 +60,6 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      */
     private static Entity createBleDeviceEntity(final Schema dbSchema) {
         final Entity deviceEntity = createEntity(dbSchema, "BleDevice");
-        deviceEntity.addIdProperty().primaryKey().autoincrement();
         deviceEntity.addStringProperty("deviceAddress").notNull();
         deviceEntity.addStringProperty("advertiseName");
         return deviceEntity;
@@ -76,7 +75,6 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      */
     private static Entity createBleEventSeriesEntity(final Schema dbSchema, final Entity deviceEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "BleEventSeries");
-        seriesEntity.addIdProperty().primaryKey().autoincrement();
         seriesEntity.addToOne(deviceEntity, seriesEntity.addLongProperty("bleDeviceId").getProperty());
         seriesEntity.addDateProperty("startTimestamp").notNull();
         seriesEntity.addDateProperty("endTimestamp");
@@ -94,7 +92,6 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      */
     private static void createBleEventEntity(final Schema dbSchema, final Entity eventSeriesEntity) {
         final Entity eventEntity = createEntity(dbSchema, "BleEvent");
-        eventEntity.addIdProperty().primaryKey().autoincrement();
         eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeriesId").getProperty());
         eventEntity.addDateProperty("startTimestamp").notNull();
         eventEntity.addDateProperty("endTimestamp");

@@ -1,5 +1,7 @@
 package com.bearded.database_schema_generator;
 
+import android.support.annotation.NonNull;
+
 import com.bearded.common.ParseableJson;
 
 import de.greenrobot.daogenerator.Entity;
@@ -23,13 +25,29 @@ import de.greenrobot.daogenerator.Schema;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+
+/**
+ * Abstract class that contains a method that should be used when creating any type of entity.
+ */
 abstract class AbstractDbSchemaGenerator {
 
     private static final String ENTITY_SUFFIX = "Entity";
 
-    protected static Entity createEntity(final Schema dbSchema, final String tableName) {
+    /**
+     * Creates a entity following all the project conventions.
+     * - Add an 'Entity suffix' to the entity name. (Not the database table name)
+     * - Adds an autoincrement primary key ID property.
+     * - Implements {@link com.bearded.common.ParseableJson} interface.
+     *
+     * @param dbSchema  where the entity is going to be added.
+     * @param tableName of the database table.
+     * @return the created {@link de.greenrobot.daogenerator.Entity}.
+     */
+    @NonNull
+    static Entity createEntity(@NonNull final Schema dbSchema, @NonNull final String tableName) {
         final String entityName = String.format("%s%s", tableName, ENTITY_SUFFIX);
         final Entity entity = dbSchema.addEntity(entityName);
+        entity.addIdProperty().primaryKey().autoincrement();
         entity.setTableName(tableName);
         entity.implementsInterface(ParseableJson.class.getCanonicalName());
         return entity;
