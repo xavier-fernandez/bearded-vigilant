@@ -6,7 +6,6 @@ package com.bearded.modules.ble.discovery.domain;
 
 import android.support.annotation.NonNull;
 
-import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 // KEEP INCLUDES END

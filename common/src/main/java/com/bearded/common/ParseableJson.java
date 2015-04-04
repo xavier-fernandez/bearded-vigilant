@@ -20,6 +20,8 @@ package com.bearded.common;
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.JsonObject;
 
 /**
@@ -35,5 +37,6 @@ public interface ParseableJson {
      *
      * @return {@link com.google.gson.JsonObject} with the relevant object information.
      */
+    @NonNull
     JsonObject toJsonObject();
 }
