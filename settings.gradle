@@ -1,3 +1,4 @@
+include ':utils'
 include ':database-schema-generator'
 include ':mod-common'
 include ':mod-ble-discovery'

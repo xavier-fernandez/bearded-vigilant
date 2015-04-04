@@ -18,13 +18,10 @@ android {
 
     //Common dependencies for all the modules.
     dependencies {
+        compile project(':utils')
         apt "org.androidannotations:androidannotations:3.2"
         compile "org.androidannotations:androidannotations-api:3.2"
         compile 'com.android.support:support-v4:22.0.0'
-        compile 'net.sourceforge.streamsupport:streamsupport:1.1.5'
-        compile 'org.threeten:threetenbp:1.2'
-        compile 'org.threeten:threeten-extra:0.9'
         androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.3.1'
-        compile 'com.google.code.gson:gson:2.3.1'
     }
 }
