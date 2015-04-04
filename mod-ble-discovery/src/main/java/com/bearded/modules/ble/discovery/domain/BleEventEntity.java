@@ -4,13 +4,20 @@ package com.bearded.modules.ble.discovery.domain;
 // KEEP INCLUDES - put your custom includes here
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import de.greenrobot.dao.DaoException;
+
+import static com.bearded.common.utils.TimeUtils.timestampToISOString;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.StartTimestamp;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.EndTimestamp;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.ReceivedSignalStrength;
 
 // KEEP INCLUDES END
 
@@ -172,15 +179,35 @@ public class BleEventEntity implements com.bearded.common.ParseableJson {
     }
 
     // KEEP METHODS - put your custom methods here
-
     /**
      * {@inheritDoc}
      */
     @Override
     @NonNull
     public JsonObject toJsonObject() {
-        return null;
+        final JsonObject bleEvent = new JsonObject();
+        bleEvent.add(StartTimestamp.name, getStartTimestampJsonPrimitive());
+        bleEvent.add(EndTimestamp.name, getEndTimestampJsonPrimitive());
+        bleEvent.add(ReceivedSignalStrength.name, getReceivedSignalStrengthJsonPrimitive());
+        return bleEvent;
+    }
+
+    @NonNull
+    private JsonPrimitive getStartTimestampJsonPrimitive(){
+        return new JsonPrimitive(timestampToISOString(this.startTimestamp.getTime()));
+    }
+
+    @Nullable
+    private JsonPrimitive getEndTimestampJsonPrimitive(){
+        if (this.endTimestamp == null){
+            return null;
+        }
+        return new JsonPrimitive(timestampToISOString(this.endTimestamp.getTime()));
+    }
+
+    @NonNull
+    private JsonPrimitive getReceivedSignalStrengthJsonPrimitive(){
+        return new JsonPrimitive(this.receivedSignalStrength);
     }
     // KEEP METHODS END
-
 }
