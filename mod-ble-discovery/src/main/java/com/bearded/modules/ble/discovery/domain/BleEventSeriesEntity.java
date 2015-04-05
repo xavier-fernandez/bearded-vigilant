@@ -9,9 +9,13 @@ import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import de.greenrobot.dao.DaoException;
 
+import static com.bearded.common.utils.TimeUtils.timestampToISOString;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao.Properties.StartTimestamp;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao.Properties.EndTimestamp;
 // KEEP INCLUDES END
 
 /**
@@ -169,7 +173,10 @@ public class BleEventSeriesEntity implements com.bearded.common.ParseableJson {
     @Override
     @NonNull
     public JsonObject toJsonObject() {
-        return null;
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.add(StartTimestamp.name, new JsonPrimitive(timestampToISOString(startTimestamp.getTime())));
+        jsonObject.add(EndTimestamp.name, new JsonPrimitive(timestampToISOString(endTimestamp.getTime())));
+        return jsonObject;
     }
     // KEEP METHODS END
 }
