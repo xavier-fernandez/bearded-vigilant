@@ -5,9 +5,11 @@ package com.bearded.modules.ble.discovery.domain;
 
 import android.support.annotation.NonNull;
 
-import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+
+import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.DeviceAddress;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.AdvertiseName;
 // KEEP INCLUDES END
 
 /**
@@ -77,10 +79,8 @@ public class BleDeviceEntity implements com.bearded.common.ParseableJson {
     @NonNull
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
-        final String deviceAddressPropertyName = BleDeviceEntityDao.Properties.DeviceAddress.name;
-        jsonObject.add(deviceAddressPropertyName, new JsonPrimitive(deviceAddress));
-        final String advertiseNamePropertyName = BleDeviceEntityDao.Properties.AdvertiseName.name;
-        jsonObject.add(advertiseNamePropertyName, new JsonPrimitive(advertiseName));
+        jsonObject.add(DeviceAddress.name, new JsonPrimitive(deviceAddress));
+        jsonObject.add(AdvertiseName.name, new JsonPrimitive(advertiseName));
         return jsonObject;
     }
     // KEEP METHODS END
