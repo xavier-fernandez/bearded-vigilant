@@ -72,16 +72,16 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * CREATE TABLE ble_event_series (
      * _id              INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * ble_device_id    INTEGER    FOREIGN KEY   REFERENCES  ble_device (_id)  NOT NULL,
-     * start_timestamp  DATE       NOTNULL,
-     * end_timestamp    DATE,
+     * start_timestamp  TEXT       NOTNULL,
+     * end_timestamp    TEXT,
      * );
      */
     @NonNull
     private static Entity createBleEventSeriesEntity(@NonNull final Schema dbSchema, @NonNull final Entity deviceEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "BleEventSeries");
         seriesEntity.addToOne(deviceEntity, seriesEntity.addLongProperty("bleDeviceId").getProperty());
-        seriesEntity.addDateProperty("startTimestamp").notNull();
-        seriesEntity.addDateProperty("endTimestamp");
+        seriesEntity.addStringProperty("startTimestamp").notNull();
+        seriesEntity.addStringProperty("endTimestamp");
         return seriesEntity;
     }
 
@@ -89,16 +89,16 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * CREATE TABLE ble_event (
      * _id                        INTEGER   PRIMARY KEY   AUTOINCREMENT,
      * event_series_id            INTEGER   FOREIGN KEY   REFERENCES  ble_event_series (_id)  NOT NULL,
-     * start_timestamp            DATE      NOT NULL,
-     * end_timestamp              DATE,
+     * start_timestamp            TEXT      NOT NULL,
+     * end_timestamp              TEXT,
      * received_signal_strength   INTEGER   NOT NULL
      * );
      */
     private static void createBleEventEntity(@NonNull final Schema dbSchema, @NonNull final Entity eventSeriesEntity) {
         final Entity eventEntity = createEntity(dbSchema, "BleEvent");
         eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeriesId").getProperty());
-        eventEntity.addDateProperty("startTimestamp").notNull();
-        eventEntity.addDateProperty("endTimestamp");
+        eventEntity.addStringProperty("startTimestamp").notNull();
+        eventEntity.addStringProperty("endTimestamp");
         eventEntity.addByteProperty("receivedSignalStrength").notNull();
     }
 }

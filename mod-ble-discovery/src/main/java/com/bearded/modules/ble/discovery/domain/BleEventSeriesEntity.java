@@ -13,9 +13,9 @@ import com.google.gson.JsonPrimitive;
 
 import de.greenrobot.dao.DaoException;
 
-import static com.bearded.common.utils.TimeUtils.timestampToISOString;
-import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao.Properties.StartTimestamp;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao.Properties.EndTimestamp;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao.Properties.StartTimestamp;
+
 // KEEP INCLUDES END
 
 /**
@@ -28,8 +28,8 @@ public class BleEventSeriesEntity implements com.bearded.common.ParseableJson {
     /**
      * Not-null value.
      */
-    private java.util.Date startTimestamp;
-    private java.util.Date endTimestamp;
+    private String startTimestamp;
+    private String endTimestamp;
 
     /**
      * Used to resolve relations
@@ -55,7 +55,7 @@ public class BleEventSeriesEntity implements com.bearded.common.ParseableJson {
         this.id = id;
     }
 
-    public BleEventSeriesEntity(Long id, Long bleDeviceId, java.util.Date startTimestamp, java.util.Date endTimestamp) {
+    public BleEventSeriesEntity(Long id, Long bleDeviceId, String startTimestamp, String endTimestamp) {
         this.id = id;
         this.bleDeviceId = bleDeviceId;
         this.startTimestamp = startTimestamp;
@@ -89,22 +89,22 @@ public class BleEventSeriesEntity implements com.bearded.common.ParseableJson {
     /**
      * Not-null value.
      */
-    public java.util.Date getStartTimestamp() {
+    public String getStartTimestamp() {
         return startTimestamp;
     }
 
     /**
      * Not-null value; ensure this value is available before it is saved to the database.
      */
-    public void setStartTimestamp(java.util.Date startTimestamp) {
+    public void setStartTimestamp(String startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
 
-    public java.util.Date getEndTimestamp() {
+    public String getEndTimestamp() {
         return endTimestamp;
     }
 
-    public void setEndTimestamp(java.util.Date endTimestamp) {
+    public void setEndTimestamp(String endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
 
@@ -174,9 +174,10 @@ public class BleEventSeriesEntity implements com.bearded.common.ParseableJson {
     @NonNull
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
-        jsonObject.add(StartTimestamp.name, new JsonPrimitive(timestampToISOString(startTimestamp.getTime())));
-        jsonObject.add(EndTimestamp.name, new JsonPrimitive(timestampToISOString(endTimestamp.getTime())));
+        jsonObject.add(StartTimestamp.name, new JsonPrimitive(startTimestamp));
+        jsonObject.add(EndTimestamp.name, new JsonPrimitive(endTimestamp));
         return jsonObject;
     }
     // KEEP METHODS END
+
 }

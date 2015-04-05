@@ -43,12 +43,13 @@ public abstract class TimeUtils {
 
     /**
      * Convert a given timestamp into a ISO 8601 {@link java.lang.String}
+     *
      * @param timestamp that will be converted. Must be a positive number.
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
     @NonNull
-    public static String timestampToISOString(final long timestamp){
-        if (timestamp < 0){
+    public static String timestampToISOString(final long timestamp) {
+        if (timestamp < 0) {
             throw new IllegalArgumentException(String.format("%s: timestampToISOString -> Received a negative timestamp", TAG));
         }
         return dateFormat.format(new Date(timestamp));

@@ -1,5 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bearded.common">
+<manifest package="com.bearded.common"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application android:allowBackup="true" />
+    <application android:allowBackup="true"/>
 </manifest>

@@ -6,6 +6,8 @@ import java.util.Date;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
+import static com.bearded.common.utils.TimeUtils.timestampToISOString;
+
 public class BleEventSeriesEntityTest extends AbstractDaoTestLongPk<BleEventSeriesEntityDao, BleEventSeriesEntity> {
 
     private static short ONE_SECOND_IN_MILLISECONDS = 1000;
@@ -15,15 +17,19 @@ public class BleEventSeriesEntityTest extends AbstractDaoTestLongPk<BleEventSeri
         super(BleEventSeriesEntityDao.class);
     }
 
-    private static Date getStartTimestamp() {
-        return new Date(System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
+    /**
+     * Returns a device entity using a start timestamp from ten seconds before this method calling.
+     * @return {@link java.lang.String} with the start timestamp following the ISO 8601 convention.
+     */
+    private static String getIsoStartTimestamp() {
+        return timestampToISOString(System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
     }
 
     @Override
     protected BleEventSeriesEntity createEntity(Long key) {
-        BleEventSeriesEntity entity = new BleEventSeriesEntity();
+        final BleEventSeriesEntity entity = new BleEventSeriesEntity();
         entity.setId(key);
-        entity.setStartTimestamp(getStartTimestamp());
+        entity.setStartTimestamp(getIsoStartTimestamp());
         return entity;
     }
 }
