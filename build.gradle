@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-apply plugin: 'retrolambda'
+apply plugin: 'me.tatarka.retrolambda'
 
 apply plugin: 'idea'
 
