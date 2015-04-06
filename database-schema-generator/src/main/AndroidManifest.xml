@@ -1,5 +1,6 @@
-<manifest package="com.bearded.database_schema_generator"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="com.bearded.database_schema_generator"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application android:allowBackup="true"/>
 </manifest>

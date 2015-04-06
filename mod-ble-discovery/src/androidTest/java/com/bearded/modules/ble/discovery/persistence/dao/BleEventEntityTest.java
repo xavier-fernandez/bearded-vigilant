@@ -19,6 +19,7 @@ public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao,
 
     /**
      * Returns a device entity using a start timestamp from ten seconds before this method calling.
+     *
      * @return {@link java.lang.String} with the start timestamp following the ISO 8601 convention.
      */
     private static String getIsoStartTimestamp() {
