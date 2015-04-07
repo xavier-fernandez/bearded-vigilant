@@ -1,3 +1,4 @@
 include ':common'
 include ':database-schema-generator'
 include ':mod-ble-discovery'
+include ':mod-sensor-light'
