@@ -33,15 +33,15 @@ import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 @EBean(scope = EBean.Scope.Singleton)
-class LightSensorListenerManager implements SensorEventListener {
+class LightSensorManager implements SensorEventListener {
 
-    private static final String TAG = LightSensorListenerManager.class.getSimpleName();
+    private static final String TAG = LightSensorManager.class.getSimpleName();
     @SystemService
     SensorManager mSensorManager;
     @Nullable
     private Sensor mLightSensor;
 
-    public LightSensorListenerManager() {
+    public LightSensorManager() {
         if (hasLightSensor()) {
             mLightSensor = mSensorManager.getDefaultSensor(TYPE_LIGHT);
             mSensorManager.registerListener(this, mLightSensor, SENSOR_DELAY_NORMAL);
@@ -53,7 +53,7 @@ class LightSensorListenerManager implements SensorEventListener {
      *
      * @return <code>true</code> if the device has a relative humidity internal sensor. <code>false</code> otherwise.
      */
-    private boolean hasLightSensor() {
+    public boolean hasLightSensor() {
         return mSensorManager.getSensorList(Sensor.TYPE_LIGHT).size() > 0;
     }
 

@@ -1,8 +1,12 @@
-package com.bearded.common.modules;
+package com.bearded.modules.sensor.light;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.bearded.common.modules.Module;
+
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import org.threeten.bp.LocalDateTime;
 
 /*
@@ -23,39 +27,46 @@ import org.threeten.bp.LocalDateTime;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+@EBean
+public class LightSensorModule implements Module {
 
-/**
- * This interface needs to be implemented on all the base classes from all modules.
- */
-public interface Module {
+    private static final String TAG = LightSensorModule.class.getSimpleName();
+    private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
+
+    @Bean
+    LightSensorManager mLightSensorManager;
 
     /**
-     * Returns the module name.
-     *
-     * @return {@link java.lang.String} with the module name.
+     * {@inheritDoc}
      */
     @NonNull
-    String getModuleName();
+    @Override
+    public String getModuleName() {
+        return TAG;
+    }
 
     /**
-     * Returns the version number of the module.
-     *
-     * @return {@link java.lang.Integer} with the version number of the module.
+     * {@inheritDoc}
      */
-    int getModuleVersion();
+    @Override
+    public int getModuleVersion() {
+        return LIGHT_SENSOR_MODULE_VERSION;
+    }
 
     /**
-     * Checks if the module is enabled in the device.
-     *
-     * @return <code>true</code> if the module is enabled - <code>false</code> otherwise.
+     * {@inheritDoc}
      */
-    boolean isModuleEnabled();
+    @Override
+    public boolean isModuleEnabled() {
+        return mLightSensorManager.hasLightSensor();
+    }
 
     /**
-     * Obtains the time of the last successful cloud upload.
-     *
-     * @return {@link org.threeten.bp.LocalDateTime} of the last cloud upload, if available.
+     * {@inheritDoc}
      */
     @Nullable
-    LocalDateTime lastCloudUploadTime();
+    @Override
+    public LocalDateTime lastCloudUploadTime() {
+        return null;
+    }
 }
