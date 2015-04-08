@@ -2,6 +2,7 @@ package com.bearded.modules.ble.discovery.domain;
 
 import android.support.annotation.NonNull;
 
+import com.bearded.common.database.ParseableJson;
 import com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
@@ -21,7 +22,7 @@ import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDa
 /**
  * Entity mapped to table BleEvent.
  */
-public class BleEventEntity implements com.bearded.common.ParseableJson {
+public class BleEventEntity implements ParseableJson {
 
     private Long id;
     private Long eventSeriesId;

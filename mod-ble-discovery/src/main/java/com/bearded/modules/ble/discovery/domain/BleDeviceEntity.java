@@ -6,6 +6,7 @@ package com.bearded.modules.ble.discovery.domain;
 
 import android.support.annotation.NonNull;
 
+import com.bearded.common.database.ParseableJson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -16,7 +17,7 @@ import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityD
 /**
  * Entity mapped to table BleDevice.
  */
-public class BleDeviceEntity implements com.bearded.common.ParseableJson {
+public class BleDeviceEntity implements ParseableJson {
 
     private Long id;
     /**

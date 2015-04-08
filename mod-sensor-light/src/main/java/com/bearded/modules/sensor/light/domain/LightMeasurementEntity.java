@@ -6,6 +6,7 @@ package com.bearded.modules.sensor.light.domain;
 
 import android.support.annotation.NonNull;
 
+import com.bearded.common.database.ParseableJson;
 import com.bearded.modules.sensor.light.persistence.dao.DaoSession;
 import com.bearded.modules.sensor.light.persistence.dao.LightMeasurementEntityDao;
 import com.bearded.modules.sensor.light.persistence.dao.LightMeasurementSeriesEntityDao;
@@ -18,7 +19,7 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table LightMeasurement.
  */
-public class LightMeasurementEntity implements com.bearded.common.ParseableJson {
+public class LightMeasurementEntity implements ParseableJson {
 
     private Long id;
     private Long measurementSeriesEntity;

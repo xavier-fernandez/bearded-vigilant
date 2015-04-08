@@ -6,6 +6,7 @@ package com.bearded.modules.sensor.light.domain;
 
 import android.support.annotation.NonNull;
 
+import com.bearded.common.database.ParseableJson;
 import com.google.gson.JsonObject;
 
 // KEEP INCLUDES END
@@ -13,7 +14,7 @@ import com.google.gson.JsonObject;
 /**
  * Entity mapped to table LightMeasurementSeries.
  */
-public class LightMeasurementSeriesEntity implements com.bearded.common.ParseableJson {
+public class LightMeasurementSeriesEntity implements ParseableJson {
 
     private Long id;
     /**
