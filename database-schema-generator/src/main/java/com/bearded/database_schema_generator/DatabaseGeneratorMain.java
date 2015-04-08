@@ -22,5 +22,6 @@ abstract class DatabaseGeneratorMain {
 
     public static void main(final String... args) throws Exception {
         BleDiscoveryDbSchemaGenerator.generateBleDatabaseSchema();
+        SensorLightDbSchemaGenerator.generateLightSensorDatabaseSchema();
     }
 }

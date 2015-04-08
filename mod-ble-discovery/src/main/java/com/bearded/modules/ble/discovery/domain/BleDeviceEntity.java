@@ -11,7 +11,6 @@ import com.google.gson.JsonPrimitive;
 
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.AdvertiseName;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.DeviceAddress;
-
 // KEEP INCLUDES END
 
 /**
