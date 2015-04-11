@@ -7,6 +7,10 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
+
+    // The following dependencies should be removed as soon as Java 8 is supported in Android.
+    dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.0.1'
     }
 }
