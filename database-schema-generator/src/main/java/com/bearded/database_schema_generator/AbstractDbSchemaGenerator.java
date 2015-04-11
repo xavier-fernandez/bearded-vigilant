@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.bearded.common.database.ParseableJson;
 
-import java.util.Comparator;
-
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 

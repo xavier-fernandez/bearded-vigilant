@@ -6,7 +6,6 @@ package com.bearded.modules.ble.discovery.domain;
 
 import android.support.annotation.NonNull;
 
-import com.bearded.common.database.ParseableJson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -17,7 +16,7 @@ import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityD
 /**
  * Entity mapped to table BleDevice.
  */
-public class BleDeviceEntity implements ParseableJson {
+public class BleDeviceEntity implements com.bearded.common.database.ParseableJson, java.lang.Comparable<BleDeviceEntity> {
 
     private Long id;
     /**
@@ -84,6 +83,15 @@ public class BleDeviceEntity implements ParseableJson {
         jsonObject.add(DeviceAddress.name, new JsonPrimitive(deviceAddress));
         jsonObject.add(AdvertiseName.name, new JsonPrimitive(advertiseName));
         return jsonObject;
+    }
+
+    /**
+     * {@inheritDoc}
+     * NOTE: This implementation compares the two elements comparing the device address.
+     */
+    @Override
+    public int compareTo(@NonNull final BleDeviceEntity entity) {
+        return this.deviceAddress.compareTo(entity.deviceAddress);
     }
     // KEEP METHODS END
 

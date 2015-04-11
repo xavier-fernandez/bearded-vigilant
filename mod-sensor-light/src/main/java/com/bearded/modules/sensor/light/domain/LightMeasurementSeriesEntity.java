@@ -6,7 +6,6 @@ package com.bearded.modules.sensor.light.domain;
 
 import android.support.annotation.NonNull;
 
-import com.bearded.common.database.ParseableJson;
 import com.google.gson.JsonObject;
 
 // KEEP INCLUDES END
@@ -14,7 +13,7 @@ import com.google.gson.JsonObject;
 /**
  * Entity mapped to table LightMeasurementSeries.
  */
-public class LightMeasurementSeriesEntity implements ParseableJson {
+public class LightMeasurementSeriesEntity implements com.bearded.common.database.ParseableJson, java.lang.Comparable<LightMeasurementSeriesEntity> {
 
     private Long id;
     /**
@@ -68,7 +67,17 @@ public class LightMeasurementSeriesEntity implements ParseableJson {
     public void setEndTimestamp(String endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
+
     // KEEP METHODS - put your custom methods here
+
+    /**
+     * {@inheritDoc}
+     * NOTE: This implementation compares the two elements comparing its start timestamp.
+     */
+    @Override
+    public int compareTo(@NonNull final LightMeasurementSeriesEntity another) {
+        return this.startTimestamp.compareTo(another.startTimestamp);
+    }
 
     /**
      * {@inheritDoc}
@@ -78,5 +87,7 @@ public class LightMeasurementSeriesEntity implements ParseableJson {
     public JsonObject toJsonObject() {
         return null;
     }
+
     // KEEP METHODS END
+
 }
