@@ -8,8 +8,14 @@ import com.bearded.modules.sensor.light.persistence.dao.DaoSession;
 import com.bearded.modules.sensor.light.persistence.dao.LightMeasurementEntityDao;
 import com.bearded.modules.sensor.light.persistence.dao.LightMeasurementSeriesEntityDao;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import de.greenrobot.dao.DaoException;
+
+import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementEntityDao.Properties.BinSize;
+import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementEntityDao.Properties.EndTimestamp;
+import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementEntityDao.Properties.MidLightValue;
+import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementEntityDao.Properties.StartTimestamp;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
@@ -207,7 +213,12 @@ public class LightMeasurementEntity implements com.bearded.common.database.Parse
     @NonNull
     @Override
     public JsonObject toJsonObject() {
-        return null;
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.add(StartTimestamp.name, new JsonPrimitive(this.startTimestamp));
+        jsonObject.add(EndTimestamp.name, new JsonPrimitive(this.endTimestamp));
+        jsonObject.add(MidLightValue.name, new JsonPrimitive(this.midLightValue));
+        jsonObject.add(BinSize.name, new JsonPrimitive(this.midLightValue));
+        return jsonObject;
     }
     // KEEP METHODS END
 

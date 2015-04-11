@@ -7,6 +7,10 @@ package com.bearded.modules.sensor.light.domain;
 import android.support.annotation.NonNull;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementSeriesEntityDao.Properties.EndTimestamp;
+import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementSeriesEntityDao.Properties.StartTimestamp;
 
 // KEEP INCLUDES END
 
@@ -85,7 +89,10 @@ public class LightMeasurementSeriesEntity implements com.bearded.common.database
     @NonNull
     @Override
     public JsonObject toJsonObject() {
-        return null;
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.add(StartTimestamp.name, new JsonPrimitive(this.startTimestamp));
+        jsonObject.add(EndTimestamp.name, new JsonPrimitive(this.endTimestamp));
+        return jsonObject;
     }
 
     // KEEP METHODS END
