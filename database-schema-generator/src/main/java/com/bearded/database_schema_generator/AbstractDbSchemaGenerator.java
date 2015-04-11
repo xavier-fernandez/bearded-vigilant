@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.bearded.common.database.ParseableJson;
 
+import java.util.Comparator;
+
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
 
@@ -50,6 +52,7 @@ abstract class AbstractDbSchemaGenerator {
         entity.addIdProperty().primaryKey().autoincrement();
         entity.setTableName(tableName);
         entity.implementsInterface(ParseableJson.class.getCanonicalName());
+        entity.implementsInterface(String.format("%s<%s>", Comparable.class.getCanonicalName(), entity.getClassName()));
         return entity;
     }
 }
