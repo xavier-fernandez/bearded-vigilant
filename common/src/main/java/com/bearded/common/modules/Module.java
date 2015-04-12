@@ -3,7 +3,7 @@ package com.bearded.common.modules;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.threeten.bp.LocalDateTime;
+import org.joda.time.DateTime;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -54,8 +54,8 @@ public interface Module {
     /**
      * Obtains the time of the last successful cloud upload.
      *
-     * @return {@link org.threeten.bp.LocalDateTime} of the last cloud upload, if available.
+     * @return {@link org.joda.time.DateTime} of the last cloud upload, if available.
      */
     @Nullable
-    LocalDateTime lastCloudUploadTime();
+    DateTime lastCloudUploadTime();
 }
