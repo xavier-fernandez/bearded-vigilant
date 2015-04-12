@@ -34,7 +34,7 @@ public abstract class TimeUtils {
 
     private static final String TAG = TimeUtils.class.getSimpleName();
 
-    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
 
     static {
         final TimeZone timeZone = TimeZone.getTimeZone("UTC");

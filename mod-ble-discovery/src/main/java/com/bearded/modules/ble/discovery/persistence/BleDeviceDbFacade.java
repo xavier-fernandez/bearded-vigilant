@@ -37,7 +37,7 @@ import de.greenrobot.dao.query.QueryBuilder;
 @EBean(scope = EBean.Scope.Singleton)
 public class BleDeviceDbFacade {
 
-    private final Map<String, BleDeviceEntity> mKnownBleDevices = Collections.synchronizedMap(new HashMap<String, BleDeviceEntity>());
+    private final Map<String, BleDeviceEntity> mKnownBleDevices = Collections.synchronizedMap(new HashMap<>());
     @Bean
     DiscoveryDatabaseFacade mDatabaseFacade;
 

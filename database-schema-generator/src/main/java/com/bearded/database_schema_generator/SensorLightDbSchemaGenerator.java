@@ -24,7 +24,7 @@ import de.greenrobot.daogenerator.Schema;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-public class SensorLightDbSchemaGenerator extends AbstractDbSchemaGenerator {
+class SensorLightDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final String MODULE_PACKAGE = "com.bearded.modules.sensor.light";
 

@@ -51,13 +51,7 @@ class DiscoveryDatabaseFacade {
 
     @NonNull
     public DaoSession getReadableSession(final boolean newSession) {
-        if (newSession) {
-            return getMaster(false).newSession();
-        }
-        if (mSession == null) {
-            mSession = getMaster(false).newSession();
-        }
-        return mSession;
+        return getSession(newSession, true);
     }
 
     @NonNull

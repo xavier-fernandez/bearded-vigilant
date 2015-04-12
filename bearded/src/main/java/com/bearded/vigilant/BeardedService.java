@@ -1,4 +1,4 @@
-package com.bearder.vigilant;
+package com.bearded.vigilant;
 
 import org.androidannotations.annotations.EService;
 

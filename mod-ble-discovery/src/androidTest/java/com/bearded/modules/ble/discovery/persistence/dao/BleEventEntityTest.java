@@ -10,8 +10,8 @@ import static com.bearded.common.utils.TimeUtils.timestampToISOString;
 
 public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao, BleEventEntity> {
 
-    private static short ONE_SECOND_IN_MILLISECONDS = 1000;
-    private static int EVENT_SERIES_TEST_DURATION_SECONDS = 10 * ONE_SECOND_IN_MILLISECONDS;
+    private static final short ONE_SECOND_IN_MILLISECONDS = 1000;
+    private static final int EVENT_SERIES_TEST_DURATION_SECONDS = 10 * ONE_SECOND_IN_MILLISECONDS;
 
     public BleEventEntityTest() {
         super(BleEventEntityDao.class);
