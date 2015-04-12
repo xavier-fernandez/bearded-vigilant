@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.bearded.common.modules.Module;
 
 import org.androidannotations.annotations.EBean;
-import org.threeten.bp.LocalDateTime;
+import org.joda.time.DateTime;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -62,7 +62,7 @@ public class BleDiscoveryModule implements Module {
      */
     @Nullable
     @Override
-    public LocalDateTime lastCloudUploadTime() {
+    public DateTime lastCloudUploadTime() {
         return null;
     }
 }
