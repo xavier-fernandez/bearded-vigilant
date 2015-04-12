@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Modules that will be loaded and used in the selected flavour -->
+    <string-array name="modules_list">
+        <item>com.bearded.modules.sensor.light.LightSensorModule</item>
+        <item>com.bearded.modules.ble.discovery</item>
+    </string-array>
+</resources>
