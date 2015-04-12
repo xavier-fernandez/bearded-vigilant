@@ -1,5 +1,14 @@
 package com.bearded.vigilant;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.bearded.common.modules.Module;
+
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
 
 /*
@@ -21,9 +30,22 @@ import org.androidannotations.annotations.EService;
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 @EService
-public class BeardedService {
+public class BeardedService extends Service {
 
     private static final String TAG = BeardedService.class.getSimpleName();
 
+    @Bean
+    ModuleManager mModuleManager;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IBinder onBind(@NonNull final Intent intent) {
+        Log.d(TAG, String.format("onBind -> Service %s was binded successfully.", TAG));
+        for (final Module module : mModuleManager.getAvailableModules()){
+            Log.i(TAG, "onBind -> Found module: " + module);
+        }
+        return null;
+    }
 }
