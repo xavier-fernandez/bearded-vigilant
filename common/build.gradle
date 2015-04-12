@@ -12,8 +12,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     //Common dependencies for all the modules.
@@ -31,6 +31,5 @@ android {
     dependencies {
         compile 'org.threeten:threetenbp:1.2'
         compile 'org.threeten:threeten-extra:0.9'
-        compile 'net.sourceforge.streamsupport:streamsupport:1.1.5'
     }
 }
