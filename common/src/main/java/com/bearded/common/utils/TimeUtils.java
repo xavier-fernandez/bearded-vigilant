@@ -42,7 +42,7 @@ public abstract class TimeUtils {
     }
 
     /**
-     * Convert a given timestamp into a ISO 8601 {@link java.lang.String}
+     * Convert a given timestamp into ISO 8601 {@link java.lang.String}
      *
      * @param timestamp that will be converted. Must be a positive number.
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.

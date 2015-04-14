@@ -1,6 +1,5 @@
 package com.bearded.common.database;
 
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -32,8 +31,7 @@ public interface ParseableJson {
 
     /**
      * Converts the object into a JSON object. If the object have a connection with another
-     * {@link ParseableJson} object, it will call this method do cascade calls
-     * to this method from other objects.
+     * {@link ParseableJson} object, it will do cascade calls on the object relationships.
      *
      * @return {@link com.google.gson.JsonObject} with the relevant object information.
      */

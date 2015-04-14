@@ -8,9 +8,6 @@ import android.util.Log;
 
 import com.bearded.common.modules.Module;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EService;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -29,21 +26,19 @@ import org.androidannotations.annotations.EService;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-@EService
 public class BeardedService extends Service {
 
     private static final String TAG = BeardedService.class.getSimpleName();
 
-    @Bean
-    ModuleManager mModuleManager;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public IBinder onBind(@NonNull final Intent intent) {
+        final ModuleManager moduleManager = new ModuleManager(this.getApplicationContext());
         Log.d(TAG, String.format("onBind -> Service %s was binded successfully.", TAG));
-        for (final Module module : mModuleManager.getAvailableModules()){
+        for (final Module module : moduleManager.getAvailableModules()){
             Log.i(TAG, "onBind -> Found module: " + module);
         }
         return null;

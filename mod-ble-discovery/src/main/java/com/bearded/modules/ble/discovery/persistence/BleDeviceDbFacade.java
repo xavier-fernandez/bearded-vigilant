@@ -34,12 +34,9 @@ import de.greenrobot.dao.query.QueryBuilder;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-@EBean(scope = EBean.Scope.Singleton)
 public class BleDeviceDbFacade {
 
     private final Map<String, BleDeviceEntity> mKnownBleDevices = Collections.synchronizedMap(new HashMap<String, BleDeviceEntity>());
-    @Bean
-    DiscoveryDatabaseFacade mDatabaseFacade;
 
     /**
      * Returns a known BleDevice from the database. It will store the known BleDevice in a proxy.
@@ -53,7 +50,7 @@ public class BleDeviceDbFacade {
         if (mKnownBleDevices.containsKey(deviceAddress.trim())) {
             return mKnownBleDevices.get(deviceAddress);
         }
-        final DaoSession session = mDatabaseFacade.getReadableSession(false);
+        final DaoSession session = DiscoveryDatabaseFacade.getInstance().getReadableSession(false);
         final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
         final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(BleDeviceEntityDao.Properties.DeviceAddress.eq(deviceAddress.trim()));

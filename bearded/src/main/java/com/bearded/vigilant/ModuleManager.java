@@ -7,9 +7,6 @@ import android.util.Log;
 
 import com.bearded.common.modules.Module;
 
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -34,7 +31,6 @@ import java.util.List;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-@EBean(scope = EBean.Scope.Singleton)
 public class ModuleManager {
 
     private static final String TAG = ModuleManager.class.getSimpleName();
@@ -42,12 +38,9 @@ public class ModuleManager {
     @NonNull
     private final List<Module> mModules = new ArrayList<>();
 
-    @RootContext
-    Context mContext;
-
-    public ModuleManager() {
+    public ModuleManager(@NonNull final Context context) {
         Log.d(TAG, String.format("Constructor(Context) -> Initializing modules for flavor %s.", BuildConfig.FLAVOR));
-        loadFlavorModules();
+        loadFlavorModules(context);
     }
 
     /**
@@ -63,13 +56,13 @@ public class ModuleManager {
     /**
      * Loads and instantiates all the modules from the running flavor into memory.
      */
-    private void loadFlavorModules() {
-        final String[] flavorModules = mContext.getResources().getStringArray(R.array.modules_list);
+    private void loadFlavorModules(@NonNull final Context context) {
+        final String[] flavorModules = context.getResources().getStringArray(R.array.modules_list);
         Log.i(TAG, String.format("loadFlavorModules -> Loading %d from flavor %s.", flavorModules.length, BuildConfig.FLAVOR));
         for (final String moduleClassLocation : flavorModules) {
-            final Module loadedModule = loadModule(moduleClassLocation);
+            final Module loadedModule = loadModule(context, moduleClassLocation);
             if (loadedModule != null) {
-                mModules.add(loadModule(moduleClassLocation));
+                mModules.add(loadedModule);
             }
         }
     }
@@ -81,7 +74,7 @@ public class ModuleManager {
      * @return {@link com.bearded.common.modules.Module} if it was loaded succesfully - <code>null</code> otherwise.
      */
     @Nullable
-    private Module loadModule(@NonNull final String moduleClassLocation) {
+    private Module loadModule(@NonNull final Context context, @NonNull final String moduleClassLocation) {
         Log.d(TAG, String.format("loadModule -> Loading module %s.", moduleClassLocation));
         final Class<?> moduleClass;
         try {
@@ -99,7 +92,7 @@ public class ModuleManager {
         }
         final Module module;
         try {
-            module = (Module) moduleConstructor.newInstance(mContext);
+            module = (Module) moduleConstructor.newInstance(context);
         } catch (final InstantiationException | IllegalAccessException | InvocationTargetException e) {
             Log.e(TAG, String.format("loadModule -> The following error was thrown when instantiating the module %s -> ", moduleClassLocation), e);
             return null;

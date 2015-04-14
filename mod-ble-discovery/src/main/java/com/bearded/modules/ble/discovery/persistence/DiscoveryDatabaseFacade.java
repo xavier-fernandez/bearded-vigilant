@@ -28,20 +28,31 @@ import android.util.Log;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoMaster;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
 /**
  * Class used for obtaining database sessions.
  */
-@EBean(scope = EBean.Scope.Singleton)
 class DiscoveryDatabaseFacade {
 
     private static final String TAG = DiscoveryDatabaseFacade.class.getSimpleName();
     private static final String DATABASE_NAME = DiscoveryDatabaseFacade.class.getCanonicalName();
 
-    @RootContext
-    Context mContext;
+    private static DiscoveryDatabaseFacade mInstance;
+    private final Context mApplicationContext;
+
+    private DiscoveryDatabaseFacade (@NonNull final Context context){
+        mApplicationContext = context.getApplicationContext();
+    }
+
+    static synchronized DiscoveryDatabaseFacade getInstance(){
+        if (mInstance == null){
+            throw new IllegalStateException(String.format("%s: getInstance() -> init() must be called before trying to obtain the class instance.", TAG));
+        }
+        return mInstance;
+    }
+
+    static void init(@NonNull final Context context){
+        new DiscoveryDatabaseFacade(context);
+    }
 
     @Nullable
     private SQLiteDatabase mDatabase = null;
@@ -92,7 +103,7 @@ class DiscoveryDatabaseFacade {
 
     private class DatabaseOpenHelper extends DaoMaster.OpenHelper {
         public DatabaseOpenHelper() {
-            super(mContext, DATABASE_NAME, null);
+            super(mApplicationContext, DATABASE_NAME, null);
         }
 
         @Override
