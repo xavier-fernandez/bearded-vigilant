@@ -1,5 +1,7 @@
 package com.bearded.modules.sensor.light;
 
+import android.content.Context;
+
 import com.bearded.common.modules.Module;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +32,13 @@ public class LightSensorModule implements Module {
     private static final String TAG = LightSensorModule.class.getSimpleName();
     private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
 
-    private LightSensorManager mLightSensorManager = LightSensorManager.getInstance();
+    @NotNull
+    private final LightSensorManager mLightSensorManager;
+
+    public LightSensorModule (@NotNull final Context context){
+        mLightSensorManager = LightSensorManager.getInstance();
+        mLightSensorManager.init(context);
+    }
 
     /**
      * {@inheritDoc}

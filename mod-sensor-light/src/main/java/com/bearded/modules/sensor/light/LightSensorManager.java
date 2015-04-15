@@ -74,7 +74,7 @@ class LightSensorManager implements SensorEventListener {
      * @throws IllegalStateException in case the method 'init(context)' is not initialized yet.
      */
     public boolean hasLightSensor() {
-        if (mLightSensor == null) {
+        if (mSensorManager == null) {
             throw new IllegalStateException(String.format("%s: hasLightSensor -> Class is not initialized yet. (HINT -> Call init(context) first.", TAG));
         }
         return mSensorManager.getSensorList(Sensor.TYPE_LIGHT).size() > 0;

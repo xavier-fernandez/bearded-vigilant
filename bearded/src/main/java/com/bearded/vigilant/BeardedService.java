@@ -31,17 +31,24 @@ public class BeardedService extends Service {
 
     private static final String TAG = BeardedService.class.getSimpleName();
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int onStartCommand(@NotNull final Intent intent, final int flags, final int startId) {
+        final ModuleManager moduleManager = new ModuleManager(this.getApplicationContext());
+        Log.d(TAG, String.format("onBind -> Service %s was binded successfully.", TAG));
+        for (final Module module : moduleManager.getAvailableModules()) {
+            Log.i(TAG, "onBind -> Found module: " + module);
+        }
+        return Service.START_STICKY; //Service is restarted if terminates.
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public IBinder onBind(@NotNull final Intent intent) {
-        final ModuleManager moduleManager = new ModuleManager(this.getApplicationContext());
-        Log.d(TAG, String.format("onBind -> Service %s was binded successfully.", TAG));
-        for (final Module module : moduleManager.getAvailableModules()) {
-            Log.i(TAG, "onBind -> Found module: " + module);
-        }
         return null;
     }
 }

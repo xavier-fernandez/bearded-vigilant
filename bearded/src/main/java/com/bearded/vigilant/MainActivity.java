@@ -3,6 +3,7 @@ package com.bearded.vigilant;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,13 +12,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class MainActivity extends Activity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, BeardedService.class));
+        Log.d(TAG, "onCreate -> Starting Bearded service...");
+        startService(new Intent(this.getApplicationContext(), BeardedService.class));
     }
 
     /**
