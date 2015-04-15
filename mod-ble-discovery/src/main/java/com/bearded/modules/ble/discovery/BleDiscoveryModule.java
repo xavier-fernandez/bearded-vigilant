@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.bearded.common.modules.Module;
 
-import org.androidannotations.annotations.EBean;
 import org.joda.time.DateTime;
 
 /*
@@ -26,7 +25,7 @@ import org.joda.time.DateTime;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-@EBean
+
 public class BleDiscoveryModule implements Module {
 
     private static final String TAG = BleDiscoveryModule.class.getSimpleName();

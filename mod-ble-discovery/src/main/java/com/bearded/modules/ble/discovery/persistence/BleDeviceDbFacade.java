@@ -7,9 +7,6 @@ import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
 import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

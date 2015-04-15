@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.bearded.common.modules.Module;
 
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
 import org.joda.time.DateTime;
 
 /*
@@ -27,14 +25,13 @@ import org.joda.time.DateTime;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-@EBean
+
 public class LightSensorModule implements Module {
 
     private static final String TAG = LightSensorModule.class.getSimpleName();
     private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
 
-    @Bean
-    LightSensorManager mLightSensorManager;
+    private LightSensorManager mLightSensorManager = LightSensorManager.getInstance();
 
     /**
      * {@inheritDoc}

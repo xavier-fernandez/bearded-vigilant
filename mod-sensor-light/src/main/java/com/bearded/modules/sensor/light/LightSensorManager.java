@@ -1,19 +1,16 @@
 package com.bearded.modules.sensor.light;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
-
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.SystemService;
 
 import static android.hardware.Sensor.TYPE_LIGHT;
 import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
-
+import static android.content.Context.SENSOR_SERVICE;
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -32,16 +29,37 @@ import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-@EBean(scope = EBean.Scope.Singleton)
+
 class LightSensorManager implements SensorEventListener {
 
     private static final String TAG = LightSensorManager.class.getSimpleName();
-    @SystemService
-    SensorManager mSensorManager;
-    @Nullable
+
+    private SensorManager mSensorManager;
+
     private Sensor mLightSensor;
 
-    public LightSensorManager() {
+    private static LightSensorManager mInstance;
+
+    private LightSensorManager(){}
+
+    /**
+     * Returns the singleton instance of the light sensor manager.
+     * @return {@link LightSensorManager} with the singleton instance.
+     */
+    @NonNull
+    public synchronized static LightSensorManager getInstance(){
+        if (mInstance == null){
+             mInstance = new LightSensorManager();
+        }
+        return mInstance;
+    }
+
+    /**
+     * Initializes the light sensors.
+     * @param context used for managing the system services.
+     */
+    public synchronized void init(@NonNull final Context context){
+        mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         if (hasLightSensor()) {
             mLightSensor = mSensorManager.getDefaultSensor(TYPE_LIGHT);
             mSensorManager.registerListener(this, mLightSensor, SENSOR_DELAY_NORMAL);
@@ -52,8 +70,12 @@ class LightSensorManager implements SensorEventListener {
      * Checks if the device has a light sensor.
      *
      * @return <code>true</code> if the device has a relative humidity internal sensor. <code>false</code> otherwise.
+     * @throws IllegalStateException in case the method 'init(context)' is not initialized yet.
      */
     public boolean hasLightSensor() {
+        if (mLightSensor == null){
+            throw new IllegalStateException(String.format("%s: hasLightSensor -> Class is not initialized yet. (HINT -> Call init(context) first.", TAG));
+        }
         return mSensorManager.getSensorList(Sensor.TYPE_LIGHT).size() > 0;
     }
 
