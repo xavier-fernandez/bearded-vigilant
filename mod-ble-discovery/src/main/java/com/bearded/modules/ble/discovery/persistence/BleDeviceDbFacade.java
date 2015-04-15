@@ -1,11 +1,11 @@
 package com.bearded.modules.ble.discovery.persistence;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
 import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class BleDeviceDbFacade {
      * @return {@link com.bearded.modules.ble.discovery.domain.BleDeviceEntity} in case the device is already on the database.
      */
     @Nullable
-    public BleDeviceEntity readBleDevice(@NonNull final String deviceAddress, @Nullable final String advertiseName) {
+    public BleDeviceEntity readBleDevice(@NotNull final String deviceAddress, @Nullable final String advertiseName) {
         if (mKnownBleDevices.containsKey(deviceAddress.trim())) {
             return mKnownBleDevices.get(deviceAddress);
         }

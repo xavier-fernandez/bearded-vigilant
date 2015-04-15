@@ -21,12 +21,13 @@ package com.bearded.modules.ble.discovery.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.modules.ble.discovery.persistence.dao.DaoMaster;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Class used for obtaining database sessions.
@@ -38,39 +39,38 @@ class DiscoveryDatabaseFacade {
 
     private static DiscoveryDatabaseFacade mInstance;
     private final Context mApplicationContext;
-
-    private DiscoveryDatabaseFacade (@NonNull final Context context){
-        mApplicationContext = context.getApplicationContext();
-    }
-
-    static synchronized DiscoveryDatabaseFacade getInstance(){
-        if (mInstance == null){
-            throw new IllegalStateException(String.format("%s: getInstance() -> init() must be called before trying to obtain the class instance.", TAG));
-        }
-        return mInstance;
-    }
-
-    static void init(@NonNull final Context context){
-        new DiscoveryDatabaseFacade(context);
-    }
-
     @Nullable
     private SQLiteDatabase mDatabase = null;
     private boolean mIsReadOnly;
     @Nullable
     private DaoSession mSession = null;
 
-    @NonNull
+    private DiscoveryDatabaseFacade(@NotNull final Context context) {
+        mApplicationContext = context.getApplicationContext();
+    }
+
+    static synchronized DiscoveryDatabaseFacade getInstance() {
+        if (mInstance == null) {
+            throw new IllegalStateException(String.format("%s: getInstance() -> init() must be called before trying to obtain the class instance.", TAG));
+        }
+        return mInstance;
+    }
+
+    static void init(@NotNull final Context context) {
+        new DiscoveryDatabaseFacade(context);
+    }
+
+    @NotNull
     public DaoSession getReadableSession(final boolean newSession) {
         return getSession(newSession, true);
     }
 
-    @NonNull
+    @NotNull
     public DaoSession getWriteableSession(final boolean newSession) {
         return getSession(newSession, false);
     }
 
-    @NonNull
+    @NotNull
     private DaoSession getSession(final boolean newSession, final boolean readOnly) {
         if (newSession) {
             return getMaster(readOnly).newSession();
@@ -81,7 +81,7 @@ class DiscoveryDatabaseFacade {
         return mSession;
     }
 
-    @NonNull
+    @NotNull
     private synchronized DaoMaster getMaster(final boolean readOnly) {
         if (mDatabase == null || mIsReadOnly != readOnly) {
             try {
@@ -107,7 +107,7 @@ class DiscoveryDatabaseFacade {
         }
 
         @Override
-        public void onUpgrade(@NonNull final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+        public void onUpgrade(@NotNull final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.d(TAG, String.format("onUpgrade -> Database %s upgraded from version %d to version %d.", DATABASE_NAME, oldVersion, newVersion));
         }
     }

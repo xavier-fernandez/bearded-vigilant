@@ -1,6 +1,6 @@
 package com.bearded.database_schema_generator;
 
-import android.support.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
@@ -60,8 +60,8 @@ class SensorLightDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * end_timestamp    TEXT
      * );
      */
-    @NonNull
-    private static Entity createLightMeasurementSeriesEntity(@NonNull final Schema dbSchema) {
+    @NotNull
+    private static Entity createLightMeasurementSeriesEntity(@NotNull final Schema dbSchema) {
         final Entity seriesEntity = createEntity(dbSchema, "LightMeasurementSeries");
         seriesEntity.addStringProperty("startTimestamp").notNull();
         seriesEntity.addStringProperty("endTimestamp");
@@ -78,7 +78,7 @@ class SensorLightDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * bin_size                 INTEGER    NOTNULL
      * );
      */
-    private static void createLightMeasurementEntity(@NonNull final Schema dbSchema, @NonNull final Entity createMeasurementSeriesEntity) {
+    private static void createLightMeasurementEntity(@NotNull final Schema dbSchema, @NotNull final Entity createMeasurementSeriesEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "LightMeasurement");
         seriesEntity.addToOne(createMeasurementSeriesEntity, seriesEntity.addLongProperty("measurementSeriesEntity").getProperty());
         seriesEntity.addFloatProperty("midLightValue").notNull();

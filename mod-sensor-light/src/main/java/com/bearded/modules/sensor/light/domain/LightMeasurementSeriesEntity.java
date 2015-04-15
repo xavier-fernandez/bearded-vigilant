@@ -4,10 +4,10 @@ package com.bearded.modules.sensor.light.domain;
 
 // KEEP INCLUDES - put your custom includes here
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementSeriesEntityDao.Properties.EndTimestamp;
 import static com.bearded.modules.sensor.light.persistence.dao.LightMeasurementSeriesEntityDao.Properties.StartTimestamp;
@@ -79,14 +79,14 @@ public class LightMeasurementSeriesEntity implements com.bearded.common.database
      * NOTE: This implementation compares the two elements comparing its start timestamp.
      */
     @Override
-    public int compareTo(@NonNull final LightMeasurementSeriesEntity another) {
+    public int compareTo(@NotNull final LightMeasurementSeriesEntity another) {
         return this.startTimestamp.compareTo(another.startTimestamp);
     }
 
     /**
      * {@inheritDoc}
      */
-    @NonNull
+    @NotNull
     @Override
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();

@@ -5,12 +5,13 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
+import static android.content.Context.SENSOR_SERVICE;
 import static android.hardware.Sensor.TYPE_LIGHT;
 import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
-import static android.content.Context.SENSOR_SERVICE;
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -33,32 +34,32 @@ import static android.content.Context.SENSOR_SERVICE;
 class LightSensorManager implements SensorEventListener {
 
     private static final String TAG = LightSensorManager.class.getSimpleName();
-
+    private static LightSensorManager mInstance;
     private SensorManager mSensorManager;
-
     private Sensor mLightSensor;
 
-    private static LightSensorManager mInstance;
-
-    private LightSensorManager(){}
+    private LightSensorManager() {
+    }
 
     /**
      * Returns the singleton instance of the light sensor manager.
+     *
      * @return {@link LightSensorManager} with the singleton instance.
      */
-    @NonNull
-    public synchronized static LightSensorManager getInstance(){
-        if (mInstance == null){
-             mInstance = new LightSensorManager();
+    @NotNull
+    public synchronized static LightSensorManager getInstance() {
+        if (mInstance == null) {
+            mInstance = new LightSensorManager();
         }
         return mInstance;
     }
 
     /**
      * Initializes the light sensors.
+     *
      * @param context used for managing the system services.
      */
-    public synchronized void init(@NonNull final Context context){
+    public synchronized void init(@NotNull final Context context) {
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         if (hasLightSensor()) {
             mLightSensor = mSensorManager.getDefaultSensor(TYPE_LIGHT);
@@ -73,7 +74,7 @@ class LightSensorManager implements SensorEventListener {
      * @throws IllegalStateException in case the method 'init(context)' is not initialized yet.
      */
     public boolean hasLightSensor() {
-        if (mLightSensor == null){
+        if (mLightSensor == null) {
             throw new IllegalStateException(String.format("%s: hasLightSensor -> Class is not initialized yet. (HINT -> Call init(context) first.", TAG));
         }
         return mSensorManager.getSensorList(Sensor.TYPE_LIGHT).size() > 0;
@@ -83,7 +84,7 @@ class LightSensorManager implements SensorEventListener {
      * {@inheritDoc}
      */
     @Override
-    public void onSensorChanged(@NonNull final SensorEvent event) {
+    public void onSensorChanged(@NotNull final SensorEvent event) {
         if (mLightSensor == null) {
             Log.e(TAG, "onSensorChanged -> Sensor %s is not initialized yet.");
             return;
@@ -97,7 +98,7 @@ class LightSensorManager implements SensorEventListener {
      * {@inheritDoc}
      */
     @Override
-    public void onAccuracyChanged(@NonNull final Sensor sensor, final int accuracy) {
+    public void onAccuracyChanged(@NotNull final Sensor sensor, final int accuracy) {
         Log.i(TAG, String.format("onAccuracyChanged -> Accuracy from sensor %s changed to %d.", sensor.getName(), accuracy));
     }
 }

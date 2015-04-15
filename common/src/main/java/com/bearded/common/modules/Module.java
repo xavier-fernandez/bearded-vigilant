@@ -1,8 +1,7 @@
 package com.bearded.common.modules;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 
 /*
@@ -34,7 +33,7 @@ public interface Module {
      *
      * @return {@link java.lang.String} with the module name.
      */
-    @NonNull
+    @NotNull
     String getModuleName();
 
     /**

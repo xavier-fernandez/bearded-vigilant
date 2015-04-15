@@ -1,6 +1,6 @@
 package com.bearded.common.utils;
 
-import android.support.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -47,7 +47,7 @@ public abstract class TimeUtils {
      * @param timestamp that will be converted. Must be a positive number.
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
-    @NonNull
+    @NotNull
     public static String timestampToISOString(final long timestamp) {
         if (timestamp < 0) {
             throw new IllegalArgumentException(String.format("%s: timestampToISOString -> Received a negative timestamp", TAG));

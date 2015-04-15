@@ -1,10 +1,9 @@
 package com.bearded.modules.ble.discovery;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.bearded.common.modules.Module;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 
 /*
@@ -34,7 +33,7 @@ public class BleDiscoveryModule implements Module {
     /**
      * {@inheritDoc}
      */
-    @NonNull
+    @NotNull
     @Override
     public String getModuleName() {
         return TAG;

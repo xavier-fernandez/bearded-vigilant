@@ -4,13 +4,13 @@ package com.bearded.modules.ble.discovery.domain;
 
 // KEEP INCLUDES - put your custom includes here
 
-import android.support.annotation.NonNull;
-
 import com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+
+import org.jetbrains.annotations.NotNull;
 
 import de.greenrobot.dao.DaoException;
 
@@ -183,7 +183,7 @@ public class BleEventEntity implements com.bearded.common.database.ParseableJson
      * NOTE: This implementation compares the two elements comparing its start timestamp.
      */
     @Override
-    public int compareTo(@NonNull final BleEventEntity eventEntity) {
+    public int compareTo(@NotNull final BleEventEntity eventEntity) {
         return this.startTimestamp.compareTo(eventEntity.startTimestamp);
     }
 
@@ -191,7 +191,7 @@ public class BleEventEntity implements com.bearded.common.database.ParseableJson
      * {@inheritDoc}
      */
     @Override
-    @NonNull
+    @NotNull
     public JsonObject toJsonObject() {
         final JsonObject bleEvent = new JsonObject();
         bleEvent.add(StartTimestamp.name, new JsonPrimitive(this.startTimestamp));
