@@ -2,6 +2,6 @@
 <resources>
     <!-- Modules that will be loaded and used in the selected flavour -->
     <string-array name="modules_list">
-        <item>com.bearded.modules.sensor.light.LightSensorModule</item>
+        <item>com.bearded.modules.sensor.internal.LightSensorModule</item>
     </string-array>
 </resources>

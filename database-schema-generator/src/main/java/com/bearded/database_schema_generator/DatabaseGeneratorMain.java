@@ -24,6 +24,6 @@ abstract class DatabaseGeneratorMain {
 
     public static void main(@Nullable final String... args) throws Exception {
         BleDiscoveryDbSchemaGenerator.generateBleDatabaseSchema();
-        SensorLightDbSchemaGenerator.generateLightSensorDatabaseSchema();
+        InternalSensorDbSchemaGenerator.generateInternalSensorDatabaseSchema();
     }
 }
