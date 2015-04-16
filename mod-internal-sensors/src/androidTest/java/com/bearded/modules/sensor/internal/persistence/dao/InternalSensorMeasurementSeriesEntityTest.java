@@ -14,8 +14,8 @@ public class InternalSensorMeasurementSeriesEntityTest extends AbstractDaoTestLo
     protected InternalSensorMeasurementSeriesEntity createEntity(Long key) {
         InternalSensorMeasurementSeriesEntity entity = new InternalSensorMeasurementSeriesEntity();
         entity.setId(key);
-        entity.setSensor_id();
-        entity.setStartTimestamp();
+        entity.setSensor_id(521);
+        entity.setStartTimestamp("ogjeo");
         return entity;
     }
 
