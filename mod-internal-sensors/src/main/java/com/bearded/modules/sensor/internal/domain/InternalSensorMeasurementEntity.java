@@ -18,7 +18,6 @@ import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensor
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.EndTimestamp;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.SensorValue;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.StartTimestamp;
-
 // KEEP INCLUDES END
 
 /**

@@ -16,7 +16,6 @@ import de.greenrobot.dao.DaoException;
 
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao.Properties.EndTimestamp;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao.Properties.StartTimestamp;
-
 // KEEP INCLUDES END
 
 /**
