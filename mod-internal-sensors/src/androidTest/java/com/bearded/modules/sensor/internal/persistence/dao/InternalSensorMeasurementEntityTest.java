@@ -2,8 +2,6 @@ package com.bearded.modules.sensor.internal.persistence.dao;
 
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
 
-import java.util.Date;
-
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<InternalSensorMeasurementEntityDao, InternalSensorMeasurementEntity> {
