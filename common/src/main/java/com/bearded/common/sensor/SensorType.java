@@ -3,6 +3,7 @@ package com.bearded.common.sensor;
 import android.hardware.Sensor;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -24,31 +25,49 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum SensorType {
 
-    LIGHT (Sensor.TYPE_LIGHT, "Light Sensor");
+    LIGHT(Sensor.TYPE_LIGHT, "Light Sensor");
 
     private final int mSensorId;
     @NotNull
     private final String mSensorTypeName;
-
-    SensorType(final int sensorId, @NotNull final String sensorTypeName){
+    
+    SensorType(final int sensorId, @NotNull final String sensorTypeName) {
         mSensorId = sensorId;
         mSensorTypeName = sensorTypeName;
     }
 
     /**
+     * Obtain a {@link SensorType} from a sensor ID.
+     *
+     * @param sensorId of an {@link android.hardware.Sensor}.
+     * @return {@link SensorType} with the sensor Type with the id - <code>null</code> if not available.
+     */
+    @Nullable
+    public static SensorType getSensorTypeFromId(final int sensorId) {
+        for (final SensorType sensorType : values()) {
+            if (sensorType.mSensorId == sensorId) {
+                return sensorType;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the sensor ID.
+     *
      * @return {@link java.lang.Integer} with the sensor ID specified in {@link android.hardware.Sensor}
      */
-    public int getSensorId(){
+    public int getSensorId() {
         return mSensorId;
     }
 
     /**
      * Returns the sensor type name in english.
+     *
      * @return {@link java.lang.String} with the sensor type name. Cannot be null.
      */
     @NotNull
-    public String getSensorTypeName(){
+    public String getSensorTypeName() {
         return mSensorTypeName;
     }
 }
