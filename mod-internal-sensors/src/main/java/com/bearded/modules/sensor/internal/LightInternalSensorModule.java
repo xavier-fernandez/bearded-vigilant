@@ -29,15 +29,14 @@ import org.joda.time.DateTime;
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 
-public class LightSensorModule extends AbstractInternalSensorManager {
+public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
-    private static final String TAG = LightSensorModule.class.getSimpleName();
     private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
 
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
-    public LightSensorModule(@NotNull final Context context) {
+    public LightInternalSensorModule(@NotNull final Context context) {
         super(context, SensorType.LIGHT);
     }
 
