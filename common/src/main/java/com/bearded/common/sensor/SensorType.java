@@ -25,17 +25,20 @@ import org.jetbrains.annotations.Nullable;
  */
 public enum SensorType {
 
-    LIGHT(Sensor.TYPE_LIGHT, "Light Sensor"),
-    AMBIENT_TEMPERATURE(Sensor.TYPE_AMBIENT_TEMPERATURE, "Ambient Temperature"),
-    RELATIVE_HUMIDITY(Sensor.TYPE_RELATIVE_HUMIDITY, "Relative Humidity");
+    LIGHT(Sensor.TYPE_LIGHT, "Light Sensor", "Lux"),
+    AMBIENT_TEMPERATURE(Sensor.TYPE_AMBIENT_TEMPERATURE, "Ambient Temperature", "Celsius"),
+    RELATIVE_HUMIDITY(Sensor.TYPE_RELATIVE_HUMIDITY, "Relative Humidity", "Relative Humidity Percentage");
 
     private final int mSensorId;
     @NotNull
     private final String mSensorTypeName;
+    @NotNull
+    private final String mSensorUnit;
 
-    SensorType(final int sensorId, @NotNull final String sensorTypeName) {
+    SensorType(final int sensorId, @NotNull final String sensorTypeName, @NotNull final String unit) {
         mSensorId = sensorId;
         mSensorTypeName = sensorTypeName;
+        mSensorUnit = unit;
     }
 
     /**
@@ -71,5 +74,15 @@ public enum SensorType {
     @NotNull
     public String getSensorTypeName() {
         return mSensorTypeName;
+    }
+
+    /**
+     * Returns the sensor unit.
+     * 
+     * @return {@link java.lang.String} with the sensor unit.
+     */
+    @NotNull
+    public String getSensorUnit() {
+        return mSensorUnit;
     }
 }
