@@ -25,7 +25,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public enum SensorType {
 
-    LIGHT(Sensor.TYPE_LIGHT, "Light Sensor");
+    LIGHT(Sensor.TYPE_LIGHT, "Light Sensor"),
+    AMBIENT_TEMPERATURE(Sensor.TYPE_AMBIENT_TEMPERATURE, "Ambient Temperature"),
+    RELATIVE_HUMIDITY(Sensor.TYPE_RELATIVE_HUMIDITY, "Relative Humidity");
 
     private final int mSensorId;
     @NotNull
