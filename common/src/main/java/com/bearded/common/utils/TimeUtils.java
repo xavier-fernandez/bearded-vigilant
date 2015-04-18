@@ -1,6 +1,7 @@
 package com.bearded.common.utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,6 +40,26 @@ public abstract class TimeUtils {
     static {
         final TimeZone timeZone = TimeZone.getTimeZone("UTC");
         dateFormat.setTimeZone(timeZone);
+    }
+
+    /**
+     * Obtains the number of milliseconds from a given {@link DateTime}
+     *
+     * @param dateTime that will be used to calculate the difference.
+     * @return {@link long} with the number of milliseconds.
+     */
+    public static long millisecondsFromNow(@NotNull final DateTime dateTime) {
+        return millisecondsFromNow(dateTime.getMillis());
+    }
+
+    /**
+     * Obtains the number of milliseconds from a given timestamp.
+     *
+     * @param timestamp in UTC.
+     * @return {@link long} with the number of milliseconds.
+     */
+    public static long millisecondsFromNow(final long timestamp) {
+        return DateTime.now().getMillis() - timestamp;
     }
 
     /**
