@@ -31,6 +31,8 @@ import org.joda.time.DateTime;
 
 public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
+    private static final String TAG = LightInternalSensorModule.class.getSimpleName();
+
     private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
 
     @Nullable
@@ -38,6 +40,15 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
     public LightInternalSensorModule(@NotNull final Context context) {
         super(context, SensorType.LIGHT);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NotNull
+    @Override
+    public String getModuleName() {
+        return TAG;
     }
 
     /**

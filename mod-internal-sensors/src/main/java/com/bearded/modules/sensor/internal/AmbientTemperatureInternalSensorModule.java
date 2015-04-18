@@ -30,6 +30,8 @@ import org.joda.time.DateTime;
  */
 public class AmbientTemperatureInternalSensorModule extends AbstractInternalSensorManager {
 
+    private static final String TAG = AmbientTemperatureInternalSensorModule.class.getSimpleName();
+
     private static final int AMBIENT_TEMPERATURE_INTERNAL_SENSOR_MODULE_VERSION = 1;
 
     @Nullable
@@ -37,6 +39,15 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
 
     public AmbientTemperatureInternalSensorModule(@NotNull final Context context) {
         super(context, SensorType.AMBIENT_TEMPERATURE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NotNull
+    @Override
+    public String getModuleName() {
+        return TAG;
     }
 
     /**

@@ -30,6 +30,8 @@ import org.joda.time.DateTime;
  */
 public class RelativeHumidityInternalSensorModule extends AbstractInternalSensorManager {
 
+    private static final String TAG = RelativeHumidityInternalSensorModule.class.getSimpleName();
+
     private static final int RELATIVE_HUMIDITY_INTERNAL_SENSOR_MODULE_VERSION = 1;
 
     @Nullable
@@ -37,6 +39,15 @@ public class RelativeHumidityInternalSensorModule extends AbstractInternalSensor
 
     public RelativeHumidityInternalSensorModule(@NotNull final Context context) {
         super(context, SensorType.RELATIVE_HUMIDITY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NotNull
+    @Override
+    public String getModuleName() {
+        return TAG;
     }
 
     /**
