@@ -32,12 +32,12 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Class used for obtaining database sessions.
  */
-class DiscoveryDatabaseFacade {
+class DiscoveryDatabaseHandler {
 
-    private static final String TAG = DiscoveryDatabaseFacade.class.getSimpleName();
-    private static final String DATABASE_NAME = DiscoveryDatabaseFacade.class.getCanonicalName();
+    private static final String TAG = DiscoveryDatabaseHandler.class.getSimpleName();
+    private static final String DATABASE_NAME = DiscoveryDatabaseHandler.class.getCanonicalName();
 
-    private static DiscoveryDatabaseFacade mInstance;
+    private static DiscoveryDatabaseHandler mInstance;
     private final Context mApplicationContext;
     @Nullable
     private SQLiteDatabase mDatabase = null;
@@ -45,11 +45,11 @@ class DiscoveryDatabaseFacade {
     @Nullable
     private DaoSession mSession = null;
 
-    private DiscoveryDatabaseFacade(@NotNull final Context context) {
+    private DiscoveryDatabaseHandler(@NotNull final Context context) {
         mApplicationContext = context.getApplicationContext();
     }
 
-    static synchronized DiscoveryDatabaseFacade getInstance() {
+    static synchronized DiscoveryDatabaseHandler getInstance() {
         if (mInstance == null) {
             throw new IllegalStateException(String.format("%s: getInstance() -> init() must be called before trying to obtain the class instance.", TAG));
         }
@@ -57,7 +57,7 @@ class DiscoveryDatabaseFacade {
     }
 
     static void init(@NotNull final Context context) {
-        new DiscoveryDatabaseFacade(context);
+        new DiscoveryDatabaseHandler(context);
     }
 
     @NotNull
