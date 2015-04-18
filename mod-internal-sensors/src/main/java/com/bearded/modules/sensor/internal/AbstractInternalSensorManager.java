@@ -1,21 +1,3 @@
-package com.bearded.modules.sensor.internal;
-
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.util.Log;
-
-import com.bearded.common.modules.Module;
-import com.bearded.common.sensor.SensorType;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joda.time.DateTime;
-
-import static android.content.Context.SENSOR_SERVICE;
-import static com.bearded.common.utils.TimeUtils.millisecondsFromNow;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -34,6 +16,29 @@ import static com.bearded.common.utils.TimeUtils.millisecondsFromNow;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+
+package com.bearded.modules.sensor.internal;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.util.Log;
+
+import com.bearded.common.modules.Module;
+import com.bearded.common.sensor.SensorType;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
+
+import static android.content.Context.SENSOR_SERVICE;
+import static com.bearded.common.utils.TimeUtils.millisecondsFromNow;
+
+/**
+ * This abstract class should be inherited by all the internal sensor modules which wants
+ * to listen for notifications from the default sensor for the given {@link SensorType}
+ */
 abstract class AbstractInternalSensorManager implements Module, SensorEventListener {
 
     protected final String TAG = this.getClass().getSimpleName();
@@ -50,6 +55,16 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensorType = sensorType;
         mInternalSensor = mSensorManager.getDefaultSensor(sensorType.getSensorId());
+    }
+
+    /**
+     * Returns the default sensor of the module {@link SensorType}
+     *
+     * @return {@link Sensor} used in the module - <code>null</code> if is not available.
+     */
+    @Nullable
+    public Sensor getSensor() {
+        return mInternalSensor;
     }
 
     /**
