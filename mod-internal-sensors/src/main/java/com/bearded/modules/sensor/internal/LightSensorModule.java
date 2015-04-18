@@ -1,8 +1,10 @@
 package com.bearded.modules.sensor.internal;
 
 import android.content.Context;
+import android.hardware.SensorEvent;
+import android.util.Log;
 
-import com.bearded.common.modules.Module;
+import com.bearded.common.sensor.SensorType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,26 +29,16 @@ import org.joda.time.DateTime;
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 
-public class LightSensorModule implements Module {
+public class LightSensorModule extends AbstractInternalSensorManager {
 
     private static final String TAG = LightSensorModule.class.getSimpleName();
     private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
 
-    @NotNull
-    private final LightSensorManager mLightSensorManager;
+    @Nullable
+    private DateTime mLastSensorValueReceivedTime;
 
     public LightSensorModule(@NotNull final Context context) {
-        mLightSensorManager = LightSensorManager.getInstance();
-        mLightSensorManager.init(context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @NotNull
-    @Override
-    public String getModuleName() {
-        return TAG;
+        super(context, SensorType.LIGHT);
     }
 
     /**
@@ -61,8 +53,14 @@ public class LightSensorModule implements Module {
      * {@inheritDoc}
      */
     @Override
-    public boolean isModuleEnabled() {
-        return mLightSensorManager.hasLightSensor();
+    public void onSensorChanged(@NotNull final SensorEvent event) {
+        if (mInternalSensor == null) {
+            Log.e(TAG, "onSensorChanged -> Sensor %s is not initialized yet.");
+            return;
+        }
+        final float lux = event.values[0];
+        mLastSensorValueReceivedTime = DateTime.now();
+        Log.d(TAG, String.format("onSensorChanged -> Light sensor with name %s retrieved: %f Lux.", mInternalSensor.getName(), lux));
     }
 
     /**
@@ -70,7 +68,7 @@ public class LightSensorModule implements Module {
      */
     @Nullable
     @Override
-    public DateTime lastCloudUploadTime() {
-        return null;
+    public DateTime getLastSensorDataReceived() {
+        return mLastSensorValueReceivedTime;
     }
 }

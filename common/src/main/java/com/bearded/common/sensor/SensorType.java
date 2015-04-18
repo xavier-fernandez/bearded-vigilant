@@ -30,7 +30,7 @@ public enum SensorType {
     private final int mSensorId;
     @NotNull
     private final String mSensorTypeName;
-    
+
     SensorType(final int sensorId, @NotNull final String sensorTypeName) {
         mSensorId = sensorId;
         mSensorTypeName = sensorTypeName;
