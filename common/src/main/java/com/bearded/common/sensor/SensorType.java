@@ -78,7 +78,7 @@ public enum SensorType {
 
     /**
      * Returns the sensor unit.
-     * 
+     *
      * @return {@link java.lang.String} with the sensor unit.
      */
     @NotNull

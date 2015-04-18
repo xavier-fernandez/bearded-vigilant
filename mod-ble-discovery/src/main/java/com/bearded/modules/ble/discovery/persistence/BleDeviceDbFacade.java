@@ -47,7 +47,7 @@ public class BleDeviceDbFacade {
         if (mKnownBleDevices.containsKey(deviceAddress.trim())) {
             return mKnownBleDevices.get(deviceAddress);
         }
-        final DaoSession session = DiscoveryDatabaseFacade.getInstance().getReadableSession(false);
+        final DaoSession session = DiscoveryDatabaseHandler.getInstance().getReadableSession(false);
         final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
         final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(BleDeviceEntityDao.Properties.DeviceAddress.eq(deviceAddress.trim()));
