@@ -60,7 +60,7 @@ public class BleDiscoveryModule implements Module {
      */
     @Nullable
     @Override
-    public DateTime lastCloudUploadTime() {
+    public DateTime getLastCloudUploadTime() {
         return null;
     }
 }

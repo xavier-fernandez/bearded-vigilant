@@ -29,6 +29,11 @@ import org.joda.time.DateTime;
 public interface Module {
 
     /**
+     * Default timeout for receiving sensor data.
+     */
+    long DEFAULT_SENSOR_TIMEOUT_MILLISECONDS = 50 * 1000l;
+
+    /**
      * Returns the module name.
      *
      * @return {@link java.lang.String} with the module name.
@@ -44,11 +49,19 @@ public interface Module {
     int getModuleVersion();
 
     /**
-     * Checks if the module is enabled in the device.
+     * Checks if the module is enabled.
      *
      * @return <code>true</code> if the module is enabled - <code>false</code> otherwise.
      */
     boolean isModuleEnabled();
+
+    /**
+     * Obtains the time of the last received sensor data.
+     *
+     * @return {@link org.joda.time.DateTime} with the last received sensor data time.
+     */
+    @Nullable
+    DateTime getLastSensorDataReceived();
 
     /**
      * Obtains the time of the last successful cloud upload.
@@ -56,5 +69,5 @@ public interface Module {
      * @return {@link org.joda.time.DateTime} of the last cloud upload, if available.
      */
     @Nullable
-    DateTime lastCloudUploadTime();
+    DateTime getLastCloudUploadTime();
 }
