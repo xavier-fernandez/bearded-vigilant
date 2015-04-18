@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 
 import static android.content.Context.SENSOR_SERVICE;
+import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
 import static com.bearded.common.utils.TimeUtils.millisecondsFromNow;
 
 /**
@@ -41,7 +42,7 @@ import static com.bearded.common.utils.TimeUtils.millisecondsFromNow;
  */
 abstract class AbstractInternalSensorManager implements Module, SensorEventListener {
 
-    protected final String TAG = this.getClass().getSimpleName();
+    private static final String TAG = AbstractInternalSensorManager.class.getSimpleName();
 
     @NotNull
     protected final SensorManager mSensorManager;
@@ -55,6 +56,12 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensorType = sensorType;
         mInternalSensor = mSensorManager.getDefaultSensor(sensorType.getSensorId());
+        if (mInternalSensor == null){
+            final String typeName = sensorType.getSensorTypeName();
+            Log.w(TAG, String.format("%s -> The device do not have a %s sensor.", TAG, typeName));
+        } else {
+             mSensorManager.registerListener(this, mInternalSensor, SENSOR_DELAY_NORMAL);
+        }
     }
 
     /**
@@ -80,26 +87,17 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
     /**
      * {@inheritDoc}
      */
-    @NotNull
-    @Override
-    public String getModuleName() {
-        return TAG;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @SuppressWarnings("SimplifiableIfStatement")
     public boolean isModuleEnabled() {
         if (mInternalSensor == null) {
             return false;
         }
-        final DateTime lastSensorDataReceivedTime = getLastSensorDataReceived();
-        if (lastSensorDataReceivedTime == null) {
+        final DateTime lastReceivedDataTime = getLastSensorDataReceived();
+        if (lastReceivedDataTime == null) {
             return false;
         }
-        return millisecondsFromNow(lastSensorDataReceivedTime) > DEFAULT_SENSOR_TIMEOUT_MILLISECONDS;
+        return millisecondsFromNow(lastReceivedDataTime) > DEFAULT_SENSOR_TIMEOUT_MILLISECONDS;
     }
 
     /**
@@ -116,6 +114,6 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
      */
     @Override
     public void onAccuracyChanged(@NotNull final Sensor sensor, final int accuracy) {
-        Log.i(TAG, String.format("onAccuracyChanged -> Accuracy from %s changed to %d.", sensor.getName(), accuracy));
+        Log.i(TAG, String.format("onAccuracyChanged -> Accuracy changed to %d.", accuracy));
     }
 }
