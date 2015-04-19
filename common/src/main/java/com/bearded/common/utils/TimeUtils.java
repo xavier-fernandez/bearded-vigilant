@@ -63,6 +63,27 @@ public abstract class TimeUtils {
     }
 
     /**
+     * Obtains an ISO 8601 {@link java.lang.String} from now.
+     *
+     * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
+     */
+    @NotNull
+    public static String nowToISOString(){
+        return timestampToISOString(DateTime.now());
+    }
+
+    /**
+     * Convert a given timestamp into ISO 8601 {@link java.lang.String}
+     *
+     * @param datetime that will be converted to the ISO 8601 convention.
+     * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
+     */
+    @NotNull
+    public static String timestampToISOString(final DateTime datetime) {
+        return timestampToISOString(datetime.getMillis());
+    }
+
+    /**
      * Convert a given timestamp into ISO 8601 {@link java.lang.String}
      *
      * @param timestamp that will be converted. Must be a positive number.
