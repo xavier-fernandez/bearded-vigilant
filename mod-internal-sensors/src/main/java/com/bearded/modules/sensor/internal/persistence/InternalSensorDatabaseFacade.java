@@ -41,7 +41,7 @@ public class InternalSensorDatabaseFacade {
     private final SensorType mSensorType;
 
     public InternalSensorDatabaseFacade(@NotNull final Context context,
-                                        @NotNull final SensorType sensorType){
+                                        @NotNull final SensorType sensorType) {
         final String databaseName = String.format("%s-%s", sensorType.getSensorTypeName(), DATABASE_NAME_SUFFIX);
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
         mSensorType = sensorType;
@@ -50,9 +50,10 @@ public class InternalSensorDatabaseFacade {
 
     /**
      * Writes in the database a sensor reading.
+     *
      * @return <code>true</code> if the reading was successful <code>false</code> otherwise.
      */
-    public void insertReadingDatabase(@NotNull final Sensor sensor){
+    public void insertReadingDatabase(@NotNull final Sensor sensor) {
 
         final DaoSession session = mDatabaseHandler.getSession();
         final InternalSensorEntity sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);

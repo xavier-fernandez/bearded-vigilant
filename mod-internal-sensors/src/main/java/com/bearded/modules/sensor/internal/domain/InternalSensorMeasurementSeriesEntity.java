@@ -190,6 +190,7 @@ public class InternalSensorMeasurementSeriesEntity implements com.bearded.common
         jsonObject.add(EndTimestamp.name, new JsonPrimitive(this.endTimestamp));
         return jsonObject;
     }
+
     // KEEP METHODS END
 
 }

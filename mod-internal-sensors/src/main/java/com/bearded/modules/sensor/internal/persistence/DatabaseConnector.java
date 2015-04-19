@@ -38,12 +38,12 @@ class DatabaseConnector {
 
     @NotNull
     private final Context mApplicationContext;
+    @NotNull
+    private final String mDatabaseName;
     @Nullable
     private SQLiteDatabase mDatabase = null;
     @Nullable
     private DaoSession mSession = null;
-    @NotNull
-    private final String mDatabaseName;
 
     public DatabaseConnector(@NotNull final Context context,
                              @NotNull final String databaseName) {

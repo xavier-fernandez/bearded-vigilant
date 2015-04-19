@@ -45,19 +45,20 @@ class InternalSensorEntityFacade {
     @NotNull
     private final SensorType mSensorType;
 
-    InternalSensorEntityFacade(@NotNull final SensorType sensorType){
+    InternalSensorEntityFacade(@NotNull final SensorType sensorType) {
         mKnownSensors = Collections.synchronizedMap(new HashMap<String, InternalSensorEntity>());
         mSensorType = sensorType;
     }
 
     /**
      * Obtains a sensor entity, if it is available, from the database.
+     *
      * @param sensor that wants to be retrieved from the database.
      * @return {@link InternalSensorEntity} of the sensor.
      */
     @Nullable
     InternalSensorEntity getSensorEntity(@NotNull final DaoSession session,
-                                         @NotNull final Sensor sensor){
+                                         @NotNull final Sensor sensor) {
         if (mKnownSensors.containsKey(sensor.getName())) {
             return mKnownSensors.get(sensor.getName());
         }
@@ -75,12 +76,13 @@ class InternalSensorEntityFacade {
 
     /**
      * Inserts a sensor, and all the obtainable information inside the database.
+     *
      * @param sensor that will be inserted inside the database.
      * @return {@link InternalSensorEntity} of the sensor.
      */
     @NotNull
     private InternalSensorEntity insertSensor(@NotNull final DaoSession session,
-                                              @NotNull final Sensor sensor){
+                                              @NotNull final Sensor sensor) {
         final InternalSensorEntity sensorEntity = new InternalSensorEntity();
         sensorEntity.setSensorName(sensor.getName());
         sensorEntity.setSensorType(mSensorType.getSensorTypeName());

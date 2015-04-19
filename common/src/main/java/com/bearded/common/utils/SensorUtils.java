@@ -27,8 +27,8 @@ public abstract class SensorUtils {
     private static final String TAG = SensorUtils.class.getSimpleName();
 
     @NotNull
-    public static String getReportingTimeString(final int type){
-        switch (type){
+    public static String getReportingTimeString(final int type) {
+        switch (type) {
             case Sensor.REPORTING_MODE_ONE_SHOT:
                 return "REPORTING_MODE_ONE_SHOT";
             case Sensor.REPORTING_MODE_SPECIAL_TRIGGER:

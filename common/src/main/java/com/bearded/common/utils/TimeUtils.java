@@ -68,7 +68,7 @@ public abstract class TimeUtils {
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
     @NotNull
-    public static String nowToISOString(){
+    public static String nowToISOString() {
         return timestampToISOString(DateTime.now());
     }
 

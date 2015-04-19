@@ -56,11 +56,11 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensorType = sensorType;
         mInternalSensor = mSensorManager.getDefaultSensor(sensorType.getSensorId());
-        if (mInternalSensor == null){
+        if (mInternalSensor == null) {
             final String typeName = sensorType.getSensorTypeName();
             Log.w(TAG, String.format("%s -> The device do not have a %s sensor.", TAG, typeName));
         } else {
-             mSensorManager.registerListener(this, mInternalSensor, SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this, mInternalSensor, SENSOR_DELAY_NORMAL);
         }
     }
 
