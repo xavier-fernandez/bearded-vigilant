@@ -32,10 +32,11 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Class used for obtaining database sessions.
  */
-class InternalSensorDatabaseHandler {
+class DatabaseConnector {
 
-    private static final String TAG = InternalSensorDatabaseHandler.class.getSimpleName();
+    private static final String TAG = DatabaseConnector.class.getSimpleName();
 
+    @NotNull
     private final Context mApplicationContext;
     @Nullable
     private SQLiteDatabase mDatabase = null;
@@ -44,8 +45,8 @@ class InternalSensorDatabaseHandler {
     @NotNull
     private final String mDatabaseName;
 
-    public InternalSensorDatabaseHandler(@NotNull final Context context,
-                                         @NotNull final String databaseName) {
+    public DatabaseConnector(@NotNull final Context context,
+                             @NotNull final String databaseName) {
         mApplicationContext = context.getApplicationContext();
         mDatabaseName = databaseName;
     }
