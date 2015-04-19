@@ -1,6 +1,5 @@
 package com.bearded.modules.sensor.internal.persistence;
 
-import android.content.Context;
 import android.hardware.Sensor;
 import android.os.Build;
 
@@ -38,12 +37,7 @@ import de.greenrobot.dao.query.QueryBuilder;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-public class InternalSensorDatabaseConnector {
-
-    private static final String DATABASE_NAME_SUFFIX = "internal-sensor-db";
-
-    @NotNull
-    private final InternalSensorDatabaseHandler mDatabaseHandler;
+class InternalSensorEntityFacade {
 
     @NotNull
     private final Map<String, InternalSensorEntity> mKnownSensors;
@@ -51,23 +45,9 @@ public class InternalSensorDatabaseConnector {
     @NotNull
     private final SensorType mSensorType;
 
-    public InternalSensorDatabaseConnector(@NotNull final Context context,
-                                           @NotNull final SensorType mSensorType){
-        final String databaseName = String.format("%s-%s", mSensorType.getSensorTypeName(), DATABASE_NAME_SUFFIX);
-        mDatabaseHandler = new InternalSensorDatabaseHandler(context, databaseName);
+    InternalSensorEntityFacade(@NotNull final SensorType sensorType){
         mKnownSensors = Collections.synchronizedMap(new HashMap<String, InternalSensorEntity>());
-        this.mSensorType = mSensorType;
-    }
-
-    /**
-     * Writes in the database a sensor reading.
-     * @return <code>true</code> if the reading was successful <code>false</code> otherwise.
-     */
-    public void insertReadingDatabase(@NotNull final Sensor sensor){
-
-        final DaoSession session = mDatabaseHandler.getSession();
-        final InternalSensorEntity sensorEntity = getSensorEntity(sensor);
-
+        mSensorType = sensorType;
     }
 
     /**
@@ -76,17 +56,17 @@ public class InternalSensorDatabaseConnector {
      * @return {@link InternalSensorEntity} of the sensor.
      */
     @Nullable
-    private InternalSensorEntity getSensorEntity(@NotNull final Sensor sensor){
+    InternalSensorEntity getSensorEntity(@NotNull final DaoSession session,
+                                         @NotNull final Sensor sensor){
         if (mKnownSensors.containsKey(sensor.getName())) {
             return mKnownSensors.get(sensor.getName());
         }
-        final DaoSession session = mDatabaseHandler.getSession();
         final InternalSensorEntityDao dao = session.getInternalSensorEntityDao();
         final QueryBuilder<InternalSensorEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(InternalSensorEntityDao.Properties.SensorName.eq(sensor.getName()));
         final List<InternalSensorEntity> internalSensorEntityList = queryBuilder.list();
         if (internalSensorEntityList.isEmpty()) {
-            return insertSensor(sensor);
+            return insertSensor(session, sensor);
         }
         final InternalSensorEntity sensorEntity = internalSensorEntityList.get(0);
         mKnownSensors.put(sensor.getName(), sensorEntity);
@@ -99,7 +79,8 @@ public class InternalSensorDatabaseConnector {
      * @return {@link InternalSensorEntity} of the sensor.
      */
     @NotNull
-    private InternalSensorEntity insertSensor(@NotNull final Sensor sensor){
+    private InternalSensorEntity insertSensor(@NotNull final DaoSession session,
+                                              @NotNull final Sensor sensor){
         final InternalSensorEntity sensorEntity = new InternalSensorEntity();
         sensorEntity.setSensorName(sensor.getName());
         sensorEntity.setSensorType(mSensorType.getSensorTypeName());
@@ -112,13 +93,13 @@ public class InternalSensorDatabaseConnector {
         sensorEntity.setFifoReservedEventCount(sensor.getFifoReservedEventCount());
         sensorEntity.setMaximumRange(sensor.getMaximumRange());
         if (Build.VERSION.SDK_INT >= 21) {
-            sensorEntity.setReportingMode(SensorUtils.getReportingTimeString(sensor.getReportingMode()));
+            final int reportingMode = sensor.getReportingMode();
+            sensorEntity.setReportingMode(SensorUtils.getReportingTimeString(reportingMode));
         }
         sensorEntity.setPowerInMilliAmperes(sensor.getPower());
         sensorEntity.setSensorResolution(sensor.getResolution());
         sensorEntity.setSensorVendor(sensor.getVendor());
         sensorEntity.setSensorVersion(sensor.getVersion());
-        final DaoSession session = mDatabaseHandler.getSession();
         session.getInternalSensorEntityDao().insert(sensorEntity);
         return sensorEntity;
     }
