@@ -33,6 +33,10 @@ public class InternalSensorDatabaseFacade {
 
     @NotNull
     private final InternalSensorEntityFacade mSensorEntityFacade;
+    @NotNull
+    private final InternalSensorMeasurementSeriesEntityFacade mMeasurementSeriesEntityFacade;
+    @NotNull
+    private final InternalSensorMeasurementEntityFacade mMeasurmentEntityFacade;
 
     @NotNull
     private final DatabaseConnector mDatabaseHandler;
@@ -46,6 +50,8 @@ public class InternalSensorDatabaseFacade {
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
         mSensorType = sensorType;
         mSensorEntityFacade = new InternalSensorEntityFacade(sensorType);
+        mMeasurementSeriesEntityFacade = new InternalSensorMeasurementSeriesEntityFacade();
+        mMeasurmentEntityFacade = new InternalSensorMeasurementEntityFacade();
     }
 
     /**
@@ -54,11 +60,7 @@ public class InternalSensorDatabaseFacade {
      * @return <code>true</code> if the reading was successful <code>false</code> otherwise.
      */
     public void insertReadingDatabase(@NotNull final Sensor sensor) {
-
         final DaoSession session = mDatabaseHandler.getSession();
         final InternalSensorEntity sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);
-
     }
-
-
 }
