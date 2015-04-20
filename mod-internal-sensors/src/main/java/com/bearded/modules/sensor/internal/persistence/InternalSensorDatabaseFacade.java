@@ -12,8 +12,6 @@ import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 
-import java.util.concurrent.FutureTask;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
