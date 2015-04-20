@@ -32,48 +32,12 @@ import static com.bearded.common.sensor.SensorType.LIGHT;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
-
-    @Nullable
-    private DatabaseConnector mDatabaseConnector;
-    @NotNull
-    private InternalSensorEntityFacade mSensorFacade = new InternalSensorEntityFacade(LIGHT);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
-        cleanDatabase();
-    }
-
-    @SmallTest
-    public void testPreConditions(){
-        assertNotNull(mDatabaseConnector);
-        assertNotNull(mSensorFacade);
-    }
+public class InternalSensorEntityFacadeTest extends AbstractInternalSensorTestCase {
 
     @MediumTest
     public void testSensorInsertion(){
-        assertNotNull(mDatabaseConnector);
-        final DaoSession session = mDatabaseConnector.getSession();
+        assertNotNull(super.mDatabaseConnector);
+        final DaoSession session = super.mDatabaseConnector.getSession();
         // TODO: Sensor needs to be mocked. Test sensor insertion.
-    }
-
-    private void cleanDatabase(){
-        assertNotNull(mDatabaseConnector);
-        DaoMaster.dropAllTables(mDatabaseConnector.getSession().getDatabase(), false);
-        DaoMaster.createAllTables(mDatabaseConnector.getSession().getDatabase(), false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        cleanDatabase();
     }
 }
