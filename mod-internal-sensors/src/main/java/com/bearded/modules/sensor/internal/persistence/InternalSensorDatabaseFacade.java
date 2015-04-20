@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
+import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ public class InternalSensorDatabaseFacade {
     @NotNull
     private final InternalSensorMeasurementSeriesEntityFacade mMeasurementSeriesEntityFacade;
     @NotNull
-    private final InternalSensorMeasurementEntityFacade mMeasurmentEntityFacade;
+    private final InternalSensorMeasurementEntityFacade mMeasurementEntityFacade;
 
     @NotNull
     private final DatabaseConnector mDatabaseHandler;
@@ -51,7 +52,7 @@ public class InternalSensorDatabaseFacade {
         mSensorType = sensorType;
         mSensorEntityFacade = new InternalSensorEntityFacade(sensorType);
         mMeasurementSeriesEntityFacade = new InternalSensorMeasurementSeriesEntityFacade();
-        mMeasurmentEntityFacade = new InternalSensorMeasurementEntityFacade();
+        mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade();
     }
 
     /**
@@ -59,8 +60,12 @@ public class InternalSensorDatabaseFacade {
      *
      * @return <code>true</code> if the reading was successful <code>false</code> otherwise.
      */
-    public void insertReadingDatabase(@NotNull final Sensor sensor) {
+    public void insertReadingDatabase(@NotNull final Sensor sensor,
+                                      final float measurement,
+                                      final int binSizeMilliseconds) {
         final DaoSession session = mDatabaseHandler.getSession();
         final InternalSensorEntity sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);
+        final InternalSensorMeasurementSeriesEntity series = mMeasurementSeriesEntityFacade.getMeasurementSeries(session, sensorEntity);
+        mMeasurementEntityFacade.addMeasurement(session, series, measurement, binSizeMilliseconds);
     }
 }
