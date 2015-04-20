@@ -6,6 +6,7 @@ import android.hardware.Sensor;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
+import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 
 import org.jetbrains.annotations.NotNull;
@@ -62,8 +63,8 @@ public class InternalSensorDatabaseFacade {
      * Writes in the database a sensor reading.
      */
     public void insertReadingDatabase(@NotNull final Sensor sensor,
-                                                     final float measurement,
-                                                     final int binSizeMilliseconds) {
+                                      final float measurement,
+                                      final int binSizeMilliseconds) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
             session.runInTx(new Runnable() {
@@ -74,6 +75,17 @@ public class InternalSensorDatabaseFacade {
                     mMeasurementEntityFacade.addMeasurement(session, series, measurement, binSizeMilliseconds);
                 }
             });
+        }
+    }
+
+    /**
+     * Removes all database content. Only used in application testing.
+     */
+    @TestOnly
+    public void cleanDatabase(){
+        synchronized (mDatabaseHandler) {
+            DaoMaster.dropAllTables(mDatabaseHandler.getSession().getDatabase(), false);
+            DaoMaster.createAllTables(mDatabaseHandler.getSession().getDatabase(), false);
         }
     }
 }
