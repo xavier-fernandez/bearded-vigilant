@@ -10,7 +10,6 @@ import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,7 +55,7 @@ class InternalSensorEntityFacade {
      * @param sensor that wants to be retrieved from the database.
      * @return {@link InternalSensorEntity} of the sensor.
      */
-    @Nullable
+    @NotNull
     InternalSensorEntity getSensorEntity(@NotNull final DaoSession session,
                                          @NotNull final Sensor sensor) {
         if (mKnownSensors.containsKey(sensor.getName())) {
