@@ -9,6 +9,9 @@ import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSerie
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.TestOnly;
+
+import java.util.concurrent.FutureTask;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -57,15 +60,20 @@ public class InternalSensorDatabaseFacade {
 
     /**
      * Writes in the database a sensor reading.
-     *
-     * @return <code>true</code> if the reading was successful <code>false</code> otherwise.
      */
     public void insertReadingDatabase(@NotNull final Sensor sensor,
-                                      final float measurement,
-                                      final int binSizeMilliseconds) {
-        final DaoSession session = mDatabaseHandler.getSession();
-        final InternalSensorEntity sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);
-        final InternalSensorMeasurementSeriesEntity series = mMeasurementSeriesEntityFacade.getMeasurementSeries(session, sensorEntity);
-        mMeasurementEntityFacade.addMeasurement(session, series, measurement, binSizeMilliseconds);
+                                                     final float measurement,
+                                                     final int binSizeMilliseconds) {
+        synchronized (mDatabaseHandler) {
+            final DaoSession session = mDatabaseHandler.getSession();
+            session.runInTx(new Runnable() {
+                @Override
+                public void run() {
+                    final InternalSensorEntity sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);
+                    final InternalSensorMeasurementSeriesEntity series = mMeasurementSeriesEntityFacade.getMeasurementSeries(session, sensorEntity);
+                    mMeasurementEntityFacade.addMeasurement(session, series, measurement, binSizeMilliseconds);
+                }
+            });
+        }
     }
 }
