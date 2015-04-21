@@ -72,12 +72,12 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
      */
     @Override
     public void onSensorChanged(@NotNull final SensorEvent event) {
-        if (mInternalSensor == null) {
+        if (getSensor() == null) {
             Log.e(TAG, "onSensorChanged -> Sensor %s is not initialized yet.");
             return;
         }
         final float tempInCelsius = event.values[0];
         mLastSensorValueReceivedTime = DateTime.now();
-        Log.d(TAG, String.format("onSensorChanged -> Sensor with name %s retrieved: %f  of relative humidity.", mInternalSensor.getName(), tempInCelsius));
+        Log.d(TAG, String.format("onSensorChanged -> Sensor with name %s retrieved: %f  of relative humidity.", getSensor().getName(), tempInCelsius));
     }
 }

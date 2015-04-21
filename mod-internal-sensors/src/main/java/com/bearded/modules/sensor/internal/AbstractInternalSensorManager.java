@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.bearded.common.modules.Module;
 import com.bearded.common.sensor.SensorType;
+import com.bearded.modules.sensor.internal.persistence.InternalSensorDatabaseFacade;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,33 +46,28 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
     private static final String TAG = AbstractInternalSensorManager.class.getSimpleName();
 
     @NotNull
-    protected final SensorManager mSensorManager;
+    private final SensorManager mSensorManager;
     @NotNull
-    protected final SensorType mSensorType;
+    private final SensorType mSensorType;
     @Nullable
-    protected final Sensor mInternalSensor;
+    private final Sensor mInternalSensor;
+    @Nullable
+    private final InternalSensorDatabaseFacade mDatabaseFacade;
+
 
     protected AbstractInternalSensorManager(@NotNull final Context context,
                                             @NotNull final SensorType sensorType) {
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensorType = sensorType;
-        mInternalSensor = mSensorManager.getDefaultSensor(sensorType.getSensorId());
-        if (mInternalSensor == null) {
+        mInternalSensor = getSensorManager().getDefaultSensor(sensorType.getSensorId());
+        if (getSensor() == null) {
             final String typeName = sensorType.getSensorTypeName();
             Log.w(TAG, String.format("%s -> The device do not have a %s sensor.", TAG, typeName));
+            mDatabaseFacade = null;
         } else {
-            mSensorManager.registerListener(this, mInternalSensor, SENSOR_DELAY_NORMAL);
+            getSensorManager().registerListener(this, getSensor(), SENSOR_DELAY_NORMAL);
+            mDatabaseFacade = new InternalSensorDatabaseFacade(context, sensorType);
         }
-    }
-
-    /**
-     * Returns the default sensor of the module {@link SensorType}
-     *
-     * @return {@link Sensor} used in the module - <code>null</code> if is not available.
-     */
-    @Nullable
-    public Sensor getSensor() {
-        return mInternalSensor;
     }
 
     /**
@@ -85,12 +81,40 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
     }
 
     /**
+     * Returns the default sensor of the module {@link SensorType}
+     *
+     * @return {@link Sensor} used in the module - <code>null</code> if is not available.
+     */
+    @Nullable
+    public Sensor getSensor() {
+        return mInternalSensor;
+    }
+
+    /**
+     * Obtains the {@link InternalSensorDatabaseFacade} of the module {@link Sensor}
+     * @return the module {@link InternalSensorDatabaseFacade}
+     */
+    @Nullable
+    protected InternalSensorDatabaseFacade getDatabaseFacade() {
+        return mDatabaseFacade;
+    }
+
+    /**
+     * Obtains the {@link SensorManager} of the module {@link Sensor}
+     * @return the module {@link SensorManager}
+     */
+    @NotNull
+    protected SensorManager getSensorManager() {
+        return mSensorManager;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     @SuppressWarnings("SimplifiableIfStatement")
     public boolean isModuleEnabled() {
-        if (mInternalSensor == null) {
+        if (getSensor() == null) {
             return false;
         }
         final DateTime lastReceivedDataTime = getLastSensorDataReceived();
