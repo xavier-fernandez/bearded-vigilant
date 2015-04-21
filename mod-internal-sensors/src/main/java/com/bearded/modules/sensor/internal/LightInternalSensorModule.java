@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.util.Log;
 
 import com.bearded.common.sensor.SensorType;
+import com.bearded.modules.sensor.internal.persistence.InternalSensorDatabaseFacade;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,13 +34,22 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
     private static final String TAG = LightInternalSensorModule.class.getSimpleName();
 
+    private static final int MODULE_TIMEOUT_MILLISECONDS = 15 * 1000;
+
     private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
+
+    private static final SensorType SENSOR_TYPE = SensorType.LIGHT;
 
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
+    /**
+     * Constructor called in {@see com.bearded.vigilant.ModuleManager}
+     * @param context needed to initialize the {@link android.hardware.SensorManager}
+     */
+    @SuppressWarnings("unused") //This constructor is called by refraction in
     public LightInternalSensorModule(@NotNull final Context context) {
-        super(context, SensorType.LIGHT);
+        super(context, SENSOR_TYPE);
     }
 
     /**
@@ -64,13 +74,15 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
      */
     @Override
     public void onSensorChanged(@NotNull final SensorEvent event) {
-        if (mInternalSensor == null) {
+        if (getSensor() == null) {
             Log.e(TAG, "onSensorChanged -> Sensor %s is not initialized yet.");
             return;
         }
         final float lux = event.values[0];
         mLastSensorValueReceivedTime = DateTime.now();
-        Log.d(TAG, String.format("onSensorChanged -> Light sensor with name %s retrieved: %f Lux.", mInternalSensor.getName(), lux));
+        Log.d(TAG, String.format("onSensorChanged -> Light sensor with name %s retrieved: %f Lux.", getSensor().getName(), lux));
+        assert(getDatabaseFacade() != null);
+        getDatabaseFacade().insertReadingDatabase(getSensor(), lux, MODULE_TIMEOUT_MILLISECONDS);
     }
 
     /**
