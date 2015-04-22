@@ -1,15 +1,3 @@
-package com.bearded.modules.sensor.internal;
-
-import android.content.Context;
-import android.hardware.SensorEvent;
-import android.util.Log;
-
-import com.bearded.common.sensor.SensorType;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joda.time.DateTime;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -28,7 +16,22 @@ import org.joda.time.DateTime;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+package com.bearded.modules.sensor.internal;
 
+import android.content.Context;
+import android.hardware.SensorEvent;
+import android.util.Log;
+
+import com.bearded.common.sensor.SensorType;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
+
+/**
+ * Class instantiation is done using refraction in {@see com.bearded.vigilant.ModuleManager}
+ */
+@SuppressWarnings("unused")
 public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
     private static final String TAG = LightInternalSensorModule.class.getSimpleName();
@@ -42,13 +45,6 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
-    /**
-     * Constructor called in {@see com.bearded.vigilant.ModuleManager}
-     *
-     * @param context needed to initialize the {@link android.hardware.SensorManager}
-     */
-    @SuppressWarnings("unused")
-    //This constructor is called using refraction in {@link com.bearded.vigilant.ModuleManager}
     public LightInternalSensorModule(@NotNull final Context context) {
         super(context, SENSOR_TYPE);
     }
