@@ -19,6 +19,8 @@
 
 package com.bearded.modules.sensor.internal.persistence;
 
+import android.util.Log;
+
 import com.bearded.common.utils.TimeUtils;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
@@ -39,6 +41,9 @@ import de.greenrobot.dao.query.QueryBuilder;
 class InternalSensorMeasurementSeriesEntityFacade {
 
     @NotNull
+    private static final String TAG = InternalSensorMeasurementSeriesEntityFacade.class.getSimpleName();
+
+    @NotNull
     private final Map<InternalSensorEntity, InternalSensorMeasurementSeriesEntity> mSensorMeasurementSeries;
 
     InternalSensorMeasurementSeriesEntityFacade() {
@@ -50,7 +55,7 @@ class InternalSensorMeasurementSeriesEntityFacade {
      *
      * @param session      needed to query, insert or update the measurement series.
      * @param sensorEntity of the measurement series.
-     * @return {@link InternalSensorMeasurementSeriesEntity} with a valid measurement series.
+     * @return {@link InternalSensorMeasurementSeriesEntity} with the measurement series.
      */
     @NotNull
     public InternalSensorMeasurementSeriesEntity getMeasurementSeries(@NotNull final DaoSession session,
@@ -69,13 +74,27 @@ class InternalSensorMeasurementSeriesEntityFacade {
                     updateMeasurementSeriesEndTimestamp(session, series);
                 }
             }
-            final InternalSensorMeasurementSeriesEntity measurementSeries = new InternalSensorMeasurementSeriesEntity();
-            measurementSeries.setStartTimestamp(TimeUtils.nowToISOString());
-            measurementSeries.setInternalSensorEntity(sensorEntity);
-            session.insert(measurementSeries);
-            mSensorMeasurementSeries.put(sensorEntity, measurementSeries);
-            return measurementSeries;
+            return insertMeasurementSeries(session, sensorEntity);
         }
+    }
+
+    /**
+     * Inserts a measurement series from a given sensor.
+     *
+     * @param session needed to insert the measurement series.
+     * @param sensorEntity of the inserted measurement series.
+     * @return {@link InternalSensorMeasurementSeriesEntity} with the measurement series.
+     */
+    @NotNull
+    private InternalSensorMeasurementSeriesEntity insertMeasurementSeries(@NotNull final DaoSession session,
+                                                                          @NotNull final InternalSensorEntity sensorEntity){
+        final InternalSensorMeasurementSeriesEntity measurementSeries = new InternalSensorMeasurementSeriesEntity();
+        measurementSeries.setStartTimestamp(TimeUtils.nowToISOString());
+        measurementSeries.setInternalSensorEntity(sensorEntity);
+        session.insert(measurementSeries);
+        mSensorMeasurementSeries.put(sensorEntity, measurementSeries);
+        Log.d(TAG, "insertMeasurementSeries -> Insert measurement series -> " + measurementSeries.toJsonObject().toString());
+        return measurementSeries;
     }
 
     /**

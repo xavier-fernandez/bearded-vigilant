@@ -1,24 +1,3 @@
-package com.bearded.modules.sensor.internal.persistence;
-
-import android.annotation.TargetApi;
-import android.hardware.Sensor;
-import android.os.Build;
-
-import com.bearded.common.sensor.SensorType;
-import com.bearded.common.utils.SensorUtils;
-import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
-import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
-import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import de.greenrobot.dao.query.QueryBuilder;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -37,7 +16,32 @@ import de.greenrobot.dao.query.QueryBuilder;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+
+package com.bearded.modules.sensor.internal.persistence;
+
+import android.annotation.TargetApi;
+import android.hardware.Sensor;
+import android.os.Build;
+import android.util.Log;
+
+import com.bearded.common.sensor.SensorType;
+import com.bearded.common.utils.SensorUtils;
+import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
+import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
+import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import de.greenrobot.dao.query.QueryBuilder;
+
 class InternalSensorEntityFacade {
+
+    private static final String TAG = InternalSensorEntityFacade.class.getSimpleName();
 
     @NotNull
     private final Map<String, InternalSensorEntity> mKnownSensors;
@@ -106,6 +110,7 @@ class InternalSensorEntityFacade {
         sensorEntity.setSensorVendor(sensor.getVendor());
         sensorEntity.setSensorVersion(sensor.getVersion());
         session.getInternalSensorEntityDao().insert(sensorEntity);
+        Log.d(TAG, "insertSensor -> Inserted sensor -> " + sensorEntity.toJsonObject().toString());
         return sensorEntity;
     }
 }

@@ -38,8 +38,8 @@ import java.util.Map;
 
 class InternalSensorMeasurementEntityFacade {
 
+    @NotNull
     private static final String TAG = InternalSensorMeasurementEntityFacade.class.getSimpleName();
-
     @NotNull
     private final Map<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer> mSensorMeasurements;
     @NotNull
