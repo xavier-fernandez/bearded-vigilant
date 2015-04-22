@@ -54,7 +54,7 @@ public class InternalSensorDatabaseFacade {
         mSensorType = sensorType;
         mSensorEntityFacade = new InternalSensorEntityFacade(sensorType);
         mMeasurementSeriesEntityFacade = new InternalSensorMeasurementSeriesEntityFacade();
-        mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade();
+        mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade(sensorType);
     }
 
     /**

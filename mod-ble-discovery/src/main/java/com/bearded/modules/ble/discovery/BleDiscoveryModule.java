@@ -1,11 +1,3 @@
-package com.bearded.modules.ble.discovery;
-
-import com.bearded.common.modules.Module;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joda.time.DateTime;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -24,6 +16,14 @@ import org.joda.time.DateTime;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+
+package com.bearded.modules.ble.discovery;
+
+import com.bearded.common.modules.Module;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
 
 public class BleDiscoveryModule implements Module {
 
@@ -53,6 +53,15 @@ public class BleDiscoveryModule implements Module {
     @Override
     public boolean isModuleEnabled() {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public DateTime getLastSensorDataReceived() {
+        return null;
     }
 
     /**
