@@ -5,7 +5,6 @@ import android.hardware.SensorEvent;
 import android.util.Log;
 
 import com.bearded.common.sensor.SensorType;
-import com.bearded.modules.sensor.internal.persistence.InternalSensorDatabaseFacade;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,6 +44,7 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
     /**
      * Constructor called in {@see com.bearded.vigilant.ModuleManager}
+     *
      * @param context needed to initialize the {@link android.hardware.SensorManager}
      */
     @SuppressWarnings("unused") //This constructor is called by refraction in
@@ -81,7 +81,7 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
         final float lux = event.values[0];
         mLastSensorValueReceivedTime = DateTime.now();
         Log.d(TAG, String.format("onSensorChanged -> Light sensor with name %s retrieved: %f Lux.", getSensor().getName(), lux));
-        assert(getDatabaseFacade() != null);
+        assert (getDatabaseFacade() != null);
         getDatabaseFacade().insertReadingDatabase(getSensor(), lux, MODULE_TIMEOUT_MILLISECONDS);
     }
 

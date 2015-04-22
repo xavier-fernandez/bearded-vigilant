@@ -1,18 +1,8 @@
 package com.bearded.modules.sensor.internal.persistence;
 
-import android.hardware.Sensor;
-import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
-import android.test.suitebuilder.annotation.SmallTest;
 
-import com.bearded.common.sensor.SensorType;
-import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import static com.bearded.common.sensor.SensorType.LIGHT;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -35,7 +25,7 @@ import static com.bearded.common.sensor.SensorType.LIGHT;
 public class InternalSensorEntityFacadeTest extends AbstractInternalSensorTestCase {
 
     @MediumTest
-    public void testSensorInsertion(){
+    public void testSensorInsertion() {
         assertNotNull(super.mDatabaseConnector);
         final DaoSession session = super.mDatabaseConnector.getSession();
         // TODO: Sensor needs to be mocked. Test sensor insertion.

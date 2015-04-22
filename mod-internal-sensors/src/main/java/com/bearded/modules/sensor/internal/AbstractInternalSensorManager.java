@@ -92,6 +92,7 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
 
     /**
      * Obtains the {@link InternalSensorDatabaseFacade} of the module {@link Sensor}
+     *
      * @return the module {@link InternalSensorDatabaseFacade}
      */
     @Nullable
@@ -101,6 +102,7 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
 
     /**
      * Obtains the {@link SensorManager} of the module {@link Sensor}
+     *
      * @return the module {@link SensorManager}
      */
     @NotNull
