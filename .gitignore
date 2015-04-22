@@ -1,6 +1,5 @@
 # misc files
 *.patch
-lint.xml
 
 # Built application files
 *.apk

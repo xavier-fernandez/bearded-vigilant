@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- This error is suppressed is reduced to warning because greendao-generator uses
+     some RMI java libraries that we are not using in this project -->
+    <issue id="InvalidPackage" severity="warning"/>
+</lint>
