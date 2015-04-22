@@ -81,13 +81,13 @@ class InternalSensorMeasurementSeriesEntityFacade {
     /**
      * Inserts a measurement series from a given sensor.
      *
-     * @param session needed to insert the measurement series.
+     * @param session      needed to insert the measurement series.
      * @param sensorEntity of the inserted measurement series.
      * @return {@link InternalSensorMeasurementSeriesEntity} with the measurement series.
      */
     @NotNull
     private InternalSensorMeasurementSeriesEntity insertMeasurementSeries(@NotNull final DaoSession session,
-                                                                          @NotNull final InternalSensorEntity sensorEntity){
+                                                                          @NotNull final InternalSensorEntity sensorEntity) {
         final InternalSensorMeasurementSeriesEntity measurementSeries = new InternalSensorMeasurementSeriesEntity();
         measurementSeries.setStartTimestamp(TimeUtils.nowToISOString());
         measurementSeries.setInternalSensorEntity(sensorEntity);

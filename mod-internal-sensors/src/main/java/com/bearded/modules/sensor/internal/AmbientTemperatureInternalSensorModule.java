@@ -42,7 +42,8 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
      *
      * @param context needed to initialize the {@link android.hardware.SensorManager}
      */
-    @SuppressWarnings("unused") //This constructor is called using refraction in {@link com.bearded.vigilant.ModuleManager}
+    @SuppressWarnings("unused")
+    //This constructor is called using refraction in {@link com.bearded.vigilant.ModuleManager}
     public AmbientTemperatureInternalSensorModule(@NotNull final Context context) {
         super(context, SensorType.AMBIENT_TEMPERATURE);
     }

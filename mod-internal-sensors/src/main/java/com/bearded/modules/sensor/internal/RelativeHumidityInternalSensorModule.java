@@ -42,7 +42,8 @@ public class RelativeHumidityInternalSensorModule extends AbstractInternalSensor
      *
      * @param context needed to initialize the {@link android.hardware.SensorManager}
      */
-    @SuppressWarnings("unused") //This constructor is called using refraction in {@link com.bearded.vigilant.ModuleManager}
+    @SuppressWarnings("unused")
+    //This constructor is called using refraction in {@link com.bearded.vigilant.ModuleManager}
     public RelativeHumidityInternalSensorModule(@NotNull final Context context) {
         super(context, SensorType.RELATIVE_HUMIDITY);
     }

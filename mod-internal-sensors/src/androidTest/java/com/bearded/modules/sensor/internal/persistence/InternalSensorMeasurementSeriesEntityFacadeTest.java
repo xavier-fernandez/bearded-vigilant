@@ -1,9 +1,5 @@
 package com.bearded.modules.sensor.internal.persistence;
 
-import android.test.InstrumentationTestCase;
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 
 import org.jetbrains.annotations.Nullable;
@@ -49,12 +45,8 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends AbstractInt
      * {@inheritDoc}
      */
     @Override
-    protected void testPreConditions(){
+    protected void testPreConditions() {
         super.testPreConditions();
         assertNotNull(mTestInternalSensorEntity);
-    }
-
-    protected void gwinge(){
-        assertNotNull("gmrie");
     }
 }
