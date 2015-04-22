@@ -1,5 +1,6 @@
 package com.bearded.modules.sensor.internal.persistence;
 
+import android.annotation.TargetApi;
 import android.hardware.Sensor;
 import android.os.Build;
 
@@ -80,6 +81,7 @@ class InternalSensorEntityFacade {
      * @return {@link InternalSensorEntity} of the sensor.
      */
     @NotNull
+    @TargetApi(22)
     private InternalSensorEntity insertSensor(@NotNull final DaoSession session,
                                               @NotNull final Sensor sensor) {
         final InternalSensorEntity sensorEntity = new InternalSensorEntity();
@@ -88,12 +90,14 @@ class InternalSensorEntityFacade {
         sensorEntity.setSensorUnit(mSensorType.getSensorUnit());
         sensorEntity.setMinimumDelayMicroseconds(sensor.getMinDelay());
         if (Build.VERSION.SDK_INT >= 21) {
+            // getMaxDelay is only available in SDK 21+
             sensorEntity.setMaximumDelayMicroseconds(sensor.getMaxDelay());
         }
         sensorEntity.setFifoMaxEventCount(sensor.getFifoMaxEventCount());
         sensorEntity.setFifoReservedEventCount(sensor.getFifoReservedEventCount());
         sensorEntity.setMaximumRange(sensor.getMaximumRange());
         if (Build.VERSION.SDK_INT >= 21) {
+            // getReportingMode is only available in SDK 21+
             final int reportingMode = sensor.getReportingMode();
             sensorEntity.setReportingMode(SensorUtils.getReportingTimeString(reportingMode));
         }
