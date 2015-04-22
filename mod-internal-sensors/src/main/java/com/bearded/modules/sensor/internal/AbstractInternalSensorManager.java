@@ -54,7 +54,6 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
     @Nullable
     private final InternalSensorDatabaseFacade mDatabaseFacade;
 
-
     protected AbstractInternalSensorManager(@NotNull final Context context,
                                             @NotNull final SensorType sensorType) {
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);

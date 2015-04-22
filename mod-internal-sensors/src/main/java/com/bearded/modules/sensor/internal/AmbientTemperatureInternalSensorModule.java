@@ -37,6 +37,12 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
+    /**
+     * Constructor called in {@see com.bearded.vigilant.ModuleManager}
+     *
+     * @param context needed to initialize the {@link android.hardware.SensorManager}
+     */
+    @SuppressWarnings("unused") //This constructor is called using refraction in {@link com.bearded.vigilant.ModuleManager}
     public AmbientTemperatureInternalSensorModule(@NotNull final Context context) {
         super(context, SensorType.AMBIENT_TEMPERATURE);
     }
