@@ -102,8 +102,10 @@ class InternalSensorMeasurementSeriesEntityFacade {
         final QueryBuilder<InternalSensorMeasurementEntity> measurementQuery = measurementDao.queryBuilder();
         measurementQuery.where(InternalSensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));
         measurementQuery.orderDesc(InternalSensorMeasurementEntityDao.Properties.EndTimestamp);
-        final List<InternalSensorMeasurementEntity> measurementEntities = measurementQuery.listLazy();
-        series.setEndTimestamp(measurementEntities.get(0).getEndTimestamp());
-        session.update(series);
+        final InternalSensorMeasurementEntity measurementEntities = measurementQuery.unique();
+        if (measurementEntities != null) {
+            series.setEndTimestamp(measurementEntities.getEndTimestamp());
+            session.update(series);
+        }
     }
 }
