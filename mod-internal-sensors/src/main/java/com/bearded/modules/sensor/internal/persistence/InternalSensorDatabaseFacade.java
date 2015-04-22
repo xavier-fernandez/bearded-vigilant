@@ -44,14 +44,10 @@ public class InternalSensorDatabaseFacade {
     @NotNull
     private final DatabaseConnector mDatabaseHandler;
 
-    @NotNull
-    private final SensorType mSensorType;
-
     public InternalSensorDatabaseFacade(@NotNull final Context context,
                                         @NotNull final SensorType sensorType) {
         final String databaseName = String.format("%s-%s", sensorType.getSensorTypeName(), DATABASE_NAME_SUFFIX);
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
-        mSensorType = sensorType;
         mSensorEntityFacade = new InternalSensorEntityFacade(sensorType);
         mMeasurementSeriesEntityFacade = new InternalSensorMeasurementSeriesEntityFacade();
         mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade(sensorType);
