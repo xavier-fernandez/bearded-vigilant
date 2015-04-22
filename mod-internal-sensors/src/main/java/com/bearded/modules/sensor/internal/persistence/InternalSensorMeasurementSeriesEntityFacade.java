@@ -52,6 +52,7 @@ class InternalSensorMeasurementSeriesEntityFacade {
      * @param sensorEntity of the measurement series.
      * @return {@link InternalSensorMeasurementSeriesEntity} with a valid measurement series.
      */
+    @NotNull
     public InternalSensorMeasurementSeriesEntity getMeasurementSeries(@NotNull final DaoSession session,
                                                                       @NotNull final InternalSensorEntity sensorEntity) {
         if (mSensorMeasurementSeries.get(sensorEntity) != null) {
@@ -59,7 +60,7 @@ class InternalSensorMeasurementSeriesEntityFacade {
         }
         final InternalSensorMeasurementSeriesEntityDao dao = session.getInternalSensorMeasurementSeriesEntityDao();
         final QueryBuilder<InternalSensorMeasurementSeriesEntity> queryBuilder = dao.queryBuilder();
-        queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp.eq(null));
+        queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp.isNull());
         queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.Sensor_id.eq(sensorEntity.getId()));
         final List<InternalSensorMeasurementSeriesEntity> query = queryBuilder.list();
         if (!query.isEmpty()) {
