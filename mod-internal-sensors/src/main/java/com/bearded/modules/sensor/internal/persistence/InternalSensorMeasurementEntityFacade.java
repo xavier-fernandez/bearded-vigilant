@@ -19,6 +19,9 @@
 
 package com.bearded.modules.sensor.internal.persistence;
 
+import android.util.Log;
+
+import com.bearded.common.sensor.SensorType;
 import com.bearded.common.utils.TimeUtils;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
@@ -35,49 +38,63 @@ import java.util.Map;
 
 class InternalSensorMeasurementEntityFacade {
 
-    @NotNull
-    private final Map<InternalSensorMeasurementSeriesEntity, SensorMeasurements> mSensorMeasurements;
+    private static final String TAG = InternalSensorMeasurementEntityFacade.class.getSimpleName();
 
-    public InternalSensorMeasurementEntityFacade (){
+    @NotNull
+    private final Map<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer> mSensorMeasurements;
+    @NotNull
+    private final SensorType mSensorType;
+
+    public InternalSensorMeasurementEntityFacade(@NotNull final SensorType sensorType) {
         mSensorMeasurements = Collections.synchronizedMap(
-                new HashMap<InternalSensorMeasurementSeriesEntity, SensorMeasurements>());
+                new HashMap<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer>());
+        mSensorType = sensorType;
     }
 
-    public void addMeasurement(@NotNull final DaoSession session,
-                               @NotNull final InternalSensorMeasurementSeriesEntity series,
-                               final float measurement, final int timeoutMillis) {
-        synchronized (this) {
-            SensorMeasurements measurements = mSensorMeasurements.get(series);
-            if (measurements == null) {
-                measurements = new SensorMeasurements();
-            }
-            measurements.addMeasurement(measurement);
-            if (TimeUtils.millisecondsFromNow(measurements.firstElementTime) > timeoutMillis) {
-                final InternalSensorMeasurementEntity measurementEntity = new InternalSensorMeasurementEntity();
-                measurementEntity.setStartTimestamp(TimeUtils.timestampToISOString(measurements.firstElementTime));
-                measurementEntity.setEndTimestamp(TimeUtils.timestampToISOString(DateTime.now()));
-                measurementEntity.setBinSize(measurements.getBinSize());
-                measurementEntity.setSensorValue(measurements.getMidSensorValue());
-                session.getInternalSensorMeasurementEntityDao().insert(measurementEntity);
-            }
+    public synchronized void addMeasurement(@NotNull final DaoSession session,
+                                            @NotNull final InternalSensorMeasurementSeriesEntity series,
+                                            final float measurement, final int timeoutMillis) {
+        SensorMeasurementsBuffer measurements = mSensorMeasurements.get(series);
+        if (measurements == null) {
+            measurements = new SensorMeasurementsBuffer();
+            mSensorMeasurements.put(series, measurements);
+        }
+        measurements.addMeasurement(measurement);
+        if (TimeUtils.millisecondsFromNow(measurements.firstElementTime) > timeoutMillis) {
+            storeMeasurement(session, measurements);
         }
     }
 
-    private static class SensorMeasurements {
+    private void storeMeasurement(@NotNull final DaoSession session, @NotNull final SensorMeasurementsBuffer measurements) {
+        final InternalSensorMeasurementEntity measurementEntity = new InternalSensorMeasurementEntity();
+        measurementEntity.setStartTimestamp(TimeUtils.timestampToISOString(measurements.firstElementTime));
+        measurementEntity.setEndTimestamp(TimeUtils.timestampToISOString(DateTime.now()));
+        measurementEntity.setBinSize(measurements.getBinSize());
+        measurementEntity.setSensorValue(measurements.getMidSensorValue());
+        session.getInternalSensorMeasurementEntityDao().insert(measurementEntity);
+        measurements.clear();
+        Log.d(TAG, String.format("addMeasurement -> The following %s measurement was inserted in the database -> %s",
+                mSensorType.getSensorTypeName(), measurementEntity.toJsonObject().toString()));
+    }
+
+    private static class SensorMeasurementsBuffer {
         @NotNull
         private final List<Float> measurements = new ArrayList<>();
         @NotNull
-        private final DateTime firstElementTime;
+        private DateTime firstElementTime;
 
-        private SensorMeasurements(){
+        private SensorMeasurementsBuffer() {
             this.firstElementTime = DateTime.now();
         }
 
         private void addMeasurement(final float measurement) {
+            if (measurements.isEmpty()) {
+                firstElementTime = DateTime.now();
+            }
             this.measurements.add(measurement);
         }
 
-        private float getMidSensorValue(){
+        private float getMidSensorValue() {
             float sum = 0;
             for (final Float measurement : this.measurements) {
                 sum += measurement;
@@ -87,6 +104,10 @@ class InternalSensorMeasurementEntityFacade {
 
         private short getBinSize() {
             return (short) this.measurements.size();
+        }
+
+        private void clear() {
+            this.measurements.clear();
         }
     }
 }
