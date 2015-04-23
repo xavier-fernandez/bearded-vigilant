@@ -1,11 +1,3 @@
-package com.bearded.database_schema_generator;
-
-import org.jetbrains.annotations.NotNull;
-
-import de.greenrobot.daogenerator.DaoGenerator;
-import de.greenrobot.daogenerator.Entity;
-import de.greenrobot.daogenerator.Schema;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -24,6 +16,14 @@ import de.greenrobot.daogenerator.Schema;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+package com.bearded.database_schema_generator;
+
+import org.jetbrains.annotations.NotNull;
+
+import de.greenrobot.daogenerator.DaoGenerator;
+import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Schema;
+
 abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final String MODULE_PACKAGE = "com.bearded.modules.ble.discovery";

@@ -1,7 +1,3 @@
-package com.bearded.database_schema_generator;
-
-import org.jetbrains.annotations.Nullable;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -20,6 +16,10 @@ import org.jetbrains.annotations.Nullable;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+package com.bearded.database_schema_generator;
+
+import org.jetbrains.annotations.Nullable;
+
 abstract class DatabaseGeneratorMain {
 
     public static void main(@Nullable final String... args) throws Exception {

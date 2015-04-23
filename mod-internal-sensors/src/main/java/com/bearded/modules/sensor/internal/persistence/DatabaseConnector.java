@@ -1,5 +1,3 @@
-package com.bearded.modules.sensor.internal.persistence;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -18,6 +16,7 @@ package com.bearded.modules.sensor.internal.persistence;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+package com.bearded.modules.sensor.internal.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

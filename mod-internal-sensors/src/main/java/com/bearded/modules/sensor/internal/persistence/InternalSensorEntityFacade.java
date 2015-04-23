@@ -16,7 +16,6 @@
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-
 package com.bearded.modules.sensor.internal.persistence;
 
 import android.annotation.TargetApi;
