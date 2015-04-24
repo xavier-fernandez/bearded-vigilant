@@ -1,8 +1,8 @@
 package com.bearded.modules.ble.discovery.persistence.dao;
 
-import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
+import android.support.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
@@ -22,7 +22,7 @@ public class BleEventSeriesEntityTest extends AbstractDaoTestLongPk<BleEventSeri
      *
      * @return {@link java.lang.String} with the start timestamp following the ISO 8601 convention.
      */
-    @NotNull
+    @NonNull
     private static String getIsoStartTimestamp() {
         return timestampToISOString(System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
     }

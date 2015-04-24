@@ -1,12 +1,11 @@
 package com.bearded.vigilant;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.modules.Module;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -36,10 +35,10 @@ public class ModuleManager {
 
     private static final String TAG = ModuleManager.class.getSimpleName();
 
-    @NotNull
+    @NonNull
     private final List<Module> mModules = new ArrayList<>();
 
-    public ModuleManager(@NotNull final Context context) {
+    public ModuleManager(@NonNull final Context context) {
         Log.d(TAG, String.format("Constructor(Context) -> Initializing modules for flavor %s.", BuildConfig.FLAVOR));
         loadFlavorModules(context);
     }
@@ -49,7 +48,7 @@ public class ModuleManager {
      *
      * @return {@link java.util.List} with all the loaded {@link com.bearded.common.modules.Module}
      */
-    @NotNull
+    @NonNull
     public List<Module> getAvailableModules() {
         return Collections.unmodifiableList(mModules);
     }
@@ -57,7 +56,7 @@ public class ModuleManager {
     /**
      * Loads and instantiates all the modules from the running flavor into memory.
      */
-    private void loadFlavorModules(@NotNull final Context context) {
+    private void loadFlavorModules(@NonNull final Context context) {
         final String[] flavorModules = context.getResources().getStringArray(R.array.modules_list);
         Log.i(TAG, String.format("loadFlavorModules -> Loading %d from flavor %s.", flavorModules.length, BuildConfig.FLAVOR));
         for (final String moduleClassLocation : flavorModules) {
@@ -75,7 +74,7 @@ public class ModuleManager {
      * @return {@link com.bearded.common.modules.Module} if it was loaded succesfully - <code>null</code> otherwise.
      */
     @Nullable
-    private Module loadModule(@NotNull final Context context, @NotNull final String moduleClassLocation) {
+    private Module loadModule(@NonNull final Context context, @NonNull final String moduleClassLocation) {
         Log.d(TAG, String.format("loadModule -> Loading module %s.", moduleClassLocation));
         final Class<?> moduleClass;
         try {

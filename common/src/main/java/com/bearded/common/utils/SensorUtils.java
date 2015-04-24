@@ -1,8 +1,7 @@
 package com.bearded.common.utils;
 
 import android.hardware.Sensor;
-
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -26,7 +25,7 @@ public abstract class SensorUtils {
 
     private static final String TAG = SensorUtils.class.getSimpleName();
 
-    @NotNull
+    @NonNull
     public static String getReportingTimeString(final int type) {
         switch (type) {
             case Sensor.REPORTING_MODE_ONE_SHOT:

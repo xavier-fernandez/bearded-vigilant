@@ -21,13 +21,12 @@ package com.bearded.modules.ble.discovery.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.modules.ble.discovery.persistence.dao.DaoMaster;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Class used for obtaining database sessions.
@@ -45,7 +44,7 @@ class DiscoveryDatabaseHandler {
     @Nullable
     private DaoSession mSession = null;
 
-    private DiscoveryDatabaseHandler(@NotNull final Context context) {
+    private DiscoveryDatabaseHandler(@NonNull final Context context) {
         mApplicationContext = context.getApplicationContext();
     }
 
@@ -56,21 +55,21 @@ class DiscoveryDatabaseHandler {
         return mInstance;
     }
 
-    static void init(@NotNull final Context context) {
+    static void init(@NonNull final Context context) {
         new DiscoveryDatabaseHandler(context);
     }
 
-    @NotNull
+    @NonNull
     public DaoSession getReadableSession(final boolean newSession) {
         return getSession(newSession, true);
     }
 
-    @NotNull
+    @NonNull
     public DaoSession getWriteableSession(final boolean newSession) {
         return getSession(newSession, false);
     }
 
-    @NotNull
+    @NonNull
     private DaoSession getSession(final boolean newSession, final boolean readOnly) {
         if (newSession) {
             return getMaster(readOnly).newSession();
@@ -81,7 +80,7 @@ class DiscoveryDatabaseHandler {
         return mSession;
     }
 
-    @NotNull
+    @NonNull
     private synchronized DaoMaster getMaster(final boolean readOnly) {
         if (mDatabase == null || mIsReadOnly != readOnly) {
             try {
@@ -107,7 +106,7 @@ class DiscoveryDatabaseHandler {
         }
 
         @Override
-        public void onUpgrade(@NotNull final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+        public void onUpgrade(@NonNull final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.d(TAG, String.format("onUpgrade -> Database %s upgraded from version %d to version %d.", DATABASE_NAME, oldVersion, newVersion));
         }
     }

@@ -4,10 +4,10 @@ package com.bearded.modules.ble.discovery.domain;
 
 // KEEP INCLUDES - put your custom includes here
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
-import org.jetbrains.annotations.NotNull;
 
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.AdvertiseName;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.DeviceAddress;
@@ -77,7 +77,7 @@ public class BleDeviceEntity implements com.bearded.common.database.ParseableJso
      * {@inheritDoc}
      */
     @Override
-    @NotNull
+    @NonNull
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.add(DeviceAddress.name, new JsonPrimitive(deviceAddress));
@@ -90,7 +90,7 @@ public class BleDeviceEntity implements com.bearded.common.database.ParseableJso
      * NOTE: This implementation compares the two elements comparing the device address.
      */
     @Override
-    public int compareTo(@NotNull final BleDeviceEntity entity) {
+    public int compareTo(@NonNull final BleDeviceEntity entity) {
         return this.deviceAddress.compareTo(entity.deviceAddress);
     }
     // KEEP METHODS END

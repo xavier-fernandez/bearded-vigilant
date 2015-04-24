@@ -20,13 +20,12 @@ package com.bearded.modules.sensor.internal.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Class used for obtaining database sessions.
@@ -35,22 +34,22 @@ class DatabaseConnector {
 
     private static final String TAG = DatabaseConnector.class.getSimpleName();
 
-    @NotNull
+    @NonNull
     private final Context mApplicationContext;
-    @NotNull
+    @NonNull
     private final String mDatabaseName;
     @Nullable
     private SQLiteDatabase mDatabase = null;
     @Nullable
     private DaoSession mSession = null;
 
-    public DatabaseConnector(@NotNull final Context context,
-                             @NotNull final String databaseName) {
+    public DatabaseConnector(@NonNull final Context context,
+                             @NonNull final String databaseName) {
         mApplicationContext = context.getApplicationContext();
         mDatabaseName = databaseName;
     }
 
-    @NotNull
+    @NonNull
     public DaoSession getSession() {
         if (mSession == null) {
             mSession = getMaster().newSession();
@@ -58,7 +57,7 @@ class DatabaseConnector {
         return mSession;
     }
 
-    @NotNull
+    @NonNull
     private synchronized DaoMaster getMaster() {
         if (mDatabase == null) {
             try {
@@ -79,7 +78,7 @@ class DatabaseConnector {
         }
 
         @Override
-        public void onUpgrade(@NotNull final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+        public void onUpgrade(@NonNull final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.d(TAG, String.format("onUpgrade -> Database %s upgraded from version %d to version %d.", mDatabaseName, oldVersion, newVersion));
         }
     }

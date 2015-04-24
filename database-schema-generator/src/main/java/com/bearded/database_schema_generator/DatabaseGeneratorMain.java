@@ -18,7 +18,7 @@
  */
 package com.bearded.database_schema_generator;
 
-import org.jetbrains.annotations.Nullable;
+import android.support.annotation.Nullable;
 
 abstract class DatabaseGeneratorMain {
 

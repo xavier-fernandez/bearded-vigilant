@@ -3,11 +3,10 @@ package com.bearded.vigilant;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bearded.common.modules.Module;
-
-import org.jetbrains.annotations.NotNull;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -35,7 +34,7 @@ public class BeardedService extends Service {
      * {@inheritDoc}
      */
     @Override
-    public int onStartCommand(@NotNull final Intent intent, final int flags, final int startId) {
+    public int onStartCommand(@NonNull final Intent intent, final int flags, final int startId) {
         final ModuleManager moduleManager = new ModuleManager(this.getApplicationContext());
         Log.d(TAG, String.format("onBind -> Service %s was binded successfully.", TAG));
         for (final Module module : moduleManager.getAvailableModules()) {
@@ -48,7 +47,7 @@ public class BeardedService extends Service {
      * {@inheritDoc}
      */
     @Override
-    public IBinder onBind(@NotNull final Intent intent) {
+    public IBinder onBind(@NonNull final Intent intent) {
         return null;
     }
 }

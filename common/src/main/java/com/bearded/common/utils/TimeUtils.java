@@ -1,6 +1,7 @@
 package com.bearded.common.utils;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
+
 import org.joda.time.DateTime;
 
 import java.text.DateFormat;
@@ -48,7 +49,7 @@ public abstract class TimeUtils {
      * @param dateTime that will be used to calculate the difference.
      * @return {@link long} with the number of milliseconds.
      */
-    public static long millisecondsFromNow(@NotNull final DateTime dateTime) {
+    public static long millisecondsFromNow(@NonNull final DateTime dateTime) {
         return millisecondsFromNow(dateTime.getMillis());
     }
 
@@ -67,7 +68,7 @@ public abstract class TimeUtils {
      *
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
-    @NotNull
+    @NonNull
     public static String nowToISOString() {
         return timestampToISOString(DateTime.now());
     }
@@ -78,7 +79,7 @@ public abstract class TimeUtils {
      * @param datetime that will be converted to the ISO 8601 convention.
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
-    @NotNull
+    @NonNull
     public static String timestampToISOString(final DateTime datetime) {
         return timestampToISOString(datetime.getMillis());
     }
@@ -89,7 +90,7 @@ public abstract class TimeUtils {
      * @param timestamp that will be converted. Must be a positive number.
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
-    @NotNull
+    @NonNull
     public static String timestampToISOString(final long timestamp) {
         if (timestamp < 0) {
             throw new IllegalArgumentException(String.format("%s: timestampToISOString -> Received a negative timestamp", TAG));

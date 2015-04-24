@@ -4,9 +4,9 @@ package com.bearded.modules.sensor.internal.domain;
 
 // KEEP INCLUDES - put your custom includes here
 
-import com.google.gson.JsonObject;
+import android.support.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.JsonObject;
 // KEEP INCLUDES END
 
 /**
@@ -202,11 +202,11 @@ public class InternalSensorEntity implements com.bearded.common.database.Parseab
      * NOTE: This implementation compares the two elements comparing its sensor name.
      */
     @Override
-    public int compareTo(@NotNull final InternalSensorEntity anotherSensorEntity) {
+    public int compareTo(@NonNull final InternalSensorEntity anotherSensorEntity) {
         return this.sensorName.compareTo(anotherSensorEntity.getSensorName());
     }
 
-    @NotNull
+    @NonNull
     @Override
     public JsonObject toJsonObject() {
         return null;

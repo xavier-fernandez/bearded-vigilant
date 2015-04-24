@@ -20,12 +20,12 @@ package com.bearded.modules.sensor.internal;
 
 import android.content.Context;
 import android.hardware.SensorEvent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.sensor.SensorType;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 
 /**
@@ -45,14 +45,14 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
-    public LightInternalSensorModule(@NotNull final Context context) {
+    public LightInternalSensorModule(@NonNull final Context context) {
         super(context, SENSOR_TYPE);
     }
 
     /**
      * {@inheritDoc}
      */
-    @NotNull
+    @NonNull
     @Override
     public String getModuleName() {
         return TAG;
@@ -70,7 +70,7 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
      * {@inheritDoc}
      */
     @Override
-    public void onSensorChanged(@NotNull final SensorEvent event) {
+    public void onSensorChanged(@NonNull final SensorEvent event) {
         if (getSensor() == null) {
             Log.e(TAG, "onSensorChanged -> Sensor %s is not initialized yet.");
             return;

@@ -19,9 +19,9 @@ package com.bearded.common.database;
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 
-import com.google.gson.JsonObject;
+import android.support.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.JsonObject;
 
 /**
  * The objects implementing this interface must have a method for parsing its data into a JSON
@@ -35,6 +35,6 @@ public interface ParseableJson {
      *
      * @return {@link com.google.gson.JsonObject} with the relevant object information.
      */
-    @NotNull
+    @NonNull
     JsonObject toJsonObject();
 }

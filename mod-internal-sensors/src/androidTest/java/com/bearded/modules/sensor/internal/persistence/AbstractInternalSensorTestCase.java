@@ -1,12 +1,11 @@
 package com.bearded.modules.sensor.internal.persistence;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import static com.bearded.common.sensor.SensorType.LIGHT;
 
@@ -32,7 +31,7 @@ abstract class AbstractInternalSensorTestCase extends InstrumentationTestCase {
 
     @Nullable
     protected DatabaseConnector mDatabaseConnector;
-    @NotNull
+    @NonNull
     protected InternalSensorEntityFacade mSensorFacade = new InternalSensorEntityFacade(LIGHT);
 
     /**
@@ -47,15 +46,15 @@ abstract class AbstractInternalSensorTestCase extends InstrumentationTestCase {
 
     @SmallTest
     protected void testPreConditions() {
-        assertNotNull(mDatabaseConnector);
-        assertNotNull(mSensorFacade);
+        assertNonNull(mDatabaseConnector);
+        assertNonNull(mSensorFacade);
     }
 
     /**
      * Cleans the database. A test, by definition, needs a clean database.
      */
     protected void cleanDatabase() {
-        assertNotNull(mDatabaseConnector);
+        assertNonNull(mDatabaseConnector);
         DaoMaster.dropAllTables(mDatabaseConnector.getSession().getDatabase(), false);
         DaoMaster.createAllTables(mDatabaseConnector.getSession().getDatabase(), false);
     }

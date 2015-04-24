@@ -20,6 +20,7 @@ package com.bearded.modules.sensor.internal.persistence;
 
 import android.content.Context;
 import android.hardware.Sensor;
+import android.support.annotation.NonNull;
 
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
@@ -27,25 +28,24 @@ import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSerie
 import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 
 public class InternalSensorDatabaseFacade {
 
     private static final String DATABASE_NAME_SUFFIX = "internal-sensor-db";
 
-    @NotNull
+    @NonNull
     private final InternalSensorEntityFacade mSensorEntityFacade;
-    @NotNull
+    @NonNull
     private final InternalSensorMeasurementSeriesEntityFacade mMeasurementSeriesEntityFacade;
-    @NotNull
+    @NonNull
     private final InternalSensorMeasurementEntityFacade mMeasurementEntityFacade;
 
-    @NotNull
+    @NonNull
     private final DatabaseConnector mDatabaseHandler;
 
-    public InternalSensorDatabaseFacade(@NotNull final Context context,
-                                        @NotNull final SensorType sensorType) {
+    public InternalSensorDatabaseFacade(@NonNull final Context context,
+                                        @NonNull final SensorType sensorType) {
         final String databaseName = String.format("%s-%s", sensorType.getSensorTypeName(), DATABASE_NAME_SUFFIX);
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
         mSensorEntityFacade = new InternalSensorEntityFacade(sensorType);
@@ -56,7 +56,7 @@ public class InternalSensorDatabaseFacade {
     /**
      * Writes in the database a sensor reading.
      */
-    public void insertReadingDatabase(@NotNull final Sensor sensor,
+    public void insertReadingDatabase(@NonNull final Sensor sensor,
                                       final float measurement,
                                       final int binSizeMilliseconds) {
         synchronized (mDatabaseHandler) {

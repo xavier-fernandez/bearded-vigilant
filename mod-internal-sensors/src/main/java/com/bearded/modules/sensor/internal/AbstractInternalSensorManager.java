@@ -23,14 +23,14 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.modules.Module;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.persistence.InternalSensorDatabaseFacade;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -45,17 +45,17 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
 
     private static final String TAG = AbstractInternalSensorManager.class.getSimpleName();
 
-    @NotNull
+    @NonNull
     private final SensorManager mSensorManager;
-    @NotNull
+    @NonNull
     private final SensorType mSensorType;
     @Nullable
     private final Sensor mInternalSensor;
     @Nullable
     private final InternalSensorDatabaseFacade mDatabaseFacade;
 
-    protected AbstractInternalSensorManager(@NotNull final Context context,
-                                            @NotNull final SensorType sensorType) {
+    protected AbstractInternalSensorManager(@NonNull final Context context,
+                                            @NonNull final SensorType sensorType) {
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensorType = sensorType;
         mInternalSensor = getSensorManager().getDefaultSensor(sensorType.getSensorId());
@@ -74,7 +74,7 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
      *
      * @return {@link com.bearded.common.sensor.SensorType}
      */
-    @NotNull
+    @NonNull
     public SensorType getSensorType() {
         return mSensorType;
     }
@@ -104,7 +104,7 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
      *
      * @return the module {@link SensorManager}
      */
-    @NotNull
+    @NonNull
     protected SensorManager getSensorManager() {
         return mSensorManager;
     }
@@ -138,7 +138,7 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
      * {@inheritDoc}
      */
     @Override
-    public void onAccuracyChanged(@NotNull final Sensor sensor, final int accuracy) {
+    public void onAccuracyChanged(@NonNull final Sensor sensor, final int accuracy) {
         Log.i(TAG, String.format("onAccuracyChanged -> Accuracy changed to %d.", accuracy));
     }
 }

@@ -18,7 +18,7 @@
  */
 package com.bearded.database_schema_generator;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
@@ -60,10 +60,10 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * advertise_name  TEXT
      * );
      */
-    @NotNull
-    private static Entity createBleDeviceEntity(@NotNull final Schema dbSchema) {
+    @NonNull
+    private static Entity createBleDeviceEntity(@NonNull final Schema dbSchema) {
         final Entity deviceEntity = createEntity(dbSchema, "BleDevice");
-        deviceEntity.addStringProperty("deviceAddress").notNull();
+        deviceEntity.addStringProperty("deviceAddress").NonNull();
         deviceEntity.addStringProperty("advertiseName");
         return deviceEntity;
     }
@@ -72,15 +72,15 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * CREATE TABLE ble_event_series (
      * _id              INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * ble_device_id    INTEGER    FOREIGN KEY   REFERENCES  ble_device (_id)  NOT NULL,
-     * start_timestamp  TEXT       NOTNULL,
+     * start_timestamp  TEXT       NonNull,
      * end_timestamp    TEXT,
      * );
      */
-    @NotNull
-    private static Entity createBleEventSeriesEntity(@NotNull final Schema dbSchema, @NotNull final Entity deviceEntity) {
+    @NonNull
+    private static Entity createBleEventSeriesEntity(@NonNull final Schema dbSchema, @NonNull final Entity deviceEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "BleEventSeries");
         seriesEntity.addToOne(deviceEntity, seriesEntity.addLongProperty("bleDeviceId").getProperty());
-        seriesEntity.addStringProperty("startTimestamp").notNull();
+        seriesEntity.addStringProperty("startTimestamp").NonNull();
         seriesEntity.addStringProperty("endTimestamp");
         return seriesEntity;
     }
@@ -94,11 +94,11 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * received_signal_strength   INTEGER   NOT NULL
      * );
      */
-    private static void createBleEventEntity(@NotNull final Schema dbSchema, @NotNull final Entity eventSeriesEntity) {
+    private static void createBleEventEntity(@NonNull final Schema dbSchema, @NonNull final Entity eventSeriesEntity) {
         final Entity eventEntity = createEntity(dbSchema, "BleEvent");
         eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeriesId").getProperty());
-        eventEntity.addStringProperty("startTimestamp").notNull();
+        eventEntity.addStringProperty("startTimestamp").NonNull();
         eventEntity.addStringProperty("endTimestamp");
-        eventEntity.addByteProperty("receivedSignalStrength").notNull();
+        eventEntity.addByteProperty("receivedSignalStrength").NonNull();
     }
 }

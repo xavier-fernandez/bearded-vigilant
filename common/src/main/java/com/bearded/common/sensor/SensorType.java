@@ -1,9 +1,8 @@
 package com.bearded.common.sensor;
 
 import android.hardware.Sensor;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -30,12 +29,12 @@ public enum SensorType {
     RELATIVE_HUMIDITY(Sensor.TYPE_RELATIVE_HUMIDITY, "Relative Humidity", "Relative Humidity Percentage");
 
     private final int mSensorId;
-    @NotNull
+    @NonNull
     private final String mSensorTypeName;
-    @NotNull
+    @NonNull
     private final String mSensorUnit;
 
-    SensorType(final int sensorId, @NotNull final String sensorTypeName, @NotNull final String unit) {
+    SensorType(final int sensorId, @NonNull final String sensorTypeName, @NonNull final String unit) {
         mSensorId = sensorId;
         mSensorTypeName = sensorTypeName;
         mSensorUnit = unit;
@@ -71,7 +70,7 @@ public enum SensorType {
      *
      * @return {@link java.lang.String} with the sensor type name. Cannot be null.
      */
-    @NotNull
+    @NonNull
     public String getSensorTypeName() {
         return mSensorTypeName;
     }
@@ -81,7 +80,7 @@ public enum SensorType {
      *
      * @return {@link java.lang.String} with the sensor unit.
      */
-    @NotNull
+    @NonNull
     public String getSensorUnit() {
         return mSensorUnit;
     }

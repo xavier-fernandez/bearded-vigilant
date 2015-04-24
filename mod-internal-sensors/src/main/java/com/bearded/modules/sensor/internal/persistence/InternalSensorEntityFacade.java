@@ -21,6 +21,7 @@ package com.bearded.modules.sensor.internal.persistence;
 import android.annotation.TargetApi;
 import android.hardware.Sensor;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bearded.common.sensor.SensorType;
@@ -28,8 +29,6 @@ import com.bearded.common.utils.SensorUtils;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,13 +41,13 @@ class InternalSensorEntityFacade {
 
     private static final String TAG = InternalSensorEntityFacade.class.getSimpleName();
 
-    @NotNull
+    @NonNull
     private final Map<String, InternalSensorEntity> mKnownSensors;
 
-    @NotNull
+    @NonNull
     private final SensorType mSensorType;
 
-    InternalSensorEntityFacade(@NotNull final SensorType sensorType) {
+    InternalSensorEntityFacade(@NonNull final SensorType sensorType) {
         mKnownSensors = Collections.synchronizedMap(new HashMap<String, InternalSensorEntity>());
         mSensorType = sensorType;
     }
@@ -59,9 +58,9 @@ class InternalSensorEntityFacade {
      * @param sensor that wants to be retrieved from the database.
      * @return {@link InternalSensorEntity} of the sensor.
      */
-    @NotNull
-    InternalSensorEntity getSensorEntity(@NotNull final DaoSession session,
-                                         @NotNull final Sensor sensor) {
+    @NonNull
+    InternalSensorEntity getSensorEntity(@NonNull final DaoSession session,
+                                         @NonNull final Sensor sensor) {
         if (mKnownSensors.containsKey(sensor.getName())) {
             return mKnownSensors.get(sensor.getName());
         }
@@ -83,10 +82,10 @@ class InternalSensorEntityFacade {
      * @param sensor that will be inserted inside the database.
      * @return {@link InternalSensorEntity} of the sensor.
      */
-    @NotNull
+    @NonNull
     @TargetApi(22)
-    private InternalSensorEntity insertSensor(@NotNull final DaoSession session,
-                                              @NotNull final Sensor sensor) {
+    private InternalSensorEntity insertSensor(@NonNull final DaoSession session,
+                                              @NonNull final Sensor sensor) {
         final InternalSensorEntity sensorEntity = new InternalSensorEntity();
         sensorEntity.setSensorName(sensor.getName());
         sensorEntity.setSensorType(mSensorType.getSensorTypeName());

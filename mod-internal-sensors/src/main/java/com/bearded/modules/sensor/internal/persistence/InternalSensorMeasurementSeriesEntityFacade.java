@@ -18,6 +18,7 @@
  */
 package com.bearded.modules.sensor.internal.persistence;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bearded.common.utils.TimeUtils;
@@ -28,8 +29,6 @@ import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao;
 import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementSeriesEntityDao;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -39,10 +38,10 @@ import de.greenrobot.dao.query.QueryBuilder;
 
 class InternalSensorMeasurementSeriesEntityFacade {
 
-    @NotNull
+    @NonNull
     private static final String TAG = InternalSensorMeasurementSeriesEntityFacade.class.getSimpleName();
 
-    @NotNull
+    @NonNull
     private final Map<InternalSensorEntity, InternalSensorMeasurementSeriesEntity> mSensorMeasurementSeries;
 
     InternalSensorMeasurementSeriesEntityFacade() {
@@ -56,9 +55,9 @@ class InternalSensorMeasurementSeriesEntityFacade {
      * @param sensorEntity of the measurement series.
      * @return {@link InternalSensorMeasurementSeriesEntity} with the measurement series.
      */
-    @NotNull
-    public InternalSensorMeasurementSeriesEntity getMeasurementSeries(@NotNull final DaoSession session,
-                                                                      @NotNull final InternalSensorEntity sensorEntity) {
+    @NonNull
+    public InternalSensorMeasurementSeriesEntity getMeasurementSeries(@NonNull final DaoSession session,
+                                                                      @NonNull final InternalSensorEntity sensorEntity) {
         synchronized (this) {
             if (mSensorMeasurementSeries.get(sensorEntity) != null) {
                 return mSensorMeasurementSeries.get(sensorEntity);
@@ -84,9 +83,9 @@ class InternalSensorMeasurementSeriesEntityFacade {
      * @param sensorEntity of the inserted measurement series.
      * @return {@link InternalSensorMeasurementSeriesEntity} with the measurement series.
      */
-    @NotNull
-    private InternalSensorMeasurementSeriesEntity insertMeasurementSeries(@NotNull final DaoSession session,
-                                                                          @NotNull final InternalSensorEntity sensorEntity) {
+    @NonNull
+    private InternalSensorMeasurementSeriesEntity insertMeasurementSeries(@NonNull final DaoSession session,
+                                                                          @NonNull final InternalSensorEntity sensorEntity) {
         final InternalSensorMeasurementSeriesEntity measurementSeries = new InternalSensorMeasurementSeriesEntity();
         measurementSeries.setStartTimestamp(TimeUtils.nowToISOString());
         measurementSeries.setInternalSensorEntity(sensorEntity);
@@ -101,7 +100,7 @@ class InternalSensorMeasurementSeriesEntityFacade {
      *
      * @param session needed to update measurement series.
      */
-    public void updateAllMeasurementSeriesEndTimestamp(@NotNull final DaoSession session) {
+    public void updateAllMeasurementSeriesEndTimestamp(@NonNull final DaoSession session) {
         synchronized (this) {
             final InternalSensorMeasurementSeriesEntityDao seriesDao = session.getInternalSensorMeasurementSeriesEntityDao();
             final QueryBuilder<InternalSensorMeasurementSeriesEntity> queryBuilder = seriesDao.queryBuilder();
@@ -120,8 +119,8 @@ class InternalSensorMeasurementSeriesEntityFacade {
      * @param session needed to update measurement series.
      * @param series  which timestamp is going to be updated.
      */
-    private void updateMeasurementSeriesEndTimestamp(@NotNull final DaoSession session,
-                                                     @NotNull final InternalSensorMeasurementSeriesEntity series) {
+    private void updateMeasurementSeriesEndTimestamp(@NonNull final DaoSession session,
+                                                     @NonNull final InternalSensorMeasurementSeriesEntity series) {
         final InternalSensorMeasurementEntityDao measurementDao = session.getInternalSensorMeasurementEntityDao();
         final QueryBuilder<InternalSensorMeasurementEntity> measurementQuery = measurementDao.queryBuilder();
         measurementQuery.where(InternalSensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));

@@ -1,8 +1,8 @@
 package com.bearded.modules.sensor.internal.persistence;
 
-import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
+import android.support.annotation.Nullable;
 
-import org.jetbrains.annotations.Nullable;
+import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -33,7 +33,7 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends AbstractInt
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        assertNotNull(mDatabaseConnector);
+        assertNonNull(mDatabaseConnector);
         mTestInternalSensorEntity = new InternalSensorEntity();
         mTestInternalSensorEntity.setSensorName("testSensor");
         mTestInternalSensorEntity.setSensorType("LIGHT");
@@ -47,6 +47,6 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends AbstractInt
     @Override
     protected void testPreConditions() {
         super.testPreConditions();
-        assertNotNull(mTestInternalSensorEntity);
+        assertNonNull(mTestInternalSensorEntity);
     }
 }

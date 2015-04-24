@@ -18,9 +18,9 @@
  */
 package com.bearded.database_schema_generator;
 
-import com.bearded.common.database.ParseableJson;
+import android.support.annotation.NonNull;
 
-import org.jetbrains.annotations.NotNull;
+import com.bearded.common.database.ParseableJson;
 
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
@@ -42,8 +42,8 @@ abstract class AbstractDbSchemaGenerator {
      * @param tableName of the database table.
      * @return the created {@link de.greenrobot.daogenerator.Entity}.
      */
-    @NotNull
-    static Entity createEntity(@NotNull final Schema dbSchema, @NotNull final String tableName) {
+    @NonNull
+    static Entity createEntity(@NonNull final Schema dbSchema, @NonNull final String tableName) {
         final String entityName = String.format("%s%s", tableName, ENTITY_SUFFIX);
         final Entity entity = dbSchema.addEntity(entityName);
         entity.addIdProperty().primaryKey().autoincrement();
