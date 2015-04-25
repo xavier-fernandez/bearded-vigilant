@@ -21,11 +21,8 @@ package com.bearded.common.utils;
 
 import android.annotation.TargetApi;
 import android.hardware.Sensor;
-import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-
-import com.bearded.common.BuildConfig;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,16 +31,11 @@ public abstract class SensorUtils {
 
     private static final String TAG = SensorUtils.class.getSimpleName();
 
-    @TargetApi(21)
-    @IntDef({Sensor.REPORTING_MODE_ONE_SHOT, Sensor.REPORTING_MODE_SPECIAL_TRIGGER,
-            Sensor.REPORTING_MODE_ON_CHANGE, Sensor.REPORTING_MODE_CONTINUOUS})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface ReportingMode {}
-
     /**
      * This method obtains a reporting time string out of a reporting type.
      * This method should only be called from SDK version 21, since it uses the new sensor APIs
      * introduced in Android 5.
+     *
      * @param type {@link int} with the type.
      * @return {@link String} that correspond to the given {@param type}
      */
@@ -63,5 +55,12 @@ public abstract class SensorUtils {
                 throw new IllegalArgumentException(TAG + ": getReportingTimeString -> Type does" +
                         " not correspond to a valid reporting type");
         }
+    }
+
+    @TargetApi(21)
+    @IntDef({Sensor.REPORTING_MODE_ONE_SHOT, Sensor.REPORTING_MODE_SPECIAL_TRIGGER,
+            Sensor.REPORTING_MODE_ON_CHANGE, Sensor.REPORTING_MODE_CONTINUOUS})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ReportingMode {
     }
 }
