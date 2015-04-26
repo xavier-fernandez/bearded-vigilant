@@ -49,31 +49,46 @@ class InternalSensorMeasurementSeriesEntityFacade {
     }
 
     /**
-     * Obtains a measurement series from a given sensor.
+     * Obtains an active measurement series from a given sensor.
+     * Creates a measurement series in case no active measurement series is found.
      *
      * @param session      needed to query, insert or update the measurement series.
      * @param sensorEntity of the measurement series.
      * @return {@link InternalSensorMeasurementSeriesEntity} with the measurement series.
      */
     @NonNull
-    public InternalSensorMeasurementSeriesEntity getMeasurementSeries(@NonNull final DaoSession session,
-                                                                      @NonNull final InternalSensorEntity sensorEntity) {
-        synchronized (this) {
-            if (mSensorMeasurementSeries.get(sensorEntity) != null) {
-                return mSensorMeasurementSeries.get(sensorEntity);
-            }
-            final InternalSensorMeasurementSeriesEntityDao dao = session.getInternalSensorMeasurementSeriesEntityDao();
-            final QueryBuilder<InternalSensorMeasurementSeriesEntity> queryBuilder = dao.queryBuilder();
-            queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp.isNull());
-            queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.Sensor_id.eq(sensorEntity.getId()));
-            final List<InternalSensorMeasurementSeriesEntity> query = queryBuilder.list();
-            if (!query.isEmpty()) {
-                for (final InternalSensorMeasurementSeriesEntity series : query) {
-                    updateMeasurementSeriesEndTimestamp(session, series);
-                }
-            }
-            return insertMeasurementSeries(session, sensorEntity);
+    public InternalSensorMeasurementSeriesEntity getActiveMeasurementSeries(@NonNull final DaoSession session,
+                                                                            @NonNull final InternalSensorEntity sensorEntity) {
+        if (mSensorMeasurementSeries.get(sensorEntity) != null) {
+            return mSensorMeasurementSeries.get(sensorEntity);
         }
+        final InternalSensorMeasurementSeriesEntityDao dao = session.getInternalSensorMeasurementSeriesEntityDao();
+        final QueryBuilder<InternalSensorMeasurementSeriesEntity> queryBuilder = dao.queryBuilder();
+        queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp.isNull());
+        queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.Sensor_id.eq(sensorEntity.getId()));
+        final List<InternalSensorMeasurementSeriesEntity> query = queryBuilder.list();
+        if (!query.isEmpty()) {
+            for (final InternalSensorMeasurementSeriesEntity series : query) {
+                updateMeasurementSeriesEndTimestamp(session, series);
+            }
+        }
+        return insertMeasurementSeries(session, sensorEntity);
+    }
+
+    /**
+     * Obtains all measurement series from a given sensor.
+     *
+     * @param session      needed to query, insert or update the measurement series.
+     * @param sensorEntity of the measurement series.
+     * @return {@link InternalSensorMeasurementSeriesEntity} with the measurement series.
+     */
+    @NonNull
+    public List<InternalSensorMeasurementSeriesEntity> getAllClosedMeasurementSeriesFromSensor(@NonNull final DaoSession session,
+                                                                                               @NonNull final InternalSensorEntity sensorEntity) {
+        final InternalSensorMeasurementSeriesEntityDao dao = session.getInternalSensorMeasurementSeriesEntityDao();
+        final QueryBuilder<InternalSensorMeasurementSeriesEntity> queryBuilder = dao.queryBuilder();
+        queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.Sensor_id.eq(sensorEntity.getId()));
+        return queryBuilder.listLazy();
     }
 
     /**
@@ -104,7 +119,7 @@ class InternalSensorMeasurementSeriesEntityFacade {
         synchronized (this) {
             final InternalSensorMeasurementSeriesEntityDao seriesDao = session.getInternalSensorMeasurementSeriesEntityDao();
             final QueryBuilder<InternalSensorMeasurementSeriesEntity> queryBuilder = seriesDao.queryBuilder();
-            queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp.eq(null));
+            queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp.isNull());
             final List<InternalSensorMeasurementSeriesEntity> outdatedSeriesQuery = queryBuilder.list();
             for (final InternalSensorMeasurementSeriesEntity series : outdatedSeriesQuery) {
                 updateMeasurementSeriesEndTimestamp(session, series);
