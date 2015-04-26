@@ -38,6 +38,8 @@ public class RelativeHumidityInternalSensorModule extends AbstractInternalSensor
 
     private static final int RELATIVE_HUMIDITY_INTERNAL_SENSOR_MODULE_VERSION = 1;
 
+    private static final int MODULE_TIMEOUT_MILLISECONDS = 15 * 1000;
+
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
@@ -47,7 +49,7 @@ public class RelativeHumidityInternalSensorModule extends AbstractInternalSensor
      * @param context needed to initialize the {@link android.hardware.SensorManager}
      */
     public RelativeHumidityInternalSensorModule(@NonNull final Context context) {
-        super(context, SensorType.RELATIVE_HUMIDITY);
+        super(context, SensorType.RELATIVE_HUMIDITY, MODULE_TIMEOUT_MILLISECONDS);
     }
 
     /**

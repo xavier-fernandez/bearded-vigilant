@@ -46,7 +46,7 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
     private DateTime mLastSensorValueReceivedTime;
 
     public LightInternalSensorModule(@NonNull final Context context) {
-        super(context, SENSOR_TYPE);
+        super(context, SENSOR_TYPE, MODULE_TIMEOUT_MILLISECONDS);
     }
 
     /**
@@ -78,7 +78,7 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
         final float lux = event.values[0];
         mLastSensorValueReceivedTime = DateTime.now();
         assert (getDatabaseFacade() != null);
-        getDatabaseFacade().insertReadingDatabase(getSensor(), lux, MODULE_TIMEOUT_MILLISECONDS);
+        getDatabaseFacade().insertReadingDatabase(getSensor(), lux);
     }
 
     /**

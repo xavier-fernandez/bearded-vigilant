@@ -55,7 +55,8 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
     private final InternalSensorDatabaseFacade mDatabaseFacade;
 
     protected AbstractInternalSensorManager(@NonNull final Context context,
-                                            @NonNull final SensorType sensorType) {
+                                            @NonNull final SensorType sensorType,
+                                            final int binSizeMillis) {
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensorType = sensorType;
         mInternalSensor = getSensorManager().getDefaultSensor(sensorType.getSensorId());
@@ -65,7 +66,7 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
             mDatabaseFacade = null;
         } else {
             getSensorManager().registerListener(this, getSensor(), SENSOR_DELAY_NORMAL);
-            mDatabaseFacade = new InternalSensorDatabaseFacade(context, sensorType);
+            mDatabaseFacade = new InternalSensorDatabaseFacade(context, sensorType, binSizeMillis);
         }
     }
 
