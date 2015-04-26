@@ -1,15 +1,3 @@
-package com.bearded.common.utils;
-
-import android.support.annotation.NonNull;
-
-import org.joda.time.DateTime;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -28,6 +16,11 @@ import java.util.TimeZone;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+package com.bearded.common.utils;
+
+import android.support.annotation.NonNull;
+
+import org.joda.time.DateTime;
 
 /**
  * Class that contains several methods for making the time management easier.
@@ -35,13 +28,6 @@ import java.util.TimeZone;
 public abstract class TimeUtils {
 
     private static final String TAG = TimeUtils.class.getSimpleName();
-
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
-
-    static {
-        final TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        dateFormat.setTimeZone(timeZone);
-    }
 
     /**
      * Obtains the number of milliseconds from a given {@link DateTime}
@@ -70,7 +56,7 @@ public abstract class TimeUtils {
      */
     @NonNull
     public static String nowToISOString() {
-        return timestampToISOString(DateTime.now());
+        return DateTime.now().toString();
     }
 
     /**
@@ -80,7 +66,7 @@ public abstract class TimeUtils {
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
     @NonNull
-    public static String timestampToISOString(final DateTime datetime) {
+    public static String timestampToISOString(@NonNull final DateTime datetime) {
         return timestampToISOString(datetime.getMillis());
     }
 
@@ -95,6 +81,6 @@ public abstract class TimeUtils {
         if (timestamp < 0) {
             throw new IllegalArgumentException(String.format("%s: timestampToISOString -> Received a negative timestamp", TAG));
         }
-        return dateFormat.format(new Date(timestamp));
+        return (new DateTime(timestamp)).toString();
     }
 }
