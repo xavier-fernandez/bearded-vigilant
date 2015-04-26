@@ -33,7 +33,7 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends AbstractInt
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        assertNonNull(mDatabaseConnector);
+        assertNotNull(mDatabaseConnector);
         mTestInternalSensorEntity = new InternalSensorEntity();
         mTestInternalSensorEntity.setSensorName("testSensor");
         mTestInternalSensorEntity.setSensorType("LIGHT");
@@ -47,6 +47,6 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends AbstractInt
     @Override
     protected void testPreConditions() {
         super.testPreConditions();
-        assertNonNull(mTestInternalSensorEntity);
+        assertNotNull(mTestInternalSensorEntity);
     }
 }

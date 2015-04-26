@@ -26,7 +26,7 @@ public class InternalSensorEntityFacadeTest extends AbstractInternalSensorTestCa
 
     @MediumTest
     public void testSensorInsertion() {
-        assertNonNull(super.mDatabaseConnector);
+        assertNotNull(super.mDatabaseConnector);
         final DaoSession session = super.mDatabaseConnector.getSession();
         // TODO: Sensor needs to be mocked. Test sensor insertion.
     }

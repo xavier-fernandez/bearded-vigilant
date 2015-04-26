@@ -46,15 +46,15 @@ abstract class AbstractInternalSensorTestCase extends InstrumentationTestCase {
 
     @SmallTest
     protected void testPreConditions() {
-        assertNonNull(mDatabaseConnector);
-        assertNonNull(mSensorFacade);
+        assertNotNull(mDatabaseConnector);
+        assertNotNull(mSensorFacade);
     }
 
     /**
      * Cleans the database. A test, by definition, needs a clean database.
      */
     protected void cleanDatabase() {
-        assertNonNull(mDatabaseConnector);
+        assertNotNull(mDatabaseConnector);
         DaoMaster.dropAllTables(mDatabaseConnector.getSession().getDatabase(), false);
         DaoMaster.createAllTables(mDatabaseConnector.getSession().getDatabase(), false);
     }
