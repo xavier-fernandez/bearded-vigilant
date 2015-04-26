@@ -83,15 +83,15 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
         /**
          * maximum range of the sensor in the sensor's unit.
          */
-        sensorEntity.addStringProperty("sensorName").NonNull().index();
+        sensorEntity.addStringProperty("sensorName").notNull().index();
         /**
          * The type of this sensor as a string.
          */
-        sensorEntity.addStringProperty("sensorType").NonNull().index();
+        sensorEntity.addStringProperty("sensorType").notNull().index();
         /**
          * Sensor unit string.
          */
-        sensorEntity.addStringProperty("sensorUnit").NonNull();
+        sensorEntity.addStringProperty("sensorUnit").notNull();
         /** the minimum delay allowed between two events in microsecond or zero if this sensor only
          * returns a value when the data it's measuring changes.
          */
@@ -151,7 +151,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * CREATE TABLE internal_sen6sor_measurement_series (
      * _id              INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * sensor_id        INTEGER    FOREIGN KEY   REFERENCES  sensor (_id)  NonNull,
-     * start_timestamp  TEXT       NonNull,
+     * start_timestamp  TEXT       NOT NULL,
      * end_timestamp    TEXT
      * );
      */
@@ -159,8 +159,9 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     private static Entity createSensorMeasurementSeriesEntity(@NonNull final Schema dbSchema,
                                                               @NonNull final Entity sensorEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "InternalSensorMeasurementSeries");
-        seriesEntity.addToOne(sensorEntity, seriesEntity.addLongProperty("sensor_id").NonNull().getProperty());
-        seriesEntity.addStringProperty("startTimestamp").NonNull();
+        final Property sensorFK = seriesEntity.addLongProperty("sensor_id").notNull().getProperty();
+        seriesEntity.addToOne(sensorEntity, sensorFK);
+        seriesEntity.addStringProperty("startTimestamp").notNull();
         seriesEntity.addStringProperty("endTimestamp");
         return seriesEntity;
     }
@@ -168,21 +169,21 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     /**
      * CREATE TABLE internal_sensor_measurement (
      * _id                    INTEGER    PRIMARY KEY   AUTOINCREMENT,
-     * measurement_series_id  INTEGER    FOREIGN KEY   REFERENCES  measurement_series (_id)  NonNull,
-     * sensor_value           FLOAT      NonNull,
-     * start_timestamp        TEXT       NonNull,
-     * end_timestamp          TEXT       NonNull,
-     * bin_size               INTEGER    NonNull
+     * measurement_series_id  INTEGER    FOREIGN KEY   REFERENCES  measurement_series  NOT NULL,
+     * sensor_value           FLOAT      NOT NULL,
+     * start_timestamp        TEXT       NOT NULL,
+     * end_timestamp          TEXT       NOT NULL,
+     * bin_size               INTEGER    NOT NULL
      * );
      */
     private static void createSensorMeasurementEntity(@NonNull final Schema dbSchema,
-                                                      @NonNull final Entity sensorMeasurementSeries) {
-        final Entity seriesEntity = createEntity(dbSchema, "InternalSensorMeasurement");
-        final Property seriesProperty = seriesEntity.addLongProperty("measurement_series_id").NonNull().getProperty();
-        seriesEntity.addToOne(sensorMeasurementSeries, seriesProperty);
-        seriesEntity.addFloatProperty("sensorValue").NonNull();
-        seriesEntity.addStringProperty("startTimestamp").NonNull();
-        seriesEntity.addStringProperty("endTimestamp").NonNull();
-        seriesEntity.addShortProperty("binSize").NonNull();
+                                                      @NonNull final Entity seriesEntity) {
+        final Entity entity = createEntity(dbSchema, "InternalSensorMeasurement");
+        final Property seriesFK = entity.addLongProperty("measurement_series_id").getProperty();
+        entity.addToOne(seriesEntity, seriesFK);
+        entity.addFloatProperty("sensorValue").notNull();
+        entity.addStringProperty("startTimestamp").notNull();
+        entity.addStringProperty("endTimestamp").notNull();
+        entity.addShortProperty("binSize").notNull();
     }
 }

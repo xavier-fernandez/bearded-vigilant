@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
 
 abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
@@ -38,11 +39,10 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     static void generateBleDatabaseSchema() throws Exception {
         System.out.println(String.format("Creating database schema with name: %s", MODULE_PACKAGE));
+        // Initializes the database schema.
         final Schema dbSchema = new Schema(SCHEMA_VERSION, ENTITY_PACKAGE);
         dbSchema.setDefaultJavaPackageDao(DAO_PACKAGE);
         dbSchema.setDefaultJavaPackageTest(DAO_PACKAGE);
-        // Initializes the database schema.
-        // The database schema will have 'keep' sections that will not be overridden when executing this class.
         dbSchema.enableKeepSectionsByDefault();
         // Creates the database table.
         final Entity deviceEntity = createBleDeviceEntity(dbSchema);
@@ -63,7 +63,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
     @NonNull
     private static Entity createBleDeviceEntity(@NonNull final Schema dbSchema) {
         final Entity deviceEntity = createEntity(dbSchema, "BleDevice");
-        deviceEntity.addStringProperty("deviceAddress").NonNull();
+        deviceEntity.addStringProperty("deviceAddress").notNull();
         deviceEntity.addStringProperty("advertiseName");
         return deviceEntity;
     }
@@ -77,28 +77,32 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     @NonNull
-    private static Entity createBleEventSeriesEntity(@NonNull final Schema dbSchema, @NonNull final Entity deviceEntity) {
+    private static Entity createBleEventSeriesEntity(@NonNull final Schema dbSchema,
+                                                     @NonNull final Entity deviceEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "BleEventSeries");
-        seriesEntity.addToOne(deviceEntity, seriesEntity.addLongProperty("bleDeviceId").getProperty());
-        seriesEntity.addStringProperty("startTimestamp").NonNull();
+        final Property bleDeviceIdFK = seriesEntity.addLongProperty("bleDeviceId").getProperty();
+        seriesEntity.addToOne(deviceEntity, bleDeviceIdFK);
+        seriesEntity.addStringProperty("startTimestamp").notNull();
         seriesEntity.addStringProperty("endTimestamp");
         return seriesEntity;
     }
 
     /**
      * CREATE TABLE ble_event (
-     * _id                        INTEGER   PRIMARY KEY   AUTOINCREMENT,
-     * event_series_id            INTEGER   FOREIGN KEY   REFERENCES  ble_event_series (_id)  NOT NULL,
-     * start_timestamp            TEXT      NOT NULL,
-     * end_timestamp              TEXT,
-     * received_signal_strength   INTEGER   NOT NULL
+     * _id                       INTEGER   PRIMARY KEY  AUTOINCREMENT,
+     * event_series_id           INTEGER   FOREIGN KEY  REFERENCES  ble_event_series(_id) NOT NULL,
+     * start_timestamp           TEXT      NOT NULL,
+     * end_timestamp             TEXT,
+     * received_signal_strength  INTEGER   NOT NULL
      * );
      */
-    private static void createBleEventEntity(@NonNull final Schema dbSchema, @NonNull final Entity eventSeriesEntity) {
+    private static void createBleEventEntity(@NonNull final Schema dbSchema,
+                                             @NonNull final Entity eventSeriesEntity) {
         final Entity eventEntity = createEntity(dbSchema, "BleEvent");
-        eventEntity.addToOne(eventSeriesEntity, eventEntity.addLongProperty("eventSeriesId").getProperty());
-        eventEntity.addStringProperty("startTimestamp").NonNull();
+        final Property eventSeriesIdFK = eventEntity.addLongProperty("eventSeriesId").getProperty();
+        eventEntity.addToOne(eventSeriesEntity, eventSeriesIdFK);
+        eventEntity.addStringProperty("startTimestamp").notNull();
         eventEntity.addStringProperty("endTimestamp");
-        eventEntity.addByteProperty("receivedSignalStrength").NonNull();
+        eventEntity.addByteProperty("receivedSignalStrength").notNull();
     }
 }
