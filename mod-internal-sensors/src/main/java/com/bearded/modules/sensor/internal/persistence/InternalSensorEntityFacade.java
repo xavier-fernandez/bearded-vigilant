@@ -54,7 +54,9 @@ class InternalSensorEntityFacade {
 
     /**
      * Obtains a sensor entity, if it is available, from the database.
+     * Creates and inserts a sensor entity in the database, if it is not available.
      *
+     * @param session for obtaining or creating a {@link InternalSensorEntity} from the database.
      * @param sensor that wants to be retrieved from the database.
      * @return {@link InternalSensorEntity} of the sensor.
      */
@@ -74,6 +76,19 @@ class InternalSensorEntityFacade {
         final InternalSensorEntity sensorEntity = internalSensorEntityList.get(0);
         mKnownSensors.put(sensor.getName(), sensorEntity);
         return sensorEntity;
+    }
+
+    /**
+     * Obtains all sensor entities stored in the database.
+     *
+     * @param session needed to retrieve all sensors from the database.
+     * @return {@link List} with all {@link InternalSensorEntity}
+     */
+    @NonNull
+    List<InternalSensorEntity> getAllSensorEntities(@NonNull final DaoSession session) {
+        final InternalSensorEntityDao dao = session.getInternalSensorEntityDao();
+        final QueryBuilder<InternalSensorEntity> queryBuilder = dao.queryBuilder();
+        return queryBuilder.listLazy();
     }
 
     /**
@@ -100,6 +115,7 @@ class InternalSensorEntityFacade {
         sensorEntity.setMaximumRange(sensor.getMaximumRange());
         if (Build.VERSION.SDK_INT >= 21) {
             // getReportingMode is only available in SDK 21+
+            @SensorUtils.ReportingMode
             final int reportingMode = sensor.getReportingMode();
             sensorEntity.setReportingMode(SensorUtils.getReportingTimeString(reportingMode));
         }
