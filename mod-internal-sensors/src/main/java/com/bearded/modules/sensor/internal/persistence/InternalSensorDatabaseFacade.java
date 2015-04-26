@@ -22,13 +22,12 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.support.annotation.NonNull;
 
+import com.bearded.common.annotation.TestOnly;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
-
-import org.jetbrains.annotations.TestOnly;
 
 public class InternalSensorDatabaseFacade {
 
