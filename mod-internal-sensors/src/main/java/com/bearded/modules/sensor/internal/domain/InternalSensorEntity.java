@@ -7,6 +7,21 @@ package com.bearded.modules.sensor.internal.domain;
 import android.support.annotation.NonNull;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.FifoMaxEventCount;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.FifoReservedEventCount;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MaximumDelayMicroseconds;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MaximumRange;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MinimumDelayMicroseconds;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.PowerInMilliAmperes;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.ReportingMode;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorName;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorResolution;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorType;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorUnit;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorVendor;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorVersion;
 // KEEP INCLUDES END
 
 /**
@@ -206,10 +221,47 @@ public class InternalSensorEntity implements com.bearded.common.database.Parseab
         return this.sensorName.compareTo(anotherSensorEntity.getSensorName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NonNull
     @Override
     public JsonObject toJsonObject() {
-        return null;
+        final JsonObject jsonObject = new JsonObject();
+        jsonObject.add(SensorName.name, new JsonPrimitive(this.sensorName));
+        jsonObject.add(SensorType.name, new JsonPrimitive(this.sensorType));
+        jsonObject.add(SensorUnit.name, new JsonPrimitive(this.sensorUnit));
+        jsonObject.add(MinimumDelayMicroseconds.name,
+                (this.minimumDelayMicroseconds == null) ?
+                        null : new JsonPrimitive(this.minimumDelayMicroseconds));
+        jsonObject.add(MaximumDelayMicroseconds.name,
+                (this.maximumDelayMicroseconds == null) ?
+                        null : new JsonPrimitive(this.maximumDelayMicroseconds));
+        jsonObject.add(FifoMaxEventCount.name,
+                (this.fifoMaxEventCount == null) ?
+                        null : new JsonPrimitive(this.fifoMaxEventCount));
+        jsonObject.add(FifoReservedEventCount.name,
+                (this.fifoReservedEventCount == null) ?
+                        null : new JsonPrimitive(this.fifoReservedEventCount));
+        jsonObject.add(MaximumRange.name,
+                (this.maximumRange == null) ?
+                        null : new JsonPrimitive(this.maximumRange));
+        jsonObject.add(ReportingMode.name,
+                (this.reportingMode == null) ?
+                        null : new JsonPrimitive(this.reportingMode));
+        jsonObject.add(PowerInMilliAmperes.name,
+                (this.powerInMilliAmperes == null) ?
+                        null : new JsonPrimitive(this.powerInMilliAmperes));
+        jsonObject.add(SensorResolution.name,
+                (this.sensorResolution == null) ?
+                        null : new JsonPrimitive(this.sensorResolution));
+        jsonObject.add(SensorVendor.name,
+                (this.sensorVendor == null) ?
+                        null : new JsonPrimitive(this.sensorVendor));
+        jsonObject.add(SensorVersion.name,
+                (this.sensorVersion == null) ?
+                        null : new JsonPrimitive(this.sensorVersion));
+        return jsonObject;
     }
     // KEEP METHODS END
 
