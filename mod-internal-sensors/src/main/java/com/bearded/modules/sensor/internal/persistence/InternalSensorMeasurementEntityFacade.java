@@ -54,7 +54,7 @@ class InternalSensorMeasurementEntityFacade {
         mSensorMeasurements = Collections.synchronizedMap(
                 new HashMap<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer>());
         mSensorType = sensorType;
-        if (timeoutMillis <= 0){
+        if (timeoutMillis <= 0) {
             throw new IllegalArgumentException(
                     String.format("%s: Constructor -> TimeoutMillis needs to be a positive number.", TAG));
         }
@@ -63,8 +63,9 @@ class InternalSensorMeasurementEntityFacade {
 
     /**
      * Stores a measurement in the database.
-     * @param session needed to store the measurement.
-     * @param series of the measurement.
+     *
+     * @param session     needed to store the measurement.
+     * @param series      of the measurement.
      * @param measurement that will be stored.
      */
     public synchronized void addMeasurement(@NonNull final DaoSession session,
@@ -96,8 +97,9 @@ class InternalSensorMeasurementEntityFacade {
 
     /**
      * Obtains all the measurements from a measurement series.
+     *
      * @param session needed to retrieve all measurements from the database.
-     * @param series that needs to retrieve all its measurements.
+     * @param series  that needs to retrieve all its measurements.
      * @return {@link List} of {@link InternalSensorMeasurementEntity}
      */
     List<InternalSensorMeasurementEntity> obtainAllMeasurementsFromSeries(@NonNull final DaoSession session,

@@ -57,7 +57,7 @@ class InternalSensorEntityFacade {
      * Creates and inserts a sensor entity in the database, if it is not available.
      *
      * @param session for obtaining or creating a {@link InternalSensorEntity} from the database.
-     * @param sensor that wants to be retrieved from the database.
+     * @param sensor  that wants to be retrieved from the database.
      * @return {@link InternalSensorEntity} of the sensor.
      */
     @NonNull
