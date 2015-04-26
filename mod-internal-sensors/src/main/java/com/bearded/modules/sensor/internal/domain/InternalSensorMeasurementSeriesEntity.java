@@ -187,7 +187,8 @@ public class InternalSensorMeasurementSeriesEntity implements com.bearded.common
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.add(StartTimestamp.name, new JsonPrimitive(this.startTimestamp));
-        jsonObject.add(EndTimestamp.name, new JsonPrimitive(this.endTimestamp));
+        jsonObject.add(EndTimestamp.name,
+                (this.endTimestamp == null) ? null : new JsonPrimitive(this.endTimestamp));
         return jsonObject;
     }
 
