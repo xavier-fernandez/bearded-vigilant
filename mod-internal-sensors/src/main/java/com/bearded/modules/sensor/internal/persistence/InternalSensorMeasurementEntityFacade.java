@@ -26,6 +26,7 @@ import com.bearded.common.utils.TimeUtils;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
+import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao;
 
 import org.joda.time.DateTime;
 
@@ -35,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.greenrobot.dao.query.QueryBuilder;
+
 class InternalSensorMeasurementEntityFacade {
 
     @NonNull
@@ -43,28 +46,43 @@ class InternalSensorMeasurementEntityFacade {
     private final Map<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer> mSensorMeasurements;
     @NonNull
     private final SensorType mSensorType;
+    @NonNull
+    private final Integer mTimeoutMillis;
 
-    public InternalSensorMeasurementEntityFacade(@NonNull final SensorType sensorType) {
+    public InternalSensorMeasurementEntityFacade(@NonNull final SensorType sensorType,
+                                                 final int timeoutMillis) {
         mSensorMeasurements = Collections.synchronizedMap(
                 new HashMap<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer>());
         mSensorType = sensorType;
+        if (timeoutMillis <= 0){
+            throw new IllegalArgumentException(
+                    String.format("%s: Constructor -> TimeoutMillis needs to be a positive number.", TAG));
+        }
+        mTimeoutMillis = timeoutMillis;
     }
 
+    /**
+     * Stores a measurement in the database.
+     * @param session needed to store the measurement.
+     * @param series of the measurement.
+     * @param measurement that will be stored.
+     */
     public synchronized void addMeasurement(@NonNull final DaoSession session,
                                             @NonNull final InternalSensorMeasurementSeriesEntity series,
-                                            final float measurement, final int timeoutMillis) {
+                                            final float measurement) {
         SensorMeasurementsBuffer measurements = mSensorMeasurements.get(series);
         if (measurements == null) {
             measurements = new SensorMeasurementsBuffer();
             mSensorMeasurements.put(series, measurements);
         }
         measurements.addMeasurement(measurement);
-        if (TimeUtils.millisecondsFromNow(measurements.firstElementTime) > timeoutMillis) {
+        if (TimeUtils.millisecondsFromNow(measurements.firstElementTime) > mTimeoutMillis) {
             storeMeasurement(session, measurements);
         }
     }
 
-    private void storeMeasurement(@NonNull final DaoSession session, @NonNull final SensorMeasurementsBuffer measurements) {
+    private void storeMeasurement(@NonNull final DaoSession session,
+                                  @NonNull final SensorMeasurementsBuffer measurements) {
         final InternalSensorMeasurementEntity measurementEntity = new InternalSensorMeasurementEntity();
         measurementEntity.setStartTimestamp(TimeUtils.timestampToISOString(measurements.firstElementTime));
         measurementEntity.setEndTimestamp(TimeUtils.timestampToISOString(DateTime.now()));
@@ -74,6 +92,20 @@ class InternalSensorMeasurementEntityFacade {
         measurements.clear();
         Log.d(TAG, String.format("addMeasurement -> The following %s measurement was inserted in the database -> %s",
                 mSensorType.getSensorTypeName(), measurementEntity.toJsonObject().toString()));
+    }
+
+    /**
+     * Obtains all the measurements from a measurement series.
+     * @param session needed to retrieve all measurements from the database.
+     * @param series that needs to retrieve all its measurements.
+     * @return {@link List} of {@link InternalSensorMeasurementEntity}
+     */
+    List<InternalSensorMeasurementEntity> obtainAllMeasurementsFromSeries(@NonNull final DaoSession session,
+                                                                          @NonNull final InternalSensorMeasurementSeriesEntity series) {
+        final InternalSensorMeasurementEntityDao dao = session.getInternalSensorMeasurementEntityDao();
+        final QueryBuilder<InternalSensorMeasurementEntity> queryBuilder = dao.queryBuilder();
+        queryBuilder.where(InternalSensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));
+        return queryBuilder.listLazy();
     }
 
     private static class SensorMeasurementsBuffer {
