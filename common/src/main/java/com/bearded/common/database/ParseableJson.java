@@ -1,5 +1,3 @@
-package com.bearded.common.database;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -18,6 +16,7 @@ package com.bearded.common.database;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+package com.bearded.common.database;
 
 import android.support.annotation.NonNull;
 

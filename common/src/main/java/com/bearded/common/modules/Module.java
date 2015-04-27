@@ -1,10 +1,3 @@
-package com.bearded.common.modules;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import org.joda.time.DateTime;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -23,6 +16,13 @@ import org.joda.time.DateTime;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+
+package com.bearded.common.modules;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import org.joda.time.DateTime;
 
 /**
  * This interface needs to be implemented on all the base classes from all modules.

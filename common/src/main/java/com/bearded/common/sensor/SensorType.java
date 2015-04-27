@@ -1,9 +1,3 @@
-package com.bearded.common.sensor;
-
-import android.hardware.Sensor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -22,6 +16,12 @@ import android.support.annotation.Nullable;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+package com.bearded.common.sensor;
+
+import android.hardware.Sensor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 public enum SensorType {
 
     LIGHT(Sensor.TYPE_LIGHT, "Light Sensor", "Lux"),
