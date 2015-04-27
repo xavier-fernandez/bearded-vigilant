@@ -21,11 +21,9 @@ package com.bearded.common.utils;
 
 import android.annotation.TargetApi;
 import android.hardware.Sensor;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import com.bearded.common.annotation.ReportingMode;
 
 public abstract class SensorUtils {
 
@@ -55,12 +53,5 @@ public abstract class SensorUtils {
                 throw new IllegalArgumentException(TAG + ": getReportingTimeString -> Type does" +
                         " not correspond to a valid reporting type");
         }
-    }
-
-    @TargetApi(21)
-    @IntDef({Sensor.REPORTING_MODE_ONE_SHOT, Sensor.REPORTING_MODE_SPECIAL_TRIGGER,
-            Sensor.REPORTING_MODE_ON_CHANGE, Sensor.REPORTING_MODE_CONTINUOUS})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface ReportingMode {
     }
 }

@@ -24,6 +24,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.bearded.common.annotation.ReportingMode;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.common.utils.SensorUtils;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
@@ -115,7 +116,7 @@ class InternalSensorEntityFacade {
         sensorEntity.setMaximumRange(sensor.getMaximumRange());
         if (Build.VERSION.SDK_INT >= 21) {
             // getReportingMode is only available in SDK 21+
-            @SensorUtils.ReportingMode
+            @ReportingMode
             final int reportingMode = sensor.getReportingMode();
             sensorEntity.setReportingMode(SensorUtils.getReportingTimeString(reportingMode));
         }
