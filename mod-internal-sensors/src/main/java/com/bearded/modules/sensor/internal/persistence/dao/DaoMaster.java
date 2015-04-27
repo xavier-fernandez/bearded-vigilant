@@ -21,6 +21,7 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(InternalSensorEntityDao.class);
         registerDaoClass(InternalSensorMeasurementSeriesEntityDao.class);
+        registerDaoClass(LocationEntityDao.class);
         registerDaoClass(InternalSensorMeasurementEntityDao.class);
     }
 
@@ -30,6 +31,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         InternalSensorEntityDao.createTable(db, ifNotExists);
         InternalSensorMeasurementSeriesEntityDao.createTable(db, ifNotExists);
+        LocationEntityDao.createTable(db, ifNotExists);
         InternalSensorMeasurementEntityDao.createTable(db, ifNotExists);
     }
 
@@ -39,6 +41,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         InternalSensorEntityDao.dropTable(db, ifExists);
         InternalSensorMeasurementSeriesEntityDao.dropTable(db, ifExists);
+        LocationEntityDao.dropTable(db, ifExists);
         InternalSensorMeasurementEntityDao.dropTable(db, ifExists);
     }
 

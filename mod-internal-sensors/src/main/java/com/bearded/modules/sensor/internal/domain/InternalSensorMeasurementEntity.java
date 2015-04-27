@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao;
 import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementSeriesEntityDao;
+import com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -18,6 +19,7 @@ import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensor
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.EndTimestamp;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.SensorValue;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.StartTimestamp;
+
 // KEEP INCLUDES END
 
 /**
@@ -37,6 +39,7 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.datab
      */
     private String endTimestamp;
     private short binSize;
+    private Long location_id;
 
     /**
      * Used to resolve relations
@@ -51,6 +54,9 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.datab
     private InternalSensorMeasurementSeriesEntity internalSensorMeasurementSeriesEntity;
     private Long internalSensorMeasurementSeriesEntity__resolvedKey;
 
+    private LocationEntity locationEntity;
+    private Long locationEntity__resolvedKey;
+
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -62,13 +68,14 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.datab
         this.id = id;
     }
 
-    public InternalSensorMeasurementEntity(Long id, long measurement_series_id, float sensorValue, String startTimestamp, String endTimestamp, short binSize) {
+    public InternalSensorMeasurementEntity(Long id, long measurement_series_id, float sensorValue, String startTimestamp, String endTimestamp, short binSize, Long location_id) {
         this.id = id;
         this.measurement_series_id = measurement_series_id;
         this.sensorValue = sensorValue;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
         this.binSize = binSize;
+        this.location_id = location_id;
     }
 
     /**
@@ -139,6 +146,14 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.datab
         this.binSize = binSize;
     }
 
+    public Long getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(Long location_id) {
+        this.location_id = location_id;
+    }
+
     /**
      * To-one relationship, resolved on first access.
      */
@@ -166,6 +181,33 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.datab
             this.internalSensorMeasurementSeriesEntity = internalSensorMeasurementSeriesEntity;
             measurement_series_id = internalSensorMeasurementSeriesEntity.getId();
             internalSensorMeasurementSeriesEntity__resolvedKey = measurement_series_id;
+        }
+    }
+
+    /**
+     * To-one relationship, resolved on first access.
+     */
+    public LocationEntity getLocationEntity() {
+        Long __key = this.location_id;
+        if (locationEntity__resolvedKey == null || !locationEntity__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            LocationEntityDao targetDao = daoSession.getLocationEntityDao();
+            LocationEntity locationEntityNew = targetDao.load(__key);
+            synchronized (this) {
+                locationEntity = locationEntityNew;
+                locationEntity__resolvedKey = __key;
+            }
+        }
+        return locationEntity;
+    }
+
+    public void setLocationEntity(LocationEntity locationEntity) {
+        synchronized (this) {
+            this.locationEntity = locationEntity;
+            location_id = locationEntity == null ? null : locationEntity.getId();
+            locationEntity__resolvedKey = location_id;
         }
     }
 

@@ -49,8 +49,10 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
         final Entity sensorEntity = createInternalSensorEntity(dbSchema);
         // Creates the measurement series entity.
         final Entity measurementSeriesEntity = createSensorMeasurementSeriesEntity(dbSchema, sensorEntity);
+        // Creates the location entity.
+        final Entity locationEntity = createLocationEntity(dbSchema);
         // Creates the measurement entity.
-        createSensorMeasurementEntity(dbSchema, measurementSeriesEntity);
+        createSensorMeasurementEntity(dbSchema, measurementSeriesEntity, locationEntity);
         // Creates the DAO classes in the specified folder.
         final DaoGenerator daoGenerator = new DaoGenerator();
         daoGenerator.generateAll(dbSchema, OUT_DIR, TEST_DIR);
@@ -177,13 +179,16 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     private static void createSensorMeasurementEntity(@NonNull final Schema dbSchema,
-                                                      @NonNull final Entity seriesEntity) {
+                                                      @NonNull final Entity seriesEntity,
+                                                      @NonNull final Entity locationEntity) {
         final Entity entity = createEntity(dbSchema, "InternalSensorMeasurement");
-        final Property seriesFK = entity.addLongProperty("measurement_series_id").getProperty();
+        final Property seriesFK = entity.addLongProperty("measurement_series_id").notNull().getProperty();
         entity.addToOne(seriesEntity, seriesFK);
         entity.addFloatProperty("sensorValue").notNull();
         entity.addStringProperty("startTimestamp").notNull();
         entity.addStringProperty("endTimestamp").notNull();
         entity.addShortProperty("binSize").notNull();
+        final Property locationFK = entity.addLongProperty("location_id").getProperty();
+        entity.addToOne(locationEntity, locationFK);
     }
 }

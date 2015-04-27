@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
+import com.bearded.modules.sensor.internal.domain.LocationEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,8 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
                 "'SENSOR_VALUE' REAL NOT NULL ," + // 2: sensorValue
                 "'START_TIMESTAMP' TEXT NOT NULL ," + // 3: startTimestamp
                 "'END_TIMESTAMP' TEXT NOT NULL ," + // 4: endTimestamp
-                "'BIN_SIZE' INTEGER NOT NULL );"); // 5: binSize
+                "'BIN_SIZE' INTEGER NOT NULL ," + // 5: binSize
+                "'LOCATION_ID' INTEGER);"); // 6: location_id
     }
 
     /**
@@ -76,6 +78,11 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         stmt.bindString(4, entity.getStartTimestamp());
         stmt.bindString(5, entity.getEndTimestamp());
         stmt.bindLong(6, entity.getBinSize());
+
+        Long location_id = entity.getLocation_id();
+        if (location_id != null) {
+            stmt.bindLong(7, location_id);
+        }
     }
 
     @Override
@@ -103,7 +110,8 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
                 cursor.getFloat(offset + 2), // sensorValue
                 cursor.getString(offset + 3), // startTimestamp
                 cursor.getString(offset + 4), // endTimestamp
-                cursor.getShort(offset + 5) // binSize
+                cursor.getShort(offset + 5), // binSize
+                cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6) // location_id
         );
         return entity;
     }
@@ -119,6 +127,7 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         entity.setStartTimestamp(cursor.getString(offset + 3));
         entity.setEndTimestamp(cursor.getString(offset + 4));
         entity.setBinSize(cursor.getShort(offset + 5));
+        entity.setLocation_id(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
     }
 
     /**
@@ -156,8 +165,11 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T0", daoSession.getInternalSensorMeasurementSeriesEntityDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T1", daoSession.getLocationEntityDao().getAllColumns());
             builder.append(" FROM InternalSensorMeasurement T");
             builder.append(" LEFT JOIN InternalSensorMeasurementSeries T0 ON T.'MEASUREMENT_SERIES_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN Location T1 ON T.'LOCATION_ID'=T1.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -172,6 +184,10 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         if (internalSensorMeasurementSeriesEntity != null) {
             entity.setInternalSensorMeasurementSeriesEntity(internalSensorMeasurementSeriesEntity);
         }
+        offset += daoSession.getInternalSensorMeasurementSeriesEntityDao().getAllColumns().length;
+
+        LocationEntity locationEntity = loadCurrentOther(daoSession.getLocationEntityDao(), cursor, offset);
+        entity.setLocationEntity(locationEntity);
 
         return entity;
     }
@@ -255,6 +271,7 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         public final static Property StartTimestamp = new Property(3, String.class, "startTimestamp", false, "START_TIMESTAMP");
         public final static Property EndTimestamp = new Property(4, String.class, "endTimestamp", false, "END_TIMESTAMP");
         public final static Property BinSize = new Property(5, short.class, "binSize", false, "BIN_SIZE");
+        public final static Property Location_id = new Property(6, Long.class, "location_id", false, "LOCATION_ID");
     }
 
 }

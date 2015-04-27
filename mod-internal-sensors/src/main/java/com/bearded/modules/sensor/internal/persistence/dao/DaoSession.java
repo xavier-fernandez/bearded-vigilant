@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
+import com.bearded.modules.sensor.internal.domain.LocationEntity;
 
 import java.util.Map;
 
@@ -24,10 +25,12 @@ public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig internalSensorEntityDaoConfig;
     private final DaoConfig internalSensorMeasurementSeriesEntityDaoConfig;
+    private final DaoConfig locationEntityDaoConfig;
     private final DaoConfig internalSensorMeasurementEntityDaoConfig;
 
     private final InternalSensorEntityDao internalSensorEntityDao;
     private final InternalSensorMeasurementSeriesEntityDao internalSensorMeasurementSeriesEntityDao;
+    private final LocationEntityDao locationEntityDao;
     private final InternalSensorMeasurementEntityDao internalSensorMeasurementEntityDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
@@ -40,21 +43,27 @@ public class DaoSession extends AbstractDaoSession {
         internalSensorMeasurementSeriesEntityDaoConfig = daoConfigMap.get(InternalSensorMeasurementSeriesEntityDao.class).clone();
         internalSensorMeasurementSeriesEntityDaoConfig.initIdentityScope(type);
 
+        locationEntityDaoConfig = daoConfigMap.get(LocationEntityDao.class).clone();
+        locationEntityDaoConfig.initIdentityScope(type);
+
         internalSensorMeasurementEntityDaoConfig = daoConfigMap.get(InternalSensorMeasurementEntityDao.class).clone();
         internalSensorMeasurementEntityDaoConfig.initIdentityScope(type);
 
         internalSensorEntityDao = new InternalSensorEntityDao(internalSensorEntityDaoConfig, this);
         internalSensorMeasurementSeriesEntityDao = new InternalSensorMeasurementSeriesEntityDao(internalSensorMeasurementSeriesEntityDaoConfig, this);
+        locationEntityDao = new LocationEntityDao(locationEntityDaoConfig, this);
         internalSensorMeasurementEntityDao = new InternalSensorMeasurementEntityDao(internalSensorMeasurementEntityDaoConfig, this);
 
         registerDao(InternalSensorEntity.class, internalSensorEntityDao);
         registerDao(InternalSensorMeasurementSeriesEntity.class, internalSensorMeasurementSeriesEntityDao);
+        registerDao(LocationEntity.class, locationEntityDao);
         registerDao(InternalSensorMeasurementEntity.class, internalSensorMeasurementEntityDao);
     }
 
     public void clear() {
         internalSensorEntityDaoConfig.getIdentityScope().clear();
         internalSensorMeasurementSeriesEntityDaoConfig.getIdentityScope().clear();
+        locationEntityDaoConfig.getIdentityScope().clear();
         internalSensorMeasurementEntityDaoConfig.getIdentityScope().clear();
     }
 
@@ -64,6 +73,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public InternalSensorMeasurementSeriesEntityDao getInternalSensorMeasurementSeriesEntityDao() {
         return internalSensorMeasurementSeriesEntityDao;
+    }
+
+    public LocationEntityDao getLocationEntityDao() {
+        return locationEntityDao;
     }
 
     public InternalSensorMeasurementEntityDao getInternalSensorMeasurementEntityDao() {
