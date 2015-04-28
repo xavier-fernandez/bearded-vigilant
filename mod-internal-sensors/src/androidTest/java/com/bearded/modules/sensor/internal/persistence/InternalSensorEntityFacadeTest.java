@@ -1,9 +1,3 @@
-package com.bearded.modules.sensor.internal.persistence;
-
-import android.test.suitebuilder.annotation.MediumTest;
-
-import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -22,12 +16,47 @@ import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-public class InternalSensorEntityFacadeTest extends AbstractInternalSensorTestCase {
+package com.bearded.modules.sensor.internal.persistence;
 
-    @MediumTest
-    public void testSensorInsertion() {
-        assertNotNull(super.mDatabaseConnector);
-        final DaoSession session = super.mDatabaseConnector.getSession();
-        // TODO: Sensor needs to be mocked. Test sensor insertion.
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.test.InstrumentationTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
+
+import static com.bearded.common.sensor.SensorType.LIGHT;
+
+public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
+
+    @Nullable
+    protected DatabaseConnector mDatabaseConnector;
+    @NonNull
+    protected InternalSensorEntityFacade mSensorFacade;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
+        mDatabaseConnector.cleanDatabase();
+        mSensorFacade = new InternalSensorEntityFacade(LIGHT);
+    }
+
+    @SmallTest
+    public void testPreConditions() {
+        assertNotNull(mDatabaseConnector);
+        assertNotNull(mSensorFacade);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        if (mDatabaseConnector != null) {
+            mDatabaseConnector.cleanDatabase();
+        }
     }
 }

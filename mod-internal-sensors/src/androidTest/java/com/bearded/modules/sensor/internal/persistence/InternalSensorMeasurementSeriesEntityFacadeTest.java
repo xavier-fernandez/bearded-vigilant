@@ -1,8 +1,14 @@
 package com.bearded.modules.sensor.internal.persistence;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.test.InstrumentationTestCase;
+import android.test.suitebuilder.annotation.SmallTest;
 
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
+import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
+
+import static com.bearded.common.sensor.SensorType.LIGHT;
 
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
@@ -22,10 +28,12 @@ import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-public class InternalSensorMeasurementSeriesEntityFacadeTest extends AbstractInternalSensorTestCase {
+public class InternalSensorMeasurementSeriesEntityFacadeTest extends InstrumentationTestCase {
 
     @Nullable
-    private InternalSensorEntity mTestInternalSensorEntity;
+    protected DatabaseConnector mDatabaseConnector;
+    @Nullable
+    protected InternalSensorEntityFacade mSensorFacade;
 
     /**
      * {@inheritDoc}
@@ -33,20 +41,24 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends AbstractInt
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
+        mSensorFacade = new InternalSensorEntityFacade(LIGHT);
+    }
+
+    @SmallTest
+    public void testPreConditions() {
         assertNotNull(mDatabaseConnector);
-        mTestInternalSensorEntity = new InternalSensorEntity();
-        mTestInternalSensorEntity.setSensorName("testSensor");
-        mTestInternalSensorEntity.setSensorType("LIGHT");
-        mTestInternalSensorEntity.setSensorUnit("lux");
-        mDatabaseConnector.getSession().insert(mTestInternalSensorEntity);
+        assertNotNull(mSensorFacade);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void testPreConditions() {
-        super.testPreConditions();
-        assertNotNull(mTestInternalSensorEntity);
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        if (mDatabaseConnector != null) {
+            mDatabaseConnector.cleanDatabase();
+        }
     }
 }
