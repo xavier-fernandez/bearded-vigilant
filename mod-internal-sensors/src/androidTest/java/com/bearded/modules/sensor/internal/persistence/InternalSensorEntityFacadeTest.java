@@ -23,8 +23,6 @@ import android.support.annotation.Nullable;
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
-
 import static com.bearded.common.sensor.SensorType.LIGHT;
 
 public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
@@ -32,7 +30,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     @Nullable
     protected DatabaseConnector mDatabaseConnector;
     @NonNull
-    protected InternalSensorEntityFacade mSensorFacade = new InternalSensorEntityFacade(LIGHT);
+    protected InternalSensorEntityFacade mSensorFacade;
 
     /**
      * {@inheritDoc}
@@ -41,7 +39,8 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
-        cleanDatabase();
+        mDatabaseConnector.cleanDatabase();
+        mSensorFacade = new InternalSensorEntityFacade(LIGHT);
     }
 
     @SmallTest
@@ -51,20 +50,13 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     }
 
     /**
-     * Cleans the database. A test, by definition, needs a clean database.
-     */
-    protected void cleanDatabase() {
-        assertNotNull(mDatabaseConnector);
-        DaoMaster.dropAllTables(mDatabaseConnector.getSession().getDatabase(), false);
-        DaoMaster.createAllTables(mDatabaseConnector.getSession().getDatabase(), false);
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        cleanDatabase();
+        if (mDatabaseConnector != null) {
+            mDatabaseConnector.cleanDatabase();
+        }
     }
 }

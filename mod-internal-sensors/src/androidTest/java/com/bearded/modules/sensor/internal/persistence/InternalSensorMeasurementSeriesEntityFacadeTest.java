@@ -31,11 +31,9 @@ import static com.bearded.common.sensor.SensorType.LIGHT;
 public class InternalSensorMeasurementSeriesEntityFacadeTest extends InstrumentationTestCase {
 
     @Nullable
-    private InternalSensorEntity mTestInternalSensorEntity;
-    @Nullable
     protected DatabaseConnector mDatabaseConnector;
-    @NonNull
-    protected InternalSensorEntityFacade mSensorFacade = new InternalSensorEntityFacade(LIGHT);
+    @Nullable
+    protected InternalSensorEntityFacade mSensorFacade;
 
     /**
      * {@inheritDoc}
@@ -44,23 +42,13 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
     protected void setUp() throws Exception {
         super.setUp();
         mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
-        cleanDatabase();
+        mSensorFacade = new InternalSensorEntityFacade(LIGHT);
     }
 
     @SmallTest
     public void testPreConditions() {
         assertNotNull(mDatabaseConnector);
         assertNotNull(mSensorFacade);
-        assertNotNull(mSensorFacade);
-    }
-
-    /**
-     * Cleans the database. A test, by definition, needs a clean database.
-     */
-    protected void cleanDatabase() {
-        assertNotNull(mDatabaseConnector);
-        DaoMaster.dropAllTables(mDatabaseConnector.getSession().getDatabase(), false);
-        DaoMaster.createAllTables(mDatabaseConnector.getSession().getDatabase(), false);
     }
 
     /**
@@ -69,6 +57,8 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        cleanDatabase();
+        if (mDatabaseConnector != null) {
+            mDatabaseConnector.cleanDatabase();
+        }
     }
 }
