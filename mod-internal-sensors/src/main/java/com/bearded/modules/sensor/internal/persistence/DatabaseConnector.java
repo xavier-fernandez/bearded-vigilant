@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.bearded.common.annotation.TestOnly;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 
@@ -70,6 +71,15 @@ class DatabaseConnector {
             }
         }
         return new DaoMaster(mDatabase);
+    }
+
+    /**
+     * Removes all database content. Only used in application testing.
+     */
+    @TestOnly
+    public void cleanDatabase() {
+        DaoMaster.dropAllTables(getSession().getDatabase(), false);
+        DaoMaster.createAllTables(getSession().getDatabase(), false);
     }
 
     private class DatabaseOpenHelper extends DaoMaster.OpenHelper {

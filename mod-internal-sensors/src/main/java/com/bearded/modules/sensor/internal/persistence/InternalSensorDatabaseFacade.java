@@ -117,15 +117,4 @@ public class InternalSensorDatabaseFacade {
             return databaseJsonObject;
         }
     }
-
-    /**
-     * Removes all database content. Only used in application testing.
-     */
-    @TestOnly
-    public void cleanDatabase() {
-        synchronized (mDatabaseHandler) {
-            DaoMaster.dropAllTables(mDatabaseHandler.getSession().getDatabase(), false);
-            DaoMaster.createAllTables(mDatabaseHandler.getSession().getDatabase(), false);
-        }
-    }
 }
