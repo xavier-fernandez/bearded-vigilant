@@ -26,7 +26,7 @@ import android.util.Log;
 
 import com.bearded.common.annotation.ReportingMode;
 import com.bearded.common.sensor.SensorType;
-import com.bearded.common.utils.SensorUtils;
+import com.bearded.common.sensor.SensorUtils;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao;
