@@ -36,10 +36,10 @@ public class LocationManager implements LocationListener {
 
     @NonNull
     private static final String TAG = LocationManager.class.getSimpleName();
-    @NonNull
-    private final Map<String, LocationProviderWithStatus> mProviders;
     @Nullable
     private static LocationManager mInstance = null;
+    @NonNull
+    private final Map<String, LocationProviderWithStatus> mProviders;
     @Nullable
     private TimedLocation mLastTimedLocation = null;
 
@@ -53,7 +53,7 @@ public class LocationManager implements LocationListener {
      * @return the singleton {@link LocationManager} instance.
      */
     @NonNull
-    public synchronized static LocationManager getInstance(){
+    public synchronized static LocationManager getInstance() {
         if (mInstance == null) {
             mInstance = new LocationManager();
         }

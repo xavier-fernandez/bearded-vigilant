@@ -35,7 +35,7 @@ import org.joda.time.DateTime;
 
 import static android.content.Context.SENSOR_SERVICE;
 import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
-import static com.bearded.common.utils.TimeUtils.millisecondsFromNow;
+import static com.bearded.common.time.TimeUtils.millisecondsFromNow;
 
 /**
  * This abstract class should be inherited by all the internal sensor modules which wants

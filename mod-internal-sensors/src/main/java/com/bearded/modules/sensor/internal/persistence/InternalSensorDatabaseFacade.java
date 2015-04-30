@@ -23,12 +23,10 @@ import android.hardware.Sensor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.bearded.common.annotation.TestOnly;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
-import com.bearded.modules.sensor.internal.persistence.dao.DaoMaster;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -6,7 +6,7 @@ import java.util.Random;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
-import static com.bearded.common.utils.TimeUtils.timestampToISOString;
+import static com.bearded.common.time.TimeUtils.timestampToISOString;
 
 public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao, BleEventEntity> {
 

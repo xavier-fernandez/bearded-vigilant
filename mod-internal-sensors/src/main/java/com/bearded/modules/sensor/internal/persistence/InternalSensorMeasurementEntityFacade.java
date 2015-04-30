@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bearded.common.sensor.SensorType;
-import com.bearded.common.utils.TimeUtils;
+import com.bearded.common.time.TimeUtils;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;

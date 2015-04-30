@@ -16,7 +16,7 @@
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-package com.bearded.common.utils;
+package com.bearded.common.time;
 
 import android.support.annotation.NonNull;
 

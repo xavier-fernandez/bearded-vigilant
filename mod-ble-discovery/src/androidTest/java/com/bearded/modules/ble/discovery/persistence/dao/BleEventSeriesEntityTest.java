@@ -6,7 +6,7 @@ import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
-import static com.bearded.common.utils.TimeUtils.timestampToISOString;
+import static com.bearded.common.time.TimeUtils.timestampToISOString;
 
 public class BleEventSeriesEntityTest extends AbstractDaoTestLongPk<BleEventSeriesEntityDao, BleEventSeriesEntity> {
 
