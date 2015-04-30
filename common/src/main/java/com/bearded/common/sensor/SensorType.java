@@ -25,7 +25,7 @@ import android.support.annotation.Nullable;
 public enum SensorType {
 
     LIGHT(Sensor.TYPE_LIGHT, "Light Sensor", "Lux"),
-    PROXIMITY(Sensor.TYPE_PROXIMITY, "Proximitity Sensor", "cm"),
+    PROXIMITY(Sensor.TYPE_PROXIMITY, "Proximity Sensor", "cm"),
     AMBIENT_TEMPERATURE(Sensor.TYPE_AMBIENT_TEMPERATURE, "Ambient Temperature", "Celsius"),
     RELATIVE_HUMIDITY(Sensor.TYPE_RELATIVE_HUMIDITY, "Relative Humidity", "Relative Humidity Percentage");
 
