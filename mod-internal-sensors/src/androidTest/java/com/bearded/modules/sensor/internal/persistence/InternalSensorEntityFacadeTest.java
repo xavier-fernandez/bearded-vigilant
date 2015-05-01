@@ -22,6 +22,7 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.test.InstrumentationTestCase;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
@@ -74,7 +75,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 0);
     }
 
-    @SmallTest
+    @MediumTest
     public void testOneObjectInsertion() {
         testPreConditions();
         //Inserts a single sensor inside the database.
@@ -87,7 +88,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 1);
     }
 
-    @SmallTest
+    @MediumTest
     public void testMultipleInsertionsSameSensor() {
         testPreConditions();
         //Insert a single sensor inside the database.
@@ -102,7 +103,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 1);
     }
 
-    @SmallTest
+    @MediumTest
     public void testDifferentSensorsOneSingleInsertion() {
         testPreConditions();
         //Insert a light sensor inside the database.
@@ -118,7 +119,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertTrue(mSensorFacade.getAllSensorEntities(session).contains(proximitySensorEntity));
     }
 
-    @SmallTest
+    @MediumTest
     public void testDisorderedMultipleInsertion() {
         testPreConditions();
         //Insert a single sensor of each type inside the database.
