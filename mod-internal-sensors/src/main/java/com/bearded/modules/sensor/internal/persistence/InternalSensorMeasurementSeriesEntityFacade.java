@@ -88,6 +88,7 @@ class InternalSensorMeasurementSeriesEntityFacade {
         final InternalSensorMeasurementSeriesEntityDao dao = session.getInternalSensorMeasurementSeriesEntityDao();
         final QueryBuilder<InternalSensorMeasurementSeriesEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.Sensor_id.eq(sensorEntity.getId()));
+        queryBuilder.where(InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp.isNotNull());
         return queryBuilder.listLazy();
     }
 

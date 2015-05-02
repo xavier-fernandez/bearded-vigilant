@@ -140,14 +140,15 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
 
     /**
      * Test that all the closed elements from a sensor are retrieved properly.
+     *
+     * @see InternalSensorMeasurementSeriesEntityFacade#getAllClosedMeasurementSeriesFromSensor(DaoSession, InternalSensorEntity)
      */
     @MediumTest
     public void testGetAllClosedMeasurementSeriesFromSensor() {
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
         //Test if the sensor facade is empty.
-        assertEquals(mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(
-                session, mSensorEntity[0]).size(), 0);
+        assertEquals(mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntity[0]).size(), 0);
         for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
             mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[i]);
             assertEquals(0, mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntity[i]).size());
