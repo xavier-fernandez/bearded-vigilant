@@ -50,7 +50,7 @@ public class TimeUtilsTest extends InstrumentationTestCase {
         final long millisecondsInThePast = 50l;
         final long previousTimestamp = DateTime.now().minus(millisecondsInThePast).getMillis();
         final long millisecondsFromTimestamp = TimeUtils.millisecondsFromNow(previousTimestamp);
-        assertTrue(millisecondsFromTimestamp > millisecondsInThePast);
+        assertTrue(millisecondsFromTimestamp >= millisecondsInThePast);
         // Check if the result milliseconds is less than one second, removing the possibility
         // of receiving extremely big results.
         // If the method last more than one second, there would be a big performance issue.
