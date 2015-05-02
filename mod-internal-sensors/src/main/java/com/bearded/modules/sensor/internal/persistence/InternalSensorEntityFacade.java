@@ -38,6 +38,8 @@ import java.util.Map;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
+import static com.bearded.common.sensor.SensorType.getSensorTypeFromId;
+
 class InternalSensorEntityFacade {
 
     private static final String TAG = InternalSensorEntityFacade.class.getSimpleName();
@@ -45,12 +47,8 @@ class InternalSensorEntityFacade {
     @NonNull
     private final Map<String, InternalSensorEntity> mKnownSensors;
 
-    @NonNull
-    private final SensorType mSensorType;
-
-    InternalSensorEntityFacade(@NonNull final SensorType sensorType) {
+    InternalSensorEntityFacade() {
         mKnownSensors = Collections.synchronizedMap(new HashMap<String, InternalSensorEntity>());
-        mSensorType = sensorType;
     }
 
     /**
@@ -70,6 +68,8 @@ class InternalSensorEntityFacade {
         final InternalSensorEntityDao dao = session.getInternalSensorEntityDao();
         final QueryBuilder<InternalSensorEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(InternalSensorEntityDao.Properties.SensorName.eq(sensor.getName()));
+        final String sensorTypeName = getSensorTypeFromId(sensor.getType()).getSensorTypeName();
+        queryBuilder.where(InternalSensorEntityDao.Properties.SensorType.eq(sensorTypeName));
         final List<InternalSensorEntity> internalSensorEntityList = queryBuilder.list();
         if (internalSensorEntityList.isEmpty()) {
             return insertSensor(session, sensor);
@@ -104,8 +104,9 @@ class InternalSensorEntityFacade {
                                               @NonNull final Sensor sensor) {
         final InternalSensorEntity sensorEntity = new InternalSensorEntity();
         sensorEntity.setSensorName(sensor.getName());
-        sensorEntity.setSensorType(mSensorType.getSensorTypeName());
-        sensorEntity.setSensorUnit(mSensorType.getSensorUnit());
+        final SensorType sensorType = getSensorTypeFromId(sensor.getType());
+        sensorEntity.setSensorType(sensorType.getSensorTypeName());
+        sensorEntity.setSensorUnit(sensorType.getSensorUnit());
         sensorEntity.setMinimumDelayMicroseconds(sensor.getMinDelay());
         if (Build.VERSION.SDK_INT >= 21) {
             // getMaxDelay is only available in SDK 21+
@@ -124,7 +125,7 @@ class InternalSensorEntityFacade {
         sensorEntity.setSensorResolution(sensor.getResolution());
         sensorEntity.setSensorVendor(sensor.getVendor());
         sensorEntity.setSensorVersion(sensor.getVersion());
-        session.getInternalSensorEntityDao().insert(sensorEntity);
+        session.insert(sensorEntity);
         Log.d(TAG, "insertSensor -> Inserted sensor -> " + sensorEntity.toJsonObject().toString());
         return sensorEntity;
     }

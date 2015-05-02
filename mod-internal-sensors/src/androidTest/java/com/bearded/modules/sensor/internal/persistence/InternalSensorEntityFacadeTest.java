@@ -54,7 +54,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         super.setUp();
         mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
         mDatabaseConnector.cleanDatabase();
-        mSensorFacade = new InternalSensorEntityFacade(LIGHT);
+        mSensorFacade = new InternalSensorEntityFacade();
         final Context context = getInstrumentation().getContext();
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mLightSensor = mSensorManager.getDefaultSensor(LIGHT.getSensorId());
@@ -72,7 +72,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertNotNull(mLightSensor);
         //Checks if the database is clean before the test starts.
         final DaoSession session = mDatabaseConnector.getSession();
-        assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 0);
+        assertEquals(0, mSensorFacade.getAllSensorEntities(session).size());
     }
 
     @MediumTest
@@ -85,7 +85,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         //Checks that the returned object belongs to the same sensor as the inserted sensor.
         assertEquals(sensorEntity.getSensorName(), mLightSensor.getName());
         //Checks that only one object was inserted.
-        assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 1);
+        assertEquals(1, mSensorFacade.getAllSensorEntities(session).size());
     }
 
     @MediumTest
@@ -100,7 +100,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
             mSensorFacade.getSensorEntity(session, mLightSensor);
         }
         assertEquals(sensorEntity, mSensorFacade.getSensorEntity(session, mLightSensor));
-        assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 1);
+        assertEquals(1, mSensorFacade.getAllSensorEntities(session).size());
     }
 
     @MediumTest
@@ -114,7 +114,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         final InternalSensorEntity proximitySensorEntity = mSensorFacade.getSensorEntity(session, mProximitySensor);
         assertNotNull(proximitySensorEntity);
         //Checks if two sensors are inside the database.
-        assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 2);
+        assertEquals(2, mSensorFacade.getAllSensorEntities(session).size());
         assertTrue(mSensorFacade.getAllSensorEntities(session).contains(lightSensorEntity));
         assertTrue(mSensorFacade.getAllSensorEntities(session).contains(proximitySensorEntity));
     }
@@ -134,7 +134,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
             mSensorFacade.getSensorEntity(session, mLightSensor);
         }
         // Test if the insertion has not produced duplicated sensor entities.
-        assertEquals(mSensorFacade.getAllSensorEntities(session).size(), 2);
+        assertEquals(2, mSensorFacade.getAllSensorEntities(session).size());
         assertTrue(mSensorFacade.getAllSensorEntities(session).contains(lightSensorEntity));
         assertTrue(mSensorFacade.getAllSensorEntities(session).contains(proximitySensorEntity));
     }

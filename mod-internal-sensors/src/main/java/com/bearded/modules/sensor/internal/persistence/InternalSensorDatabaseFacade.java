@@ -54,7 +54,7 @@ public class InternalSensorDatabaseFacade {
                                         final int binSizeMilliseconds) {
         final String databaseName = String.format("%s-%s", sensorType.getSensorTypeName(), DATABASE_NAME_SUFFIX);
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
-        mSensorEntityFacade = new InternalSensorEntityFacade(sensorType);
+        mSensorEntityFacade = new InternalSensorEntityFacade();
         mMeasurementSeriesEntityFacade = new InternalSensorMeasurementSeriesEntityFacade();
         mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade(sensorType, binSizeMilliseconds);
     }
