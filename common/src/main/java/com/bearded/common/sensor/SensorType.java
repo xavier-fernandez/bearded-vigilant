@@ -20,7 +20,6 @@ package com.bearded.common.sensor;
 
 import android.hardware.Sensor;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 public enum SensorType {
 
@@ -29,6 +28,7 @@ public enum SensorType {
     AMBIENT_TEMPERATURE(Sensor.TYPE_AMBIENT_TEMPERATURE, "Ambient Temperature", "Celsius"),
     RELATIVE_HUMIDITY(Sensor.TYPE_RELATIVE_HUMIDITY, "Relative Humidity", "Relative Humidity Percentage");
 
+    private static final String TAG = SensorType.class.getSimpleName();
     private final int mSensorId;
     @NonNull
     private final String mSensorTypeName;
@@ -46,15 +46,16 @@ public enum SensorType {
      *
      * @param sensorId of an {@link android.hardware.Sensor}.
      * @return {@link SensorType} with the sensor Type with the id - <code>null</code> if not available.
+     * @throws IllegalArgumentException when the given sensor type is not implemented.
      */
-    @Nullable
+    @NonNull
     public static SensorType getSensorTypeFromId(final int sensorId) {
         for (final SensorType sensorType : values()) {
             if (sensorType.mSensorId == sensorId) {
                 return sensorType;
             }
         }
-        return null;
+        throw new IllegalArgumentException(String.format("%s: Sensor type %d is not implemented yet.", TAG, sensorId));
     }
 
     /**
