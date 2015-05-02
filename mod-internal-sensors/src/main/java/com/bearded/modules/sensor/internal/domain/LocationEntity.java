@@ -106,6 +106,14 @@ public class LocationEntity implements com.bearded.common.database.ParseableJson
         jsonObject.add(Longitude.name, new JsonPrimitive(this.latitude));
         return jsonObject;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.toJsonObject().toString();
+    }
 
     // KEEP METHODS END
 

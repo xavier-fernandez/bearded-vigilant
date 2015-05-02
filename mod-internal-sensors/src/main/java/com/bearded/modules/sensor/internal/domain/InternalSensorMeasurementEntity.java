@@ -265,6 +265,14 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.datab
         jsonObject.add(BinSize.name, new JsonPrimitive(this.binSize));
         return jsonObject;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.toJsonObject().toString();
+    }
     // KEEP METHODS END
 
 }
