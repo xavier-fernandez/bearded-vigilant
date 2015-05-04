@@ -45,15 +45,11 @@ class InternalSensorMeasurementEntityFacade {
     @NonNull
     private final Map<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer> mSensorMeasurements;
     @NonNull
-    private final SensorType mSensorType;
-    @NonNull
     private final Integer mTimeoutMillis;
 
-    public InternalSensorMeasurementEntityFacade(@NonNull final SensorType sensorType,
-                                                 final int timeoutMillis) {
+    public InternalSensorMeasurementEntityFacade(final int timeoutMillis) {
         mSensorMeasurements = Collections.synchronizedMap(
                 new HashMap<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer>());
-        mSensorType = sensorType;
         if (timeoutMillis <= 0) {
             throw new IllegalArgumentException(
                     String.format("%s: Constructor -> TimeoutMillis needs to be a positive number.", TAG));
@@ -73,12 +69,16 @@ class InternalSensorMeasurementEntityFacade {
                                             final float measurement) {
         SensorMeasurementsBuffer measurements = mSensorMeasurements.get(series);
         if (measurements == null) {
+            //The first inserted element will be written inside the database.
             measurements = new SensorMeasurementsBuffer();
             mSensorMeasurements.put(series, measurements);
-        }
-        measurements.addMeasurement(measurement);
-        if (TimeUtils.millisecondsFromNow(measurements.firstElementTime) > mTimeoutMillis) {
+            measurements.addMeasurement(measurement);
             storeMeasurement(session, measurements);
+        } else {
+            measurements.addMeasurement(measurement);
+            if (TimeUtils.millisecondsFromNow(measurements.firstElementTime) > mTimeoutMillis) {
+                storeMeasurement(session, measurements);
+            }
         }
     }
 
@@ -91,8 +91,8 @@ class InternalSensorMeasurementEntityFacade {
         measurementEntity.setSensorValue(measurements.getMidSensorValue());
         session.getInternalSensorMeasurementEntityDao().insert(measurementEntity);
         measurements.clear();
-        Log.d(TAG, String.format("addMeasurement -> The following %s measurement was inserted in the database -> %s",
-                mSensorType.getSensorTypeName(), measurementEntity.toJsonObject().toString()));
+        Log.d(TAG, String.format("addMeasurement -> The following measurement was inserted in the database -> %s",
+                measurementEntity.toJsonObject().toString()));
     }
 
     /**

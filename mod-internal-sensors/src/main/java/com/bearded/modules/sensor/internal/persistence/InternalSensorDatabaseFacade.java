@@ -56,7 +56,7 @@ public class InternalSensorDatabaseFacade {
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
         mSensorEntityFacade = new InternalSensorEntityFacade();
         mMeasurementSeriesEntityFacade = new InternalSensorMeasurementSeriesEntityFacade();
-        mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade(sensorType, binSizeMilliseconds);
+        mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade(binSizeMilliseconds);
     }
 
     /**
