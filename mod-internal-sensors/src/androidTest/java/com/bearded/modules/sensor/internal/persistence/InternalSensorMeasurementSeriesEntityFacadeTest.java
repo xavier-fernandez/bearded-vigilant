@@ -33,7 +33,7 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
 
     private DatabaseConnector mDatabaseConnector;
     private InternalSensorMeasurementSeriesEntityFacade mSeriesFacade;
-    private InternalSensorEntity[] mSensorEntity;
+    private InternalSensorEntity[] mSensorEntities;
 
     /**
      * {@inheritDoc}
@@ -47,13 +47,13 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
     }
 
     private void generateSensorEntities() {
-        mSensorEntity = new InternalSensorEntity[NUMBER_OF_SENSOR_ENTITIES];
+        mSensorEntities = new InternalSensorEntity[NUMBER_OF_SENSOR_ENTITIES];
         for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            mSensorEntity[i] = new InternalSensorEntity();
-            mSensorEntity[i].setSensorName(String.format("test sensor %d", i));
-            mSensorEntity[i].setSensorType(String.format("test type %d", i));
-            mSensorEntity[i].setSensorUnit(String.format("unit %d", i));
-            mDatabaseConnector.getSession().insert(mSensorEntity[i]);
+            mSensorEntities[i] = new InternalSensorEntity();
+            mSensorEntities[i].setSensorName(String.format("test sensor %d", i));
+            mSensorEntities[i].setSensorType(String.format("test type %d", i));
+            mSensorEntities[i].setSensorUnit(String.format("unit %d", i));
+            mDatabaseConnector.getSession().insert(mSensorEntities[i]);
         }
     }
 
@@ -61,7 +61,11 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
     public void testPreConditions() {
         assertNotNull(mDatabaseConnector);
         assertNotNull(mSeriesFacade);
-        assertNotNull(mSensorEntity);
+        assertNotNull(mSensorEntities);
+        assertEquals(NUMBER_OF_SENSOR_ENTITIES, mSensorEntities.length);
+        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
+            assertNotNull(mSensorEntities[i]);
+        }
     }
 
     /**
@@ -74,9 +78,9 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
         final InternalSensorMeasurementSeriesEntity series =
-                mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[0]);
+                mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntities[0]);
         assertNotNull(series);
-        assertEquals(series.getInternalSensorEntity(), mSensorEntity[0]);
+        assertEquals(series.getInternalSensorEntity(), mSensorEntities[0]);
     }
 
     /**
@@ -89,10 +93,10 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
         final InternalSensorMeasurementSeriesEntity series1 =
-                mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[0]);
+                mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntities[0]);
         assertNotNull(series1);
         final InternalSensorMeasurementSeriesEntity series2 =
-                mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[0]);
+                mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntities[0]);
         assertNotNull(series2);
         assertEquals(series1, series2);
     }
@@ -109,8 +113,8 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
         final InternalSensorMeasurementSeriesEntity[] series =
                 new InternalSensorMeasurementSeriesEntity[NUMBER_OF_SENSOR_ENTITIES];
         for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            series[i] = mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[i]);
-            assertEquals(series[i].getInternalSensorEntity(), mSensorEntity[i]);
+            series[i] = mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntities[i]);
+            assertEquals(series[i].getInternalSensorEntity(), mSensorEntities[i]);
         }
     }
 
@@ -126,14 +130,14 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
         final InternalSensorMeasurementSeriesEntity[] series =
                 new InternalSensorMeasurementSeriesEntity[NUMBER_OF_SENSOR_ENTITIES];
         for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            series[i] = mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[i]);
-            assertEquals(series[i].getInternalSensorEntity(), mSensorEntity[i]);
+            series[i] = mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntities[i]);
+            assertEquals(series[i].getInternalSensorEntity(), mSensorEntities[i]);
         }
         // Retrieves an the inserted sensors again, and checks if the retrieved elements
         // are the same as in the first insertion.
         for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
             final InternalSensorMeasurementSeriesEntity duplicatedSeries =
-                    mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[i]);
+                    mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntities[i]);
             assertEquals(series[i], duplicatedSeries);
         }
     }
@@ -148,14 +152,14 @@ public class InternalSensorMeasurementSeriesEntityFacadeTest extends Instrumenta
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
         //Test if the sensor facade is empty.
-        assertEquals(mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntity[0]).size(), 0);
+        assertEquals(mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntities[0]).size(), 0);
         for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntity[i]);
-            assertEquals(0, mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntity[i]).size());
+            mSeriesFacade.getActiveMeasurementSeries(session, mSensorEntities[i]);
+            assertEquals(0, mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntities[i]).size());
         }
         mSeriesFacade.updateAllMeasurementSeriesEndTimestamp(session);
         for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            assertEquals(1, mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntity[i]).size());
+            assertEquals(1, mSeriesFacade.getAllClosedMeasurementSeriesFromSensor(session, mSensorEntities[i]).size());
         }
     }
 
