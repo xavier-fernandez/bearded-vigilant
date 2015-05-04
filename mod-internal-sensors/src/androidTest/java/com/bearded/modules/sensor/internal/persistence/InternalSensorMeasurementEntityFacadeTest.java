@@ -107,7 +107,7 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
                 new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
         //Checks if the database is empty.
         final float midValue = 51f;
-        final float [] testValues = new float []{midValue - 1, midValue, midValue + 1};
+        final float[] testValues = new float[]{midValue - 1, midValue, midValue + 1};
         for (float testValue : testValues) {
             measurementFacade.addMeasurement(session, mSeriesEntities[0], testValue);
         }
@@ -133,7 +133,8 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
             try {
                 Thread.sleep(MEASUREMENT_ENTITY_TIMEOUT + 1);
                 break;
-            } catch (final InterruptedException ignored) {}
+            } catch (final InterruptedException ignored) {
+            }
         }
         for (int i = 0; i < 3; i++) {
             final List<InternalSensorMeasurementEntity> result =
