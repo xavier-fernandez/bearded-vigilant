@@ -1,18 +1,3 @@
-package com.bearded.modules.ble.discovery.persistence;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
-import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
-import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import de.greenrobot.dao.query.QueryBuilder;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -31,7 +16,23 @@ import de.greenrobot.dao.query.QueryBuilder;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-public class BleDeviceDbFacade {
+
+package com.bearded.modules.ble.discovery.persistence;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
+import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
+import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import de.greenrobot.dao.query.QueryBuilder;
+
+public class BleDeviceEntityFacade {
 
     private final Map<String, BleDeviceEntity> mKnownBleDevices = Collections.synchronizedMap(new HashMap<String, BleDeviceEntity>());
 
