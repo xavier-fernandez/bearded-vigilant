@@ -32,23 +32,26 @@ import java.util.Map;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class BleDeviceEntityFacade {
+class BleDeviceEntityFacade {
 
-    private final Map<String, BleDeviceEntity> mKnownBleDevices = Collections.synchronizedMap(new HashMap<String, BleDeviceEntity>());
+    private final Map<String, BleDeviceEntity> mKnownBleDevices =
+            Collections.synchronizedMap(new HashMap<String, BleDeviceEntity>());
 
     /**
-     * Returns a known BleDevice from the database. It will store the known BleDevice in a proxy.
+     * Returns a known BleDevice from the database, or from a known {@link BleDeviceEntity} proxy.
      *
-     * @param deviceAddress of the BleDevice
-     * @param advertiseName of the BleDevice
-     * @return {@link com.bearded.modules.ble.discovery.domain.BleDeviceEntity} in case the device is already on the database.
+     * @param session needed to create and/or retrieve the {@link BleDeviceEntity} from the database.
+     * @param deviceAddress of the {@link BleDeviceEntity}
+     * @param advertiseName of the {@link BleDeviceEntity}
+     * @return {@link BleDeviceEntity} in case the device is already on the database.
      */
-    @Nullable
-    public BleDeviceEntity readBleDevice(@NonNull final String deviceAddress, @Nullable final String advertiseName) {
+    @NonNull
+    BleDeviceEntity readBleDevice(@NonNull final DaoSession session,
+                                  @NonNull final String deviceAddress,
+                                  @Nullable final String advertiseName) {
         if (mKnownBleDevices.containsKey(deviceAddress.trim())) {
             return mKnownBleDevices.get(deviceAddress);
         }
-        final DaoSession session = DiscoveryDatabaseHandler.getInstance().getReadableSession(false);
         final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
         final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(BleDeviceEntityDao.Properties.DeviceAddress.eq(deviceAddress.trim()));
