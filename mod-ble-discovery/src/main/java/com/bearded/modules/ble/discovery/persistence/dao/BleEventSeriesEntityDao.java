@@ -45,7 +45,7 @@ public class BleEventSeriesEntityDao extends AbstractDao<BleEventSeriesEntity, L
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
         db.execSQL("CREATE TABLE " + constraint + "'BleEventSeries' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "'BLE_DEVICE_ID' INTEGER," + // 1: bleDeviceId
+                "'BLE_DEVICE_ID' INTEGER NOT NULL ," + // 1: bleDeviceId
                 "'START_TIMESTAMP' TEXT NOT NULL ," + // 2: startTimestamp
                 "'END_TIMESTAMP' TEXT);"); // 3: endTimestamp
     }
@@ -69,11 +69,7 @@ public class BleEventSeriesEntityDao extends AbstractDao<BleEventSeriesEntity, L
         if (id != null) {
             stmt.bindLong(1, id);
         }
-
-        Long bleDeviceId = entity.getBleDeviceId();
-        if (bleDeviceId != null) {
-            stmt.bindLong(2, bleDeviceId);
-        }
+        stmt.bindLong(2, entity.getBleDeviceId());
         stmt.bindString(3, entity.getStartTimestamp());
 
         String endTimestamp = entity.getEndTimestamp();
@@ -103,7 +99,7 @@ public class BleEventSeriesEntityDao extends AbstractDao<BleEventSeriesEntity, L
     public BleEventSeriesEntity readEntity(Cursor cursor, int offset) {
         BleEventSeriesEntity entity = new BleEventSeriesEntity( //
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-                cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // bleDeviceId
+                cursor.getLong(offset + 1), // bleDeviceId
                 cursor.getString(offset + 2), // startTimestamp
                 cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // endTimestamp
         );
@@ -116,7 +112,7 @@ public class BleEventSeriesEntityDao extends AbstractDao<BleEventSeriesEntity, L
     @Override
     public void readEntity(Cursor cursor, BleEventSeriesEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setBleDeviceId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setBleDeviceId(cursor.getLong(offset + 1));
         entity.setStartTimestamp(cursor.getString(offset + 2));
         entity.setEndTimestamp(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
     }
@@ -169,7 +165,9 @@ public class BleEventSeriesEntityDao extends AbstractDao<BleEventSeriesEntity, L
         int offset = getAllColumns().length;
 
         BleDeviceEntity bleDeviceEntity = loadCurrentOther(daoSession.getBleDeviceEntityDao(), cursor, offset);
-        entity.setBleDeviceEntity(bleDeviceEntity);
+        if (bleDeviceEntity != null) {
+            entity.setBleDeviceEntity(bleDeviceEntity);
+        }
 
         return entity;
     }
@@ -248,7 +246,7 @@ public class BleEventSeriesEntityDao extends AbstractDao<BleEventSeriesEntity, L
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property BleDeviceId = new Property(1, Long.class, "bleDeviceId", false, "BLE_DEVICE_ID");
+        public final static Property BleDeviceId = new Property(1, long.class, "bleDeviceId", false, "BLE_DEVICE_ID");
         public final static Property StartTimestamp = new Property(2, String.class, "startTimestamp", false, "START_TIMESTAMP");
         public final static Property EndTimestamp = new Property(3, String.class, "endTimestamp", false, "END_TIMESTAMP");
     }

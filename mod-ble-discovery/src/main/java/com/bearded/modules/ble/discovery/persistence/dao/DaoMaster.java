@@ -21,6 +21,7 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(BleDeviceEntityDao.class);
         registerDaoClass(BleEventSeriesEntityDao.class);
+        registerDaoClass(LocationEntityDao.class);
         registerDaoClass(BleEventEntityDao.class);
     }
 
@@ -30,6 +31,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         BleDeviceEntityDao.createTable(db, ifNotExists);
         BleEventSeriesEntityDao.createTable(db, ifNotExists);
+        LocationEntityDao.createTable(db, ifNotExists);
         BleEventEntityDao.createTable(db, ifNotExists);
     }
 
@@ -39,6 +41,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         BleDeviceEntityDao.dropTable(db, ifExists);
         BleEventSeriesEntityDao.dropTable(db, ifExists);
+        LocationEntityDao.dropTable(db, ifExists);
         BleEventEntityDao.dropTable(db, ifExists);
     }
 

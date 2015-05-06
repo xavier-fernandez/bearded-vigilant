@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
 import com.bearded.modules.ble.discovery.domain.BleEventEntity;
 import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
+import com.bearded.modules.ble.discovery.domain.LocationEntity;
 
 import java.util.Map;
 
@@ -24,10 +25,12 @@ public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig bleDeviceEntityDaoConfig;
     private final DaoConfig bleEventSeriesEntityDaoConfig;
+    private final DaoConfig locationEntityDaoConfig;
     private final DaoConfig bleEventEntityDaoConfig;
 
     private final BleDeviceEntityDao bleDeviceEntityDao;
     private final BleEventSeriesEntityDao bleEventSeriesEntityDao;
+    private final LocationEntityDao locationEntityDao;
     private final BleEventEntityDao bleEventEntityDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
@@ -40,21 +43,27 @@ public class DaoSession extends AbstractDaoSession {
         bleEventSeriesEntityDaoConfig = daoConfigMap.get(BleEventSeriesEntityDao.class).clone();
         bleEventSeriesEntityDaoConfig.initIdentityScope(type);
 
+        locationEntityDaoConfig = daoConfigMap.get(LocationEntityDao.class).clone();
+        locationEntityDaoConfig.initIdentityScope(type);
+
         bleEventEntityDaoConfig = daoConfigMap.get(BleEventEntityDao.class).clone();
         bleEventEntityDaoConfig.initIdentityScope(type);
 
         bleDeviceEntityDao = new BleDeviceEntityDao(bleDeviceEntityDaoConfig, this);
         bleEventSeriesEntityDao = new BleEventSeriesEntityDao(bleEventSeriesEntityDaoConfig, this);
+        locationEntityDao = new LocationEntityDao(locationEntityDaoConfig, this);
         bleEventEntityDao = new BleEventEntityDao(bleEventEntityDaoConfig, this);
 
         registerDao(BleDeviceEntity.class, bleDeviceEntityDao);
         registerDao(BleEventSeriesEntity.class, bleEventSeriesEntityDao);
+        registerDao(LocationEntity.class, locationEntityDao);
         registerDao(BleEventEntity.class, bleEventEntityDao);
     }
 
     public void clear() {
         bleDeviceEntityDaoConfig.getIdentityScope().clear();
         bleEventSeriesEntityDaoConfig.getIdentityScope().clear();
+        locationEntityDaoConfig.getIdentityScope().clear();
         bleEventEntityDaoConfig.getIdentityScope().clear();
     }
 
@@ -64,6 +73,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public BleEventSeriesEntityDao getBleEventSeriesEntityDao() {
         return bleEventSeriesEntityDao;
+    }
+
+    public LocationEntityDao getLocationEntityDao() {
+        return locationEntityDao;
     }
 
     public BleEventEntityDao getBleEventEntityDao() {

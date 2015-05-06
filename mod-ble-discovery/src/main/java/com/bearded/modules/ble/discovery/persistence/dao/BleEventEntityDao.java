@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.bearded.modules.ble.discovery.domain.BleEventEntity;
 import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
+import com.bearded.modules.ble.discovery.domain.LocationEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +46,11 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
         db.execSQL("CREATE TABLE " + constraint + "'BleEvent' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "'EVENT_SERIES_ID' INTEGER," + // 1: eventSeriesId
-                "'START_TIMESTAMP' TEXT NOT NULL ," + // 2: startTimestamp
-                "'END_TIMESTAMP' TEXT," + // 3: endTimestamp
-                "'RECEIVED_SIGNAL_STRENGTH' INTEGER NOT NULL );"); // 4: receivedSignalStrength
+                "'EVENT_SERIES_ID' INTEGER NOT NULL ," + // 1: eventSeriesId
+                "'LOCATION_ID' INTEGER," + // 2: location_id
+                "'START_TIMESTAMP' TEXT NOT NULL ," + // 3: startTimestamp
+                "'END_TIMESTAMP' TEXT," + // 4: endTimestamp
+                "'RECEIVED_SIGNAL_STRENGTH' INTEGER NOT NULL );"); // 5: receivedSignalStrength
     }
 
     /**
@@ -70,18 +72,19 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindLong(2, entity.getEventSeriesId());
 
-        Long eventSeriesId = entity.getEventSeriesId();
-        if (eventSeriesId != null) {
-            stmt.bindLong(2, eventSeriesId);
+        Long location_id = entity.getLocation_id();
+        if (location_id != null) {
+            stmt.bindLong(3, location_id);
         }
-        stmt.bindString(3, entity.getStartTimestamp());
+        stmt.bindString(4, entity.getStartTimestamp());
 
         String endTimestamp = entity.getEndTimestamp();
         if (endTimestamp != null) {
-            stmt.bindString(4, endTimestamp);
+            stmt.bindString(5, endTimestamp);
         }
-        stmt.bindLong(5, entity.getReceivedSignalStrength());
+        stmt.bindLong(6, entity.getReceivedSignalStrength());
     }
 
     @Override
@@ -105,10 +108,11 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
     public BleEventEntity readEntity(Cursor cursor, int offset) {
         BleEventEntity entity = new BleEventEntity( //
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-                cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // eventSeriesId
-                cursor.getString(offset + 2), // startTimestamp
-                cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // endTimestamp
-                (byte) cursor.getShort(offset + 4) // receivedSignalStrength
+                cursor.getLong(offset + 1), // eventSeriesId
+                cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // location_id
+                cursor.getString(offset + 3), // startTimestamp
+                cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // endTimestamp
+                (byte) cursor.getShort(offset + 5) // receivedSignalStrength
         );
         return entity;
     }
@@ -119,10 +123,11 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
     @Override
     public void readEntity(Cursor cursor, BleEventEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setEventSeriesId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setStartTimestamp(cursor.getString(offset + 2));
-        entity.setEndTimestamp(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setReceivedSignalStrength((byte) cursor.getShort(offset + 4));
+        entity.setEventSeriesId(cursor.getLong(offset + 1));
+        entity.setLocation_id(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setStartTimestamp(cursor.getString(offset + 3));
+        entity.setEndTimestamp(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setReceivedSignalStrength((byte) cursor.getShort(offset + 5));
     }
 
     /**
@@ -160,8 +165,11 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T0", daoSession.getBleEventSeriesEntityDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T1", daoSession.getLocationEntityDao().getAllColumns());
             builder.append(" FROM BleEvent T");
             builder.append(" LEFT JOIN BleEventSeries T0 ON T.'EVENT_SERIES_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN Location T1 ON T.'LOCATION_ID'=T1.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -173,7 +181,13 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
         int offset = getAllColumns().length;
 
         BleEventSeriesEntity bleEventSeriesEntity = loadCurrentOther(daoSession.getBleEventSeriesEntityDao(), cursor, offset);
-        entity.setBleEventSeriesEntity(bleEventSeriesEntity);
+        if (bleEventSeriesEntity != null) {
+            entity.setBleEventSeriesEntity(bleEventSeriesEntity);
+        }
+        offset += daoSession.getBleEventSeriesEntityDao().getAllColumns().length;
+
+        LocationEntity locationEntity = loadCurrentOther(daoSession.getLocationEntityDao(), cursor, offset);
+        entity.setLocationEntity(locationEntity);
 
         return entity;
     }
@@ -252,10 +266,11 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property EventSeriesId = new Property(1, Long.class, "eventSeriesId", false, "EVENT_SERIES_ID");
-        public final static Property StartTimestamp = new Property(2, String.class, "startTimestamp", false, "START_TIMESTAMP");
-        public final static Property EndTimestamp = new Property(3, String.class, "endTimestamp", false, "END_TIMESTAMP");
-        public final static Property ReceivedSignalStrength = new Property(4, byte.class, "receivedSignalStrength", false, "RECEIVED_SIGNAL_STRENGTH");
+        public final static Property EventSeriesId = new Property(1, long.class, "eventSeriesId", false, "EVENT_SERIES_ID");
+        public final static Property Location_id = new Property(2, Long.class, "location_id", false, "LOCATION_ID");
+        public final static Property StartTimestamp = new Property(3, String.class, "startTimestamp", false, "START_TIMESTAMP");
+        public final static Property EndTimestamp = new Property(4, String.class, "endTimestamp", false, "END_TIMESTAMP");
+        public final static Property ReceivedSignalStrength = new Property(5, byte.class, "receivedSignalStrength", false, "RECEIVED_SIGNAL_STRENGTH");
     }
 
 }

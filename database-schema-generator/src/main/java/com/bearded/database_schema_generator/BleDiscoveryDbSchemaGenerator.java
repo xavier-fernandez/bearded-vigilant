@@ -47,8 +47,11 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
         dbSchema.enableKeepSectionsByDefault();
         // Creates the database table.
         final Entity deviceEntity = createBleDeviceEntity(dbSchema);
+        // Creates the event series entity.
         final Entity eventSeriesEntity = createBleEventSeriesEntity(dbSchema, deviceEntity);
-        createBleEventEntity(dbSchema, eventSeriesEntity);
+        // Creates the location entity.
+        final Entity locationEntity = createLocationEntity(dbSchema);
+        createBleEventEntity(dbSchema, eventSeriesEntity, locationEntity);
         // Creates the DAO classes in the specified folder.
         final DaoGenerator daoGenerator = new DaoGenerator();
         daoGenerator.generateAll(dbSchema, OUT_DIR, TEST_DIR);
@@ -81,7 +84,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
     private static Entity createBleEventSeriesEntity(@NonNull final Schema dbSchema,
                                                      @NonNull final Entity deviceEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "BleEventSeries");
-        final Property bleDeviceIdFK = seriesEntity.addLongProperty("bleDeviceId").getProperty();
+        final Property bleDeviceIdFK = seriesEntity.addLongProperty("bleDeviceId").notNull().getProperty();
         seriesEntity.addToOne(deviceEntity, bleDeviceIdFK);
         seriesEntity.addStringProperty("startTimestamp").notNull();
         seriesEntity.addStringProperty("endTimestamp");
@@ -91,17 +94,21 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
     /**
      * CREATE TABLE ble_event (
      * _id                       INTEGER   PRIMARY KEY  AUTOINCREMENT,
-     * event_series_id           INTEGER   FOREIGN KEY  REFERENCES  ble_event_series(_id) NOT NULL,
+     * event_series_id           INTEGER   FOREIGN KEY  REFERENCES  ble_event_series(_id)  NOT NULL,
+     * location_id               INTEGER   FOREIGN KEY  REFERENCES  location(_id);
      * start_timestamp           TEXT      NOT NULL,
      * end_timestamp             TEXT,
      * received_signal_strength  INTEGER   NOT NULL
      * );
      */
     private static void createBleEventEntity(@NonNull final Schema dbSchema,
-                                             @NonNull final Entity eventSeriesEntity) {
+                                             @NonNull final Entity eventSeriesEntity,
+                                             @NonNull final Entity locationEntity) {
         final Entity eventEntity = createEntity(dbSchema, "BleEvent");
-        final Property eventSeriesIdFK = eventEntity.addLongProperty("eventSeriesId").getProperty();
+        final Property eventSeriesIdFK = eventEntity.addLongProperty("eventSeriesId").notNull().getProperty();
         eventEntity.addToOne(eventSeriesEntity, eventSeriesIdFK);
+        final Property locationFK = eventEntity.addLongProperty("location_id").getProperty();
+        eventEntity.addToOne(locationEntity, locationFK);
         eventEntity.addStringProperty("startTimestamp").notNull();
         eventEntity.addStringProperty("endTimestamp");
         eventEntity.addByteProperty("receivedSignalStrength").notNull();

@@ -1,6 +1,6 @@
-package com.bearded.modules.sensor.internal.domain;
+package com.bearded.modules.ble.discovery.domain;
 
-import com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao;
+import com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
@@ -18,5 +18,4 @@ public class LocationEntityTest extends AbstractDaoTestLongPk<LocationEntityDao,
         entity.setLongitude(50f);
         return entity;
     }
-
 }

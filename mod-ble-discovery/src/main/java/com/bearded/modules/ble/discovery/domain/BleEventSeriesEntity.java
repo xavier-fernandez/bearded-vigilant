@@ -25,7 +25,7 @@ import static com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEn
 public class BleEventSeriesEntity implements com.bearded.common.database.ParseableJson, java.lang.Comparable<BleEventSeriesEntity> {
 
     private Long id;
-    private Long bleDeviceId;
+    private long bleDeviceId;
     /**
      * Not-null value.
      */
@@ -56,7 +56,7 @@ public class BleEventSeriesEntity implements com.bearded.common.database.Parseab
         this.id = id;
     }
 
-    public BleEventSeriesEntity(Long id, Long bleDeviceId, String startTimestamp, String endTimestamp) {
+    public BleEventSeriesEntity(Long id, long bleDeviceId, String startTimestamp, String endTimestamp) {
         this.id = id;
         this.bleDeviceId = bleDeviceId;
         this.startTimestamp = startTimestamp;
@@ -79,11 +79,11 @@ public class BleEventSeriesEntity implements com.bearded.common.database.Parseab
         this.id = id;
     }
 
-    public Long getBleDeviceId() {
+    public long getBleDeviceId() {
         return bleDeviceId;
     }
 
-    public void setBleDeviceId(Long bleDeviceId) {
+    public void setBleDeviceId(long bleDeviceId) {
         this.bleDeviceId = bleDeviceId;
     }
 
@@ -113,7 +113,7 @@ public class BleEventSeriesEntity implements com.bearded.common.database.Parseab
      * To-one relationship, resolved on first access.
      */
     public BleDeviceEntity getBleDeviceEntity() {
-        Long __key = this.bleDeviceId;
+        long __key = this.bleDeviceId;
         if (bleDeviceEntity__resolvedKey == null || !bleDeviceEntity__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -129,9 +129,12 @@ public class BleEventSeriesEntity implements com.bearded.common.database.Parseab
     }
 
     public void setBleDeviceEntity(BleDeviceEntity bleDeviceEntity) {
+        if (bleDeviceEntity == null) {
+            throw new DaoException("To-one property 'bleDeviceId' has not-null constraint; cannot set to-one to null");
+        }
         synchronized (this) {
             this.bleDeviceEntity = bleDeviceEntity;
-            bleDeviceId = bleDeviceEntity == null ? null : bleDeviceEntity.getId();
+            bleDeviceId = bleDeviceEntity.getId();
             bleDeviceEntity__resolvedKey = bleDeviceId;
         }
     }
