@@ -173,6 +173,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * CREATE TABLE internal_sensor_measurement (
      * _id                    INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * measurement_series_id  INTEGER    FOREIGN KEY   REFERENCES  measurement_series  NOT NULL,
+     * location_id            INTEGER    FOREIGN KEY   REFERENCES  location,
      * sensor_value           FLOAT      NOT NULL,
      * start_timestamp        TEXT       NOT NULL,
      * end_timestamp          TEXT       NOT NULL,
@@ -185,11 +186,11 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
         final Entity entity = createEntity(dbSchema, "InternalSensorMeasurement");
         final Property seriesFK = entity.addLongProperty("measurement_series_id").notNull().getProperty();
         entity.addToOne(seriesEntity, seriesFK);
+        final Property locationFK = entity.addLongProperty("location_id").getProperty();
+        entity.addToOne(locationEntity, locationFK);
         entity.addFloatProperty("sensorValue").notNull();
         entity.addStringProperty("startTimestamp").notNull();
         entity.addStringProperty("endTimestamp").notNull();
         entity.addShortProperty("binSize").notNull();
-        final Property locationFK = entity.addLongProperty("location_id").getProperty();
-        entity.addToOne(locationEntity, locationFK);
     }
 }
