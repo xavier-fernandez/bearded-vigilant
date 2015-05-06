@@ -16,6 +16,7 @@ import de.greenrobot.dao.DaoException;
 
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementSeriesEntityDao.Properties.StartTimestamp;
+
 // KEEP INCLUDES END
 
 /**
@@ -199,7 +200,6 @@ public class InternalSensorMeasurementSeriesEntity implements com.bearded.common
     public String toString() {
         return this.toJsonObject().toString();
     }
-
     // KEEP METHODS END
 
 }

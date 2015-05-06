@@ -271,7 +271,6 @@ public class InternalSensorEntity implements com.bearded.common.database.Parseab
     public String toString() {
         return this.toJsonObject().toString();
     }
-
     // KEEP METHODS END
 
 }

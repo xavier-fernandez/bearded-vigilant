@@ -1,20 +1,20 @@
-package com.bearded.modules.ble.discovery.persistence.dao;
+package com.bearded.modules.ble.discovery.domain;
 
-import com.bearded.modules.ble.discovery.domain.BleEventEntity;
+import android.support.annotation.NonNull;
 
-import java.util.Random;
+import com.bearded.modules.ble.discovery.persistence.dao.BleEventSeriesEntityDao;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 import static com.bearded.common.time.TimeUtils.timestampToISOString;
 
-public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao, BleEventEntity> {
+public class BleEventSeriesEntityTest extends AbstractDaoTestLongPk<BleEventSeriesEntityDao, BleEventSeriesEntity> {
 
     private static final short ONE_SECOND_IN_MILLISECONDS = 1000;
     private static final int EVENT_SERIES_TEST_DURATION_SECONDS = 10 * ONE_SECOND_IN_MILLISECONDS;
 
-    public BleEventEntityTest() {
-        super(BleEventEntityDao.class);
+    public BleEventSeriesEntityTest() {
+        super(BleEventSeriesEntityDao.class);
     }
 
     /**
@@ -22,16 +22,16 @@ public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao,
      *
      * @return {@link java.lang.String} with the start timestamp following the ISO 8601 convention.
      */
+    @NonNull
     private static String getIsoStartTimestamp() {
         return timestampToISOString(System.currentTimeMillis() - EVENT_SERIES_TEST_DURATION_SECONDS);
     }
 
     @Override
-    protected BleEventEntity createEntity(Long key) {
-        final BleEventEntity entity = new BleEventEntity();
+    protected BleEventSeriesEntity createEntity(Long key) {
+        final BleEventSeriesEntity entity = new BleEventSeriesEntity();
         entity.setId(key);
         entity.setStartTimestamp(getIsoStartTimestamp());
-        entity.setReceivedSignalStrength((byte) (0 - new Random().nextInt(101)));
         return entity;
     }
 }

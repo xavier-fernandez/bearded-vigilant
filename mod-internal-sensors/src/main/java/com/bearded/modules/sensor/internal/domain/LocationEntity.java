@@ -12,7 +12,6 @@ import com.google.gson.JsonPrimitive;
 
 import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao.Properties.Latitude;
 import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao.Properties.Longitude;
-
 // KEEP INCLUDES END
 
 /**
@@ -114,7 +113,6 @@ public class LocationEntity implements com.bearded.common.database.ParseableJson
     public String toString() {
         return this.toJsonObject().toString();
     }
-
     // KEEP METHODS END
 
 }

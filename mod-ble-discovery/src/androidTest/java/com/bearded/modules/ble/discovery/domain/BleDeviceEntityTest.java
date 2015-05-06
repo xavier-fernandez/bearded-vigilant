@@ -1,6 +1,6 @@
-package com.bearded.modules.ble.discovery.persistence.dao;
+package com.bearded.modules.ble.discovery.domain;
 
-import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
+import com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
@@ -19,5 +19,4 @@ public class BleDeviceEntityTest extends AbstractDaoTestLongPk<BleDeviceEntityDa
         entity.setDeviceAddress(TEST_DEVICE_ADDRESS);
         return entity;
     }
-
 }

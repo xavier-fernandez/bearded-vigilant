@@ -31,6 +31,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final String ENTITY_PACKAGE = String.format("%s.domain", MODULE_PACKAGE);
     private static final String DAO_PACKAGE = String.format("%s.persistence.dao", MODULE_PACKAGE);
+    private static final String ENTITY_TEST_PACKAGE = ENTITY_PACKAGE;
 
     private static final int SCHEMA_VERSION = 1;
 
@@ -42,7 +43,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
         // Initializes the database schema.
         final Schema dbSchema = new Schema(SCHEMA_VERSION, ENTITY_PACKAGE);
         dbSchema.setDefaultJavaPackageDao(DAO_PACKAGE);
-        dbSchema.setDefaultJavaPackageTest(DAO_PACKAGE);
+        dbSchema.setDefaultJavaPackageTest(ENTITY_TEST_PACKAGE);
         dbSchema.enableKeepSectionsByDefault();
         // Creates the database table.
         final Entity deviceEntity = createBleDeviceEntity(dbSchema);

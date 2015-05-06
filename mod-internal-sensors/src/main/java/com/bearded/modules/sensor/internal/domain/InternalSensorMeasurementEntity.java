@@ -273,7 +273,6 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.datab
     public String toString() {
         return this.toJsonObject().toString();
     }
-
     // KEEP METHODS END
 
 }

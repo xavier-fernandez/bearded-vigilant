@@ -1,6 +1,7 @@
-package com.bearded.modules.sensor.internal.persistence.dao;
+package com.bearded.modules.sensor.internal.domain;
 
 import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
+import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 

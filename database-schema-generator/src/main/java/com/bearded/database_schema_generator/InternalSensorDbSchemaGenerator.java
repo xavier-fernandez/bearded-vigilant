@@ -31,6 +31,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final String ENTITY_PACKAGE = String.format("%s.domain", MODULE_PACKAGE);
     private static final String DAO_PACKAGE = String.format("%s.persistence.dao", MODULE_PACKAGE);
+    private static final String ENTITY_TEST_PACKAGE = ENTITY_PACKAGE;
 
     private static final int SCHEMA_VERSION = 1;
 
@@ -41,7 +42,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
         System.out.println(String.format("Creating database schema with name: %s", MODULE_PACKAGE));
         final Schema dbSchema = new Schema(SCHEMA_VERSION, ENTITY_PACKAGE);
         dbSchema.setDefaultJavaPackageDao(DAO_PACKAGE);
-        dbSchema.setDefaultJavaPackageTest(DAO_PACKAGE);
+        dbSchema.setDefaultJavaPackageTest(ENTITY_TEST_PACKAGE);
         // Initializes the database schema.
         // The database schema will have 'keep' sections that will not be overridden when executing this class.
         dbSchema.enableKeepSectionsByDefault();
