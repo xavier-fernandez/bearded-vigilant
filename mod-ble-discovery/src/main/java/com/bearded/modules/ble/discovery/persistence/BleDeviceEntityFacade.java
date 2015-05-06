@@ -28,6 +28,7 @@ import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.greenrobot.dao.query.QueryBuilder;
@@ -40,7 +41,7 @@ class BleDeviceEntityFacade {
     /**
      * Returns a known BleDevice from the database, or from a known {@link BleDeviceEntity} proxy.
      *
-     * @param session needed to create and/or retrieve the {@link BleDeviceEntity} from the database.
+     * @param session       needed to create and/or retrieve the {@link BleDeviceEntity} from the database.
      * @param deviceAddress of the {@link BleDeviceEntity}
      * @param advertiseName of the {@link BleDeviceEntity}
      * @return {@link BleDeviceEntity} in case the device is already on the database.
@@ -61,5 +62,18 @@ class BleDeviceEntityFacade {
         final BleDeviceEntity device = queryBuilder.uniqueOrThrow();
         mKnownBleDevices.put(device.getDeviceAddress(), device);
         return device;
+    }
+
+    /**
+     * Returns a list with all the {@link BleDeviceEntity} stored in the database.
+     *
+     * @param session needed to create and/or retrieve all {@link BleDeviceEntity} from the database.
+     * @return {@link java.util.List} with all the {@link BleDeviceEntity}.
+     */
+    @NonNull
+    List<BleDeviceEntity> obtainAllBleDevices(@NonNull final DaoSession session) {
+        final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
+        final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
+        return queryBuilder.listLazy();
     }
 }
