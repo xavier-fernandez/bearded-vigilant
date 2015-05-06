@@ -62,7 +62,8 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     }
 
     /**
-     * Checks the conditions that all the class test are supposed to have before hand.
+     * Checks the conditions that all the class test are supposed to have before each test
+     * method is executed.
      */
     @SmallTest
     public void testPreConditions() {
@@ -75,6 +76,11 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertEquals(0, mSensorFacade.getAllSensorEntities(session).size());
     }
 
+    /**
+     * Test the insertion of one single {@link InternalSensorEntity} inside the database.
+     *
+     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     */
     @MediumTest
     public void testOneObjectInsertion() {
         testPreConditions();
@@ -88,6 +94,12 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertEquals(1, mSensorFacade.getAllSensorEntities(session).size());
     }
 
+    /**
+     * Test the insertion of one single {@link InternalSensorEntity} inside the database, asking
+     * for it several times. (Only one {@link InternalSensorEntity} is created.
+     *
+     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     */
     @MediumTest
     public void testMultipleInsertionsSameSensor() {
         testPreConditions();
@@ -103,6 +115,11 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertEquals(1, mSensorFacade.getAllSensorEntities(session).size());
     }
 
+    /**
+     * Test the insertion of one multiple {@link InternalSensorEntity} inside the database.
+     *
+     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     */
     @MediumTest
     public void testDifferentSensorsOneSingleInsertion() {
         testPreConditions();
@@ -119,6 +136,12 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         assertTrue(mSensorFacade.getAllSensorEntities(session).contains(proximitySensorEntity));
     }
 
+    /**
+     * Test the insertion of one multiple {@link InternalSensorEntity} inside the database
+     * while this elements are not ordered.
+     *
+     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     */
     @MediumTest
     public void testDisorderedMultipleInsertion() {
         testPreConditions();
