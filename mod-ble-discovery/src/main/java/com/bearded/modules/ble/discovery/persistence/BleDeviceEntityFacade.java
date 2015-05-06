@@ -47,9 +47,9 @@ class BleDeviceEntityFacade {
      * @return {@link BleDeviceEntity} in case the device is already on the database.
      */
     @NonNull
-    BleDeviceEntity readBleDevice(@NonNull final DaoSession session,
-                                  @NonNull final String deviceAddress,
-                                  @Nullable final String advertiseName) {
+    BleDeviceEntity getBleDeviceEntity(@NonNull final DaoSession session,
+                                       @NonNull final String deviceAddress,
+                                       @Nullable final String advertiseName) {
         if (mKnownBleDevices.containsKey(deviceAddress.trim())) {
             return mKnownBleDevices.get(deviceAddress);
         }
@@ -71,7 +71,7 @@ class BleDeviceEntityFacade {
      * @return {@link java.util.List} with all the {@link BleDeviceEntity}.
      */
     @NonNull
-    List<BleDeviceEntity> obtainAllBleDevices(@NonNull final DaoSession session) {
+    List<BleDeviceEntity> getAllBleDevices(@NonNull final DaoSession session) {
         final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
         final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
         return queryBuilder.listLazy();
