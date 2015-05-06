@@ -16,48 +16,67 @@
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-
 package com.bearded.common.location;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.annotation.LocationProviderStatus;
+import com.bearded.common.time.TimeUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LocationManager implements LocationListener {
+class LocationDataListener implements LocationListener {
 
     @NonNull
-    private static final String TAG = LocationManager.class.getSimpleName();
-    @Nullable
-    private static LocationManager mInstance = null;
+    private static final String TAG = LocationDataManager.class.getSimpleName();
+    private static final long MIN_LOCATION_UPDATE_TIME_MILLISECONDS = 5 * 1000; // 5 seconds
+    private static final long MIN_DISTANCE_METERS = 10;
     @NonNull
     private final Map<String, LocationProviderWithStatus> mProviders;
+    @NonNull
+    private final LocationManager mLocationManager;
     @Nullable
     private TimedLocation mLastTimedLocation = null;
 
-    private LocationManager() {
+    LocationDataListener(@NonNull final Context context) {
         mProviders = Collections.synchronizedMap(new HashMap<String, LocationProviderWithStatus>());
+        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
 
     /**
-     * Returns the singleton class instance.
+     * Obtains the last timed location. In case the last location is obsolete, it will try to
+     * register for location updates again.
      *
-     * @return the singleton {@link LocationManager} instance.
+     * @return {@link TimedLocation} with the last location. <code>null</code> if it is unknown.
      */
-    @NonNull
-    public synchronized static LocationManager getInstance() {
-        if (mInstance == null) {
-            mInstance = new LocationManager();
+    @Nullable
+    TimedLocation getLastTimedLocation() {
+        if (mLastTimedLocation == null ||
+                TimeUtils.millisecondsFromNow(mLastTimedLocation.getTime())
+                        > MIN_LOCATION_UPDATE_TIME_MILLISECONDS * 2) {
+            registerForLocationUpdates();
         }
-        return mInstance;
+        return mLastTimedLocation;
+    }
+
+    /**
+     * Assign LocationListener to LocationManager in order to receive location updates.
+     * Acquiring provider that is used for location updates will also be covered later.
+     * Instead of LocationListener, PendingIntent can be assigned, also instead of
+     * provider name, criteria can be used, but we won't use those approaches now.
+     */
+    void registerForLocationUpdates() {
+        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(null, true),
+                MIN_LOCATION_UPDATE_TIME_MILLISECONDS, MIN_DISTANCE_METERS, this);
     }
 
     /**
@@ -65,8 +84,8 @@ public class LocationManager implements LocationListener {
      *
      * @return {@link Iterable} of {@link LocationProviderWithStatus} with all the providers.
      */
-    @Nullable
-    public Iterable<LocationProviderWithStatus> getLocationProviders() {
+    @NonNull
+    Iterable<LocationProviderWithStatus> getLocationProviders() {
         return Collections.unmodifiableCollection(mProviders.values());
     }
 
