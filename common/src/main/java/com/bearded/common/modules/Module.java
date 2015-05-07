@@ -64,11 +64,4 @@ public interface Module {
     @Nullable
     DateTime getLastSensorDataReceived();
 
-    /**
-     * Obtains the time of the last successful cloud upload.
-     *
-     * @return {@link org.joda.time.DateTime} of the last cloud upload, if available.
-     */
-    @Nullable
-    DateTime getLastCloudUploadTime();
 }
