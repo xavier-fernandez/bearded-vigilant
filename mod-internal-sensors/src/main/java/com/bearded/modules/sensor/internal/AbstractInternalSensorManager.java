@@ -27,7 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.bearded.common.modules.Module;
+import com.bearded.common.modules.AbstractCloudModule;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.internal.persistence.InternalSensorDatabaseFacade;
 
@@ -41,7 +41,7 @@ import static com.bearded.common.time.TimeUtils.millisecondsFromNow;
  * This abstract class should be inherited by all the internal sensor modules which wants
  * to listen for notifications from the default sensor for the given {@link SensorType}
  */
-abstract class AbstractInternalSensorManager implements Module, SensorEventListener {
+abstract class AbstractInternalSensorManager extends AbstractCloudModule implements SensorEventListener {
 
     private static final String TAG = AbstractInternalSensorManager.class.getSimpleName();
 
@@ -129,17 +129,16 @@ abstract class AbstractInternalSensorManager implements Module, SensorEventListe
     /**
      * {@inheritDoc}
      */
-    @Nullable
     @Override
-    public DateTime getLastCloudUploadTime() {
-        return null;
+    public void onAccuracyChanged(@NonNull final Sensor sensor, final int accuracy) {
+        Log.i(TAG, String.format("onAccuracyChanged -> Accuracy changed to %d.", accuracy));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void onAccuracyChanged(@NonNull final Sensor sensor, final int accuracy) {
-        Log.i(TAG, String.format("onAccuracyChanged -> Accuracy changed to %d.", accuracy));
+    public void pushCloudDataToTheCloud() {
+        //TODO: implement
     }
 }

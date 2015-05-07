@@ -22,11 +22,11 @@ package com.bearded.modules.ble.discovery;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.bearded.common.modules.Module;
+import com.bearded.common.modules.AbstractCloudModule;
 
 import org.joda.time.DateTime;
 
-public class BleDiscoveryModule implements Module {
+public class BleDiscoveryModule extends AbstractCloudModule {
 
     private static final String TAG = BleDiscoveryModule.class.getSimpleName();
     private static final int BLE_DISCOVERY_MODULE_VERSION = 1;
@@ -53,6 +53,7 @@ public class BleDiscoveryModule implements Module {
      */
     @Override
     public boolean isModuleEnabled() {
+        //TODO: Implement
         return false;
     }
 
@@ -62,15 +63,12 @@ public class BleDiscoveryModule implements Module {
     @Nullable
     @Override
     public DateTime getLastSensorDataReceived() {
+        //TODO: Implement
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Nullable
     @Override
-    public DateTime getLastCloudUploadTime() {
-        return null;
+    public void pushCloudDataToTheCloud() {
+        //TODO: Implement
     }
 }
