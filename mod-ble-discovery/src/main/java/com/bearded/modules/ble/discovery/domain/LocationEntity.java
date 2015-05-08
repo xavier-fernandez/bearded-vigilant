@@ -12,7 +12,6 @@ import com.google.gson.JsonPrimitive;
 
 import static com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao.Properties.Latitude;
 import static com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao.Properties.Longitude;
-
 // KEEP INCLUDES END
 
 /**
@@ -23,6 +22,10 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
     private Long id;
     private float latitude;
     private float longitude;
+    /**
+     * Not-null value.
+     */
+    private String timestamp;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -34,10 +37,11 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
         this.id = id;
     }
 
-    public LocationEntity(Long id, float latitude, float longitude) {
+    public LocationEntity(Long id, float latitude, float longitude, String timestamp) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.timestamp = timestamp;
     }
 
     public Long getId() {
@@ -62,6 +66,20 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    /**
+     * Not-null value.
+     */
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * Not-null value; ensure this value is available before it is saved to the database.
+     */
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     // KEEP METHODS - put your custom methods here

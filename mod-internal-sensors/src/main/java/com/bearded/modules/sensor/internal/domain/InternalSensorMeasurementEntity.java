@@ -29,6 +29,7 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.persi
 
     private Long id;
     private long measurement_series_id;
+    private Long location_id;
     private float sensorValue;
     /**
      * Not-null value.
@@ -39,7 +40,6 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.persi
      */
     private String endTimestamp;
     private short binSize;
-    private Long location_id;
 
     /**
      * Used to resolve relations
@@ -68,14 +68,14 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.persi
         this.id = id;
     }
 
-    public InternalSensorMeasurementEntity(Long id, long measurement_series_id, float sensorValue, String startTimestamp, String endTimestamp, short binSize, Long location_id) {
+    public InternalSensorMeasurementEntity(Long id, long measurement_series_id, Long location_id, float sensorValue, String startTimestamp, String endTimestamp, short binSize) {
         this.id = id;
         this.measurement_series_id = measurement_series_id;
+        this.location_id = location_id;
         this.sensorValue = sensorValue;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
         this.binSize = binSize;
-        this.location_id = location_id;
     }
 
     /**
@@ -100,6 +100,14 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.persi
 
     public void setMeasurement_series_id(long measurement_series_id) {
         this.measurement_series_id = measurement_series_id;
+    }
+
+    public Long getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(Long location_id) {
+        this.location_id = location_id;
     }
 
     public float getSensorValue() {
@@ -144,14 +152,6 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.persi
 
     public void setBinSize(short binSize) {
         this.binSize = binSize;
-    }
-
-    public Long getLocation_id() {
-        return location_id;
-    }
-
-    public void setLocation_id(Long location_id) {
-        this.location_id = location_id;
     }
 
     /**

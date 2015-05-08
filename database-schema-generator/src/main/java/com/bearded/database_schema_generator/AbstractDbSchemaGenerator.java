@@ -23,8 +23,6 @@ import android.support.annotation.NonNull;
 import com.bearded.common.persistance.ParseableJson;
 
 import de.greenrobot.daogenerator.Entity;
-import de.greenrobot.daogenerator.Index;
-import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
 
 /**
@@ -60,18 +58,15 @@ abstract class AbstractDbSchemaGenerator {
      * _id          INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * latitude     FLOAT      NOTNULL,
      * longitude    FLOAT      NOTNULL,
+     * timestamp    TEXT       NOTNULL
      * );
-     * CREATE INDEX index ON location (latitude, longitude);
      */
     @NonNull
     static Entity createLocationEntity(@NonNull final Schema dbSchema) {
         final Entity metadataEntity = createEntity(dbSchema, "Location");
-        final Property latitudeProperty = metadataEntity.addFloatProperty("latitude").notNull().getProperty();
-        final Property longitudeProperty = metadataEntity.addFloatProperty("longitude").notNull().getProperty();
-        final Index index = new Index();
-        index.addProperty(latitudeProperty);
-        index.addProperty(longitudeProperty);
-        metadataEntity.addIndex(index);
+        metadataEntity.addFloatProperty("latitude").notNull();
+        metadataEntity.addFloatProperty("longitude").notNull();
+        metadataEntity.addStringProperty("timestamp").notNull();
         return metadataEntity;
     }
 }

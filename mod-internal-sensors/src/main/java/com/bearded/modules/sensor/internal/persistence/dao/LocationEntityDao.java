@@ -38,10 +38,8 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'Location' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'LATITUDE' REAL NOT NULL ," + // 1: latitude
-                "'LONGITUDE' REAL NOT NULL );"); // 2: longitude
-        // Add Indexes
-        db.execSQL("CREATE INDEX " + constraint + "IDX_Location_LATITUDE_LONGITUDE ON Location" +
-                " (LATITUDE,LONGITUDE);");
+                "'LONGITUDE' REAL NOT NULL ," + // 2: longitude
+                "'TIMESTAMP' TEXT NOT NULL );"); // 3: timestamp
     }
 
     /**
@@ -65,6 +63,7 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
         }
         stmt.bindDouble(2, entity.getLatitude());
         stmt.bindDouble(3, entity.getLongitude());
+        stmt.bindString(4, entity.getTimestamp());
     }
 
     /**
@@ -83,7 +82,8 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
         LocationEntity entity = new LocationEntity( //
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
                 cursor.getFloat(offset + 1), // latitude
-                cursor.getFloat(offset + 2) // longitude
+                cursor.getFloat(offset + 2), // longitude
+                cursor.getString(offset + 3) // timestamp
         );
         return entity;
     }
@@ -96,6 +96,7 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setLatitude(cursor.getFloat(offset + 1));
         entity.setLongitude(cursor.getFloat(offset + 2));
+        entity.setTimestamp(cursor.getString(offset + 3));
     }
 
     /**
@@ -135,6 +136,7 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Latitude = new Property(1, float.class, "latitude", false, "LATITUDE");
         public final static Property Longitude = new Property(2, float.class, "longitude", false, "LONGITUDE");
+        public final static Property Timestamp = new Property(3, String.class, "timestamp", false, "TIMESTAMP");
     }
 
 }

@@ -47,11 +47,11 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         db.execSQL("CREATE TABLE " + constraint + "'InternalSensorMeasurement' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'MEASUREMENT_SERIES_ID' INTEGER NOT NULL ," + // 1: measurement_series_id
-                "'SENSOR_VALUE' REAL NOT NULL ," + // 2: sensorValue
-                "'START_TIMESTAMP' TEXT NOT NULL ," + // 3: startTimestamp
-                "'END_TIMESTAMP' TEXT NOT NULL ," + // 4: endTimestamp
-                "'BIN_SIZE' INTEGER NOT NULL ," + // 5: binSize
-                "'LOCATION_ID' INTEGER);"); // 6: location_id
+                "'LOCATION_ID' INTEGER," + // 2: location_id
+                "'SENSOR_VALUE' REAL NOT NULL ," + // 3: sensorValue
+                "'START_TIMESTAMP' TEXT NOT NULL ," + // 4: startTimestamp
+                "'END_TIMESTAMP' TEXT NOT NULL ," + // 5: endTimestamp
+                "'BIN_SIZE' INTEGER NOT NULL );"); // 6: binSize
     }
 
     /**
@@ -74,15 +74,15 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getMeasurement_series_id());
-        stmt.bindDouble(3, entity.getSensorValue());
-        stmt.bindString(4, entity.getStartTimestamp());
-        stmt.bindString(5, entity.getEndTimestamp());
-        stmt.bindLong(6, entity.getBinSize());
 
         Long location_id = entity.getLocation_id();
         if (location_id != null) {
-            stmt.bindLong(7, location_id);
+            stmt.bindLong(3, location_id);
         }
+        stmt.bindDouble(4, entity.getSensorValue());
+        stmt.bindString(5, entity.getStartTimestamp());
+        stmt.bindString(6, entity.getEndTimestamp());
+        stmt.bindLong(7, entity.getBinSize());
     }
 
     @Override
@@ -107,11 +107,11 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         InternalSensorMeasurementEntity entity = new InternalSensorMeasurementEntity( //
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
                 cursor.getLong(offset + 1), // measurement_series_id
-                cursor.getFloat(offset + 2), // sensorValue
-                cursor.getString(offset + 3), // startTimestamp
-                cursor.getString(offset + 4), // endTimestamp
-                cursor.getShort(offset + 5), // binSize
-                cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6) // location_id
+                cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // location_id
+                cursor.getFloat(offset + 3), // sensorValue
+                cursor.getString(offset + 4), // startTimestamp
+                cursor.getString(offset + 5), // endTimestamp
+                cursor.getShort(offset + 6) // binSize
         );
         return entity;
     }
@@ -123,11 +123,11 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
     public void readEntity(Cursor cursor, InternalSensorMeasurementEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMeasurement_series_id(cursor.getLong(offset + 1));
-        entity.setSensorValue(cursor.getFloat(offset + 2));
-        entity.setStartTimestamp(cursor.getString(offset + 3));
-        entity.setEndTimestamp(cursor.getString(offset + 4));
-        entity.setBinSize(cursor.getShort(offset + 5));
-        entity.setLocation_id(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
+        entity.setLocation_id(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setSensorValue(cursor.getFloat(offset + 3));
+        entity.setStartTimestamp(cursor.getString(offset + 4));
+        entity.setEndTimestamp(cursor.getString(offset + 5));
+        entity.setBinSize(cursor.getShort(offset + 6));
     }
 
     /**
@@ -267,11 +267,11 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Measurement_series_id = new Property(1, long.class, "measurement_series_id", false, "MEASUREMENT_SERIES_ID");
-        public final static Property SensorValue = new Property(2, float.class, "sensorValue", false, "SENSOR_VALUE");
-        public final static Property StartTimestamp = new Property(3, String.class, "startTimestamp", false, "START_TIMESTAMP");
-        public final static Property EndTimestamp = new Property(4, String.class, "endTimestamp", false, "END_TIMESTAMP");
-        public final static Property BinSize = new Property(5, short.class, "binSize", false, "BIN_SIZE");
-        public final static Property Location_id = new Property(6, Long.class, "location_id", false, "LOCATION_ID");
+        public final static Property Location_id = new Property(2, Long.class, "location_id", false, "LOCATION_ID");
+        public final static Property SensorValue = new Property(3, float.class, "sensorValue", false, "SENSOR_VALUE");
+        public final static Property StartTimestamp = new Property(4, String.class, "startTimestamp", false, "START_TIMESTAMP");
+        public final static Property EndTimestamp = new Property(5, String.class, "endTimestamp", false, "END_TIMESTAMP");
+        public final static Property BinSize = new Property(6, short.class, "binSize", false, "BIN_SIZE");
     }
 
 }
