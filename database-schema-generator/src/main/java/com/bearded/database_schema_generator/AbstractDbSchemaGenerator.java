@@ -55,18 +55,22 @@ abstract class AbstractDbSchemaGenerator {
 
     /**
      * CREATE TABLE location (
-     * _id          INTEGER    PRIMARY KEY   AUTOINCREMENT,
-     * latitude     FLOAT      NOTNULL,
-     * longitude    FLOAT      NOTNULL,
-     * timestamp    TEXT       NOTNULL
+     * _id                    INTEGER    PRIMARY KEY   AUTOINCREMENT,
+     * latitude               FLOAT      NOTNULL,
+     * longitude              FLOAT      NOTNULL,
+     * timestamp              TEXT       NOTNULL,
+     * accuracyInMeters       FLOAT      NOTNULL,
+     * speedInMetersSecond    FLOAT      NOTNULL
      * );
      */
     @NonNull
     static Entity createLocationEntity(@NonNull final Schema dbSchema) {
         final Entity metadataEntity = createEntity(dbSchema, "Location");
-        metadataEntity.addFloatProperty("latitude").notNull();
-        metadataEntity.addFloatProperty("longitude").notNull();
+        metadataEntity.addDoubleProperty("latitude").notNull();
+        metadataEntity.addDoubleProperty("longitude").notNull();
         metadataEntity.addStringProperty("timestamp").notNull();
+        metadataEntity.addFloatProperty("accuracyInMeters");
+        metadataEntity.addFloatProperty("speedInMetersSecond");
         return metadataEntity;
     }
 }

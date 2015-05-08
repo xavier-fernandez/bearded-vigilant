@@ -12,6 +12,7 @@ import com.google.gson.JsonPrimitive;
 
 import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao.Properties.Latitude;
 import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao.Properties.Longitude;
+import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao.Properties.Timestamp;
 // KEEP INCLUDES END
 
 /**
@@ -20,12 +21,14 @@ import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntity
 public class LocationEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<LocationEntity> {
 
     private Long id;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
     /**
      * Not-null value.
      */
     private String timestamp;
+    private Float accuracyInMeters;
+    private Float speedInMetersSecond;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -37,11 +40,13 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
         this.id = id;
     }
 
-    public LocationEntity(Long id, float latitude, float longitude, String timestamp) {
+    public LocationEntity(Long id, double latitude, double longitude, String timestamp, Float accuracyInMeters, Float speedInMetersSecond) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.timestamp = timestamp;
+        this.accuracyInMeters = accuracyInMeters;
+        this.speedInMetersSecond = speedInMetersSecond;
     }
 
     public Long getId() {
@@ -52,19 +57,19 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
         this.id = id;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -80,6 +85,22 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
      */
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Float getAccuracyInMeters() {
+        return accuracyInMeters;
+    }
+
+    public void setAccuracyInMeters(Float accuracyInMeters) {
+        this.accuracyInMeters = accuracyInMeters;
+    }
+
+    public Float getSpeedInMetersSecond() {
+        return speedInMetersSecond;
+    }
+
+    public void setSpeedInMetersSecond(Float speedInMetersSecond) {
+        this.speedInMetersSecond = speedInMetersSecond;
     }
 
     // KEEP METHODS - put your custom methods here
@@ -122,6 +143,7 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
         final JsonObject jsonObject = new JsonObject();
         jsonObject.add(Latitude.name, new JsonPrimitive(this.latitude));
         jsonObject.add(Longitude.name, new JsonPrimitive(this.latitude));
+        jsonObject.add(Timestamp.name, new JsonPrimitive(this.timestamp));
         return jsonObject;
     }
 

@@ -39,7 +39,9 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'LATITUDE' REAL NOT NULL ," + // 1: latitude
                 "'LONGITUDE' REAL NOT NULL ," + // 2: longitude
-                "'TIMESTAMP' TEXT NOT NULL );"); // 3: timestamp
+                "'TIMESTAMP' TEXT NOT NULL ," + // 3: timestamp
+                "'ACCURACY_IN_METERS' REAL," + // 4: accuracyInMeters
+                "'SPEED_IN_METERS_SECOND' REAL);"); // 5: speedInMetersSecond
     }
 
     /**
@@ -64,6 +66,16 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
         stmt.bindDouble(2, entity.getLatitude());
         stmt.bindDouble(3, entity.getLongitude());
         stmt.bindString(4, entity.getTimestamp());
+
+        Float accuracyInMeters = entity.getAccuracyInMeters();
+        if (accuracyInMeters != null) {
+            stmt.bindDouble(5, accuracyInMeters);
+        }
+
+        Float speedInMetersSecond = entity.getSpeedInMetersSecond();
+        if (speedInMetersSecond != null) {
+            stmt.bindDouble(6, speedInMetersSecond);
+        }
     }
 
     /**
@@ -81,9 +93,11 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
     public LocationEntity readEntity(Cursor cursor, int offset) {
         LocationEntity entity = new LocationEntity( //
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-                cursor.getFloat(offset + 1), // latitude
-                cursor.getFloat(offset + 2), // longitude
-                cursor.getString(offset + 3) // timestamp
+                cursor.getDouble(offset + 1), // latitude
+                cursor.getDouble(offset + 2), // longitude
+                cursor.getString(offset + 3), // timestamp
+                cursor.isNull(offset + 4) ? null : cursor.getFloat(offset + 4), // accuracyInMeters
+                cursor.isNull(offset + 5) ? null : cursor.getFloat(offset + 5) // speedInMetersSecond
         );
         return entity;
     }
@@ -94,9 +108,11 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
     @Override
     public void readEntity(Cursor cursor, LocationEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setLatitude(cursor.getFloat(offset + 1));
-        entity.setLongitude(cursor.getFloat(offset + 2));
+        entity.setLatitude(cursor.getDouble(offset + 1));
+        entity.setLongitude(cursor.getDouble(offset + 2));
         entity.setTimestamp(cursor.getString(offset + 3));
+        entity.setAccuracyInMeters(cursor.isNull(offset + 4) ? null : cursor.getFloat(offset + 4));
+        entity.setSpeedInMetersSecond(cursor.isNull(offset + 5) ? null : cursor.getFloat(offset + 5));
     }
 
     /**
@@ -134,9 +150,11 @@ public class LocationEntityDao extends AbstractDao<LocationEntity, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Latitude = new Property(1, float.class, "latitude", false, "LATITUDE");
-        public final static Property Longitude = new Property(2, float.class, "longitude", false, "LONGITUDE");
+        public final static Property Latitude = new Property(1, double.class, "latitude", false, "LATITUDE");
+        public final static Property Longitude = new Property(2, double.class, "longitude", false, "LONGITUDE");
         public final static Property Timestamp = new Property(3, String.class, "timestamp", false, "TIMESTAMP");
+        public final static Property AccuracyInMeters = new Property(4, Float.class, "accuracyInMeters", false, "ACCURACY_IN_METERS");
+        public final static Property SpeedInMetersSecond = new Property(5, Float.class, "speedInMetersSecond", false, "SPEED_IN_METERS_SECOND");
     }
 
 }
