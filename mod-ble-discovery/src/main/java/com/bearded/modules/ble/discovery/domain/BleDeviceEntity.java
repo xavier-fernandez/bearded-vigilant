@@ -16,7 +16,7 @@ import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityD
 /**
  * Entity mapped to table BleDevice.
  */
-public class BleDeviceEntity implements com.bearded.common.database.ParseableJson, java.lang.Comparable<BleDeviceEntity> {
+public class BleDeviceEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<BleDeviceEntity> {
 
     private Long id;
     /**

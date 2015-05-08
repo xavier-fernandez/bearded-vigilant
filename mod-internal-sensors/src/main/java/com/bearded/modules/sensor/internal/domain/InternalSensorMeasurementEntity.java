@@ -25,7 +25,7 @@ import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensor
 /**
  * Entity mapped to table InternalSensorMeasurement.
  */
-public class InternalSensorMeasurementEntity implements com.bearded.common.database.ParseableJson, java.lang.Comparable<InternalSensorMeasurementEntity> {
+public class InternalSensorMeasurementEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<InternalSensorMeasurementEntity> {
 
     private Long id;
     private long measurement_series_id;

@@ -17,7 +17,7 @@ import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntity
 /**
  * Entity mapped to table Location.
  */
-public class LocationEntity implements com.bearded.common.database.ParseableJson, java.lang.Comparable<LocationEntity> {
+public class LocationEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<LocationEntity> {
 
     private Long id;
     private float latitude;

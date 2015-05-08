@@ -24,7 +24,7 @@ import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDa
 /**
  * Entity mapped to table BleEvent.
  */
-public class BleEventEntity implements com.bearded.common.database.ParseableJson, java.lang.Comparable<BleEventEntity> {
+public class BleEventEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<BleEventEntity> {
 
     private Long id;
     private long eventSeriesId;

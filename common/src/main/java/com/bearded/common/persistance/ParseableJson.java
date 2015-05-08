@@ -16,7 +16,7 @@
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
-package com.bearded.common.database;
+package com.bearded.common.persistance;
 
 import android.support.annotation.NonNull;
 

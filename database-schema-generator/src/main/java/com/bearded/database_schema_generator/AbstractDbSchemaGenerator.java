@@ -20,7 +20,7 @@ package com.bearded.database_schema_generator;
 
 import android.support.annotation.NonNull;
 
-import com.bearded.common.database.ParseableJson;
+import com.bearded.common.persistance.ParseableJson;
 
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Index;
