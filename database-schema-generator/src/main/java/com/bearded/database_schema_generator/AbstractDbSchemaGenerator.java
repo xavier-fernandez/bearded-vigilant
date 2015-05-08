@@ -59,8 +59,8 @@ abstract class AbstractDbSchemaGenerator {
      * latitude               FLOAT      NOTNULL,
      * longitude              FLOAT      NOTNULL,
      * timestamp              TEXT       NOTNULL,
-     * accuracyInMeters       FLOAT      NOTNULL,
-     * speedInMetersSecond    FLOAT      NOTNULL
+     * accuracyInMeters       FLOAT,
+     * speedInMetersSecond    FLOAT
      * );
      */
     @NonNull
