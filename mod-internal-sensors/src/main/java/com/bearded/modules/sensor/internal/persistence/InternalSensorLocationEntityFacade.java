@@ -29,8 +29,13 @@ import com.bearded.common.location.TimedLocation;
 import com.bearded.common.time.TimeUtils;
 import com.bearded.modules.sensor.internal.domain.LocationEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
+import com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao;
 
 import org.joda.time.DateTime;
+
+import de.greenrobot.dao.query.QueryBuilder;
+
+import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao.Properties.Id;
 
 class InternalSensorLocationEntityFacade {
 
@@ -90,5 +95,21 @@ class InternalSensorLocationEntityFacade {
         session.insert(locationEntity);
         mLastInsertedLocationTime = DateTime.now();
         return locationEntity;
+    }
+
+    /**
+     * Removes all the outdated location entities from the database.
+     *
+     * @param session needed to purge all the outdated locations from the database.
+     */
+    void purgeAllOutdatedLocationEntities(@NonNull final DaoSession session) {
+        final LocationEntityDao dao = session.getLocationEntityDao();
+        final QueryBuilder<LocationEntity> queryBuilder = dao.queryBuilder();
+        if (mLastInsertedLocationEntity != null) {
+            queryBuilder.where(Id.notEq(mLastInsertedLocationEntity.getId()));
+        }
+        for (final LocationEntity outdatedLocation : queryBuilder.list()) {
+            session.delete(outdatedLocation);
+        }
     }
 }
