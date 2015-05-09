@@ -17,6 +17,7 @@ import de.greenrobot.dao.DaoException;
 
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.BinSize;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.EndTimestamp;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.Location_id;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.SensorValue;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.StartTimestamp;
 
@@ -259,6 +260,8 @@ public class InternalSensorMeasurementEntity implements com.bearded.common.persi
     @Override
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
+        jsonObject.add(Location_id.name, (getLocationEntity() == null)
+                ? null : getLocationEntity().toJsonObject());
         jsonObject.add(StartTimestamp.name, new JsonPrimitive(this.startTimestamp));
         jsonObject.add(EndTimestamp.name, new JsonPrimitive(this.endTimestamp));
         jsonObject.add(SensorValue.name, new JsonPrimitive(this.sensorValue));
