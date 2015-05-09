@@ -26,44 +26,61 @@ import android.util.Log;
 
 import com.bearded.common.location.LocationDataManager;
 import com.bearded.common.location.TimedLocation;
+import com.bearded.common.time.TimeUtils;
 import com.bearded.modules.sensor.internal.domain.LocationEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 
-import java.util.Stack;
+import org.joda.time.DateTime;
 
 class InternalSensorLocationEntityFacade {
 
     @NonNull
     private static final String TAG = InternalSensorLocationEntityFacade.class.getSimpleName();
-    @NonNull
-    private final Stack<TimedLocation> mLocationBuffer = new Stack<>();
+    private static final int LOCATION_BIN_SIZE_MS = 15 * 1000; // 15 seconds
     @Nullable
-    private LocationEntity mLastLocation = null;
+    private LocationEntity mLastInsertedLocationEntity = null;
+    @Nullable
+    private DateTime mLastInsertedLocationTime;
 
+    /**
+     * Obtains the last inserted {@link LocationEntity}.
+     * If the last {@link LocationEntity} is null or its obsolete it insert a new location entity.
+     *
+     * @param session needed to insert a new location entity, if necessary.
+     * @return {@link LocationEntity} if an up to date location is found.
+     */
     @Nullable
     LocationEntity getActiveLocation(@NonNull final DaoSession session) {
-        if (mLastLocation == null) {
+        final TimedLocation lastLocation = LocationDataManager.getInstance().getLastTimedLocation();
+        if (lastLocation == null) {
+            return null;
+        }
+        if (mLastInsertedLocationTime == null) {
             final TimedLocation location = LocationDataManager.getInstance().getLastTimedLocation();
             if (location == null) {
                 Log.w(TAG, "getActiveLocation -> No valid location found.");
                 return null;
             }
-            insertLocation(session, location);
+            return insertLocation(session, location);
         }
-
-        return null;
+        if (TimeUtils.millisecondsFromNow(mLastInsertedLocationTime) > LOCATION_BIN_SIZE_MS
+                && TimeUtils.millisecondsFromNow(lastLocation.getTime()) < LOCATION_BIN_SIZE_MS) {
+            return insertLocation(session, lastLocation);
+        }
+        return mLastInsertedLocationEntity;
     }
 
     /**
      * Inserts a given location in the database.
-     * @param session needed to insert the location inside the database.
+     *
+     * @param session       needed to insert the location inside the database.
      * @param timedLocation that will be inserted inside the database.
      * @return the inserted {@link LocationEntity}
      */
     @NonNull
     private LocationEntity insertLocation(@NonNull final DaoSession session,
                                           @NonNull final TimedLocation timedLocation) {
-        Log.d(TAG, "insertLocation -> Inserting location %s.");
+        Log.d(TAG, String.format("insertLocation -> Inserting location %s.", timedLocation));
         final LocationEntity locationEntity = new LocationEntity();
         final Location location = timedLocation.getLocation();
         locationEntity.setLatitude(location.getLatitude());
@@ -71,6 +88,7 @@ class InternalSensorLocationEntityFacade {
         locationEntity.setAccuracyInMeters(location.getAccuracy());
         locationEntity.setSpeedInMetersSecond(location.getSpeed());
         session.insert(locationEntity);
+        mLastInsertedLocationTime = DateTime.now();
         return locationEntity;
     }
 }
