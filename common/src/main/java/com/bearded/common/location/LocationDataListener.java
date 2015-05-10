@@ -75,8 +75,14 @@ class LocationDataListener implements LocationListener {
      * provider name, criteria can be used, but we won't use those approaches now.
      */
     void registerForLocationUpdates() {
-        mLocationManager.requestLocationUpdates(mLocationManager.getBestProvider(null, true),
-                MIN_LOCATION_UPDATE_TIME_MILLISECONDS, MIN_DISTANCE_METERS, this);
+        if (mLocationManager.getAllProviders().isEmpty()) {
+            Log.e(TAG, "registerForLocationUpdates -> Can not find location providers.");
+        } else {
+            for (final String locationProvider : mLocationManager.getAllProviders()) {
+                mLocationManager.requestLocationUpdates(locationProvider,
+                        MIN_LOCATION_UPDATE_TIME_MILLISECONDS, MIN_DISTANCE_METERS, this);
+            }
+        }
     }
 
     /**
