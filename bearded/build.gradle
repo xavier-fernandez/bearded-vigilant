@@ -16,5 +16,4 @@ android {
 dependencies {
     compile project(':common')
     compile project(':mod-internal-sensors')
-
 }
