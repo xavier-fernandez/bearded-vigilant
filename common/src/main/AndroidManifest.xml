@@ -4,6 +4,8 @@
     <!-- Enables the access to the GPS location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- Enables the access to the network state -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- Declares an android application.-->
     <application android:allowBackup="true"/>
 </manifest>
