@@ -75,7 +75,7 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
         new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
         final InternalSensorMeasurementEntityFacade measurementFacade =
                 new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
-        assertEquals(0, measurementFacade.obtainAllMeasurementsFromSeries(session, mSeriesEntities[0]).size());
+        assertEquals(0, measurementFacade.getAllMeasurementsFromSeries(session, mSeriesEntities[0]).size());
     }
 
     /**
@@ -88,10 +88,10 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
         final InternalSensorMeasurementEntityFacade measurementFacade =
                 new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
         // Adds a measurement
-        final float testValue = 50f;
+        final float testValue = 30f;
         measurementFacade.addMeasurement(session, mSeriesEntities[0], testValue);
         final List<InternalSensorMeasurementEntity> result =
-                measurementFacade.obtainAllMeasurementsFromSeries(session, mSeriesEntities[0]);
+                measurementFacade.getAllMeasurementsFromSeries(session, mSeriesEntities[0]);
         assertEquals(1, result.size());
         assertEquals(testValue, result.get(0).getSensorValue());
     }
@@ -102,23 +102,36 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
      * @see InternalSensorMeasurementEntityFacade#addMeasurement(DaoSession, InternalSensorMeasurementSeriesEntity, float)
      */
     public void testAddMultipleMeasurementsSameBean() {
+        // Since the first value will always be inserted, we will insert and wait for testing other elements.
         final DaoSession session = mDatabaseConnector.getSession();
         final InternalSensorMeasurementEntityFacade measurementFacade =
                 new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
-        //Checks if the database is empty.
-        final float midValue = 51f;
+        // A value is inserted, being the first value the value will be written inside the database.
+        final float testValue = 30f;
+        measurementFacade.addMeasurement(session, mSeriesEntities[0], testValue);
+        measurementFacade.storeAllOpenMeasurements(session);
+        // Checks if the database is empty.
+        final float midValue = testValue + 21f;
         final float[] testValues = new float[]{midValue - 1, midValue, midValue + 1};
-        for (float testValue : testValues) {
-            measurementFacade.addMeasurement(session, mSeriesEntities[0], testValue);
+        for (float value : testValues) {
+            measurementFacade.addMeasurement(session, mSeriesEntities[0], value);
         }
+        measurementFacade.storeAllOpenMeasurements(session);
+        // Obtains all the database elements.
         final List<InternalSensorMeasurementEntity> result =
-                measurementFacade.obtainAllMeasurementsFromSeries(session, mSeriesEntities[0]);
-        assertEquals(1, result.size());
-        assertEquals(midValue, result.get(0).getSensorValue());
+                measurementFacade.getAllMeasurementsFromSeries(session, mSeriesEntities[0]);
+        // Checks if two results are available. (One measurement bean, and the tested bin)
+        assertEquals(2, result.size());
+        // Checks if the result order is correct.
+        assertTrue(result.get(1).compareTo(result.get(0)) > 0);
+        // Checks if the bin size is correct.
+        assertEquals(testValues.length, result.get(1).getBinSize());
+        // Check if the data wrapping is correct.
+        assertEquals(midValue, result.get(1).getSensorValue());
     }
 
     /**
-     * Test the following method for the insertion of one single measurement belonging to different beans.
+     * Test the following method for the insertion of one single measurement belonging to different series.
      *
      * @see InternalSensorMeasurementEntityFacade#addMeasurement(DaoSession, InternalSensorMeasurementSeriesEntity, float)
      */
@@ -128,18 +141,11 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
                 new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
         // Adds a measurement
         final float testValue = 50f;
-        measurementFacade.addMeasurement(session, mSeriesEntities[1], testValue);
-        while (true) {
-            try {
-                Thread.sleep(MEASUREMENT_ENTITY_TIMEOUT + 1);
-                break;
-            } catch (final InterruptedException ignored) {
-            }
-        }
-        for (int i = 0; i < 3; i++) {
+        for (final InternalSensorMeasurementSeriesEntity mSeriesEntity : mSeriesEntities) {
+            measurementFacade.addMeasurement(session, mSeriesEntity, testValue);
             final List<InternalSensorMeasurementEntity> result =
-                    measurementFacade.obtainAllMeasurementsFromSeries(session, mSeriesEntities[0]);
-            assertEquals(i + 1, result.size());
+                    measurementFacade.getAllMeasurementsFromSeries(session, mSeriesEntity);
+            assertEquals(1, result.size());
         }
     }
 

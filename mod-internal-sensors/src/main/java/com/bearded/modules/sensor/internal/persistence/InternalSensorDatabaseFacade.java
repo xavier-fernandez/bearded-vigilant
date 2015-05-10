@@ -98,7 +98,7 @@ public class InternalSensorDatabaseFacade {
                     Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing series id with name: %s.", series.getId()));
                     final JsonObject seriesJsonObject = series.toJsonObject();
                     final JsonArray seriesMeasurementsArray = new JsonArray();
-                    for (final InternalSensorMeasurementEntity measurementEntity : mMeasurementEntityFacade.obtainAllMeasurementsFromSeries(session, series)) {
+                    for (final InternalSensorMeasurementEntity measurementEntity : mMeasurementEntityFacade.getAllMeasurementsFromSeries(session, series)) {
                         final JsonObject measurementJsonObject = measurementEntity.toJsonObject();
                         Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing measurement: %s.", measurementJsonObject.toString()));
                         seriesMeasurementsArray.add(measurementJsonObject);

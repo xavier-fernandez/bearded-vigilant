@@ -70,28 +70,44 @@ class InternalSensorMeasurementEntityFacade {
         if (measurements == null) {
             //The first inserted element will be written inside the database.
             measurements = new SensorMeasurementsBuffer();
-            mSensorMeasurements.put(series, measurements);
             measurements.addMeasurement(measurement);
-            storeMeasurement(session, measurements);
+            mSensorMeasurements.put(series, measurements);
+            storeMeasurement(session, series, measurements);
         } else {
             measurements.addMeasurement(measurement);
             if (TimeUtils.millisecondsFromNow(measurements.firstElementTime) > mTimeoutMillis) {
-                storeMeasurement(session, measurements);
+                storeMeasurement(session, series, measurements);
             }
         }
     }
 
     private void storeMeasurement(@NonNull final DaoSession session,
+                                  @NonNull final InternalSensorMeasurementSeriesEntity series,
                                   @NonNull final SensorMeasurementsBuffer measurements) {
         final InternalSensorMeasurementEntity measurementEntity = new InternalSensorMeasurementEntity();
         measurementEntity.setStartTimestamp(TimeUtils.timestampToISOString(measurements.firstElementTime));
-        measurementEntity.setEndTimestamp(TimeUtils.timestampToISOString(DateTime.now()));
+        measurementEntity.setEndTimestamp(TimeUtils.nowToISOString());
         measurementEntity.setBinSize(measurements.getBinSize());
         measurementEntity.setSensorValue(measurements.getMidSensorValue());
-        session.getInternalSensorMeasurementEntityDao().insert(measurementEntity);
+        measurementEntity.setInternalSensorMeasurementSeriesEntity(series);
+        session.insert(measurementEntity);
         measurements.clear();
         Log.d(TAG, String.format("addMeasurement -> The following measurement was inserted in the database -> %s",
                 measurementEntity.toJsonObject().toString()));
+    }
+
+    /**
+     * Inserts all open measurements buffer inside the database.
+     *
+     * @param session needed to insert all open measurements inside the database.
+     */
+    void storeAllOpenMeasurements(@NonNull final DaoSession session) {
+        for (final InternalSensorMeasurementSeriesEntity seriesEntity : mSensorMeasurements.keySet()) {
+            final SensorMeasurementsBuffer measurementsBuffer = mSensorMeasurements.get(seriesEntity);
+            if (measurementsBuffer.getBinSize() > 0) {
+                storeMeasurement(session, seriesEntity, measurementsBuffer);
+            }
+        }
     }
 
     /**
@@ -101,12 +117,14 @@ class InternalSensorMeasurementEntityFacade {
      * @param series  that needs to retrieve all its measurements.
      * @return {@link List} of {@link InternalSensorMeasurementEntity}
      */
-    List<InternalSensorMeasurementEntity> obtainAllMeasurementsFromSeries(@NonNull final DaoSession session,
-                                                                          @NonNull final InternalSensorMeasurementSeriesEntity series) {
+    List<InternalSensorMeasurementEntity> getAllMeasurementsFromSeries(@NonNull final DaoSession session,
+                                                                       @NonNull final InternalSensorMeasurementSeriesEntity series) {
         final InternalSensorMeasurementEntityDao dao = session.getInternalSensorMeasurementEntityDao();
         final QueryBuilder<InternalSensorMeasurementEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(InternalSensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));
-        return queryBuilder.listLazy();
+        final List<InternalSensorMeasurementEntity> result = queryBuilder.list();
+        Collections.sort(result);
+        return result;
     }
 
     private static class SensorMeasurementsBuffer {
