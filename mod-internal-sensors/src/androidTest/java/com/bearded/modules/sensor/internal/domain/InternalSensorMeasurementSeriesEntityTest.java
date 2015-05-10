@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 import static com.bearded.common.time.TimeUtils.timestampToISOString;
-
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementSeriesEntityDao.Properties.EndTimestamp;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementSeriesEntityDao.Properties.StartTimestamp;
 
@@ -47,13 +46,12 @@ public class InternalSensorMeasurementSeriesEntityTest extends AbstractDaoTestLo
      * Test if the created sensor entities have all the inserted attributes.
      */
     @SmallTest
-    public void testEntityAttributes(){
+    public void testEntityAttributes() {
         final InternalSensorMeasurementSeriesEntity seriesEntity = createEntity(1l);
         assertEquals(seriesEntity.getStartTimestamp(), START_TIMESTAMP);
         assertEquals(seriesEntity.getEndTimestamp(), END_TIMESTAMP);
         assertNotNull(seriesEntity.getInternalSensorEntity());
     }
-
 
     /**
      * Test the @see InternalSensorMeasurementSeriesEntity#toJson
