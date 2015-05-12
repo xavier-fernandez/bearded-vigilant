@@ -48,7 +48,7 @@ public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao,
     }
 
     /**
-     * Test if the created sensor entities have all the inserted attributes.
+     * Test if the entity attributes have been set properly.
      */
     @MediumTest
     public void testEntityAttributes() {
