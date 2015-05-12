@@ -34,7 +34,7 @@ public class BleDeviceEntityTest extends AbstractDaoTestLongPk<BleDeviceEntityDa
         entity.setAdvertiseName(TEST_ADVERTISE_NAME);
         return entity;
     }
-    
+
     /**
      * Test if the entity attributes have been inserted properly.
      */
@@ -48,7 +48,7 @@ public class BleDeviceEntityTest extends AbstractDaoTestLongPk<BleDeviceEntityDa
     }
 
     /**
-     * Test the @see InternalSensorEntity#toJson
+     * Test the @see BleDeviceEntity#toJson
      */
     @SmallTest
     public void testToJson() {
