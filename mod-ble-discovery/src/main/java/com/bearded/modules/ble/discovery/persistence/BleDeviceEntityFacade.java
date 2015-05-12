@@ -59,7 +59,13 @@ class BleDeviceEntityFacade {
         if (advertiseName != null) {
             queryBuilder.where(BleDeviceEntityDao.Properties.AdvertiseName.eq(deviceAddress.trim()));
         }
-        final BleDeviceEntity device = queryBuilder.uniqueOrThrow();
+        BleDeviceEntity device = queryBuilder.unique();
+        if (device == null) {
+            device = new BleDeviceEntity();
+            device.setDeviceAddress(deviceAddress);
+            device.setAdvertiseName(advertiseName);
+            session.insert(device);
+        }
         mKnownBleDevices.put(device.getDeviceAddress(), device);
         return device;
     }
