@@ -10,8 +10,11 @@ import android.support.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import static com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao.Properties.AccuracyInMeters;
 import static com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao.Properties.Latitude;
 import static com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao.Properties.Longitude;
+import static com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao.Properties.SpeedInMetersSecond;
+import static com.bearded.modules.ble.discovery.persistence.dao.LocationEntityDao.Properties.Timestamp;
 // KEEP INCLUDES END
 
 /**
@@ -141,7 +144,12 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.add(Latitude.name, new JsonPrimitive(this.latitude));
-        jsonObject.add(Longitude.name, new JsonPrimitive(this.latitude));
+        jsonObject.add(Longitude.name, new JsonPrimitive(this.longitude));
+        jsonObject.add(Timestamp.name, new JsonPrimitive(this.timestamp));
+        jsonObject.add(AccuracyInMeters.name, (accuracyInMeters == null)
+                ? null : new JsonPrimitive(this.accuracyInMeters));
+        jsonObject.add(SpeedInMetersSecond.name, (this.speedInMetersSecond == null)
+                ? null : new JsonPrimitive(this.speedInMetersSecond));
         return jsonObject;
     }
 
