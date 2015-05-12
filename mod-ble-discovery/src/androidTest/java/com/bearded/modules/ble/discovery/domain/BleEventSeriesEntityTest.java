@@ -51,7 +51,7 @@ public class BleEventSeriesEntityTest extends AbstractDaoTestLongPk<BleEventSeri
         assertEquals(eventEntity.getStartTimestamp(), TEST_START_TIMESTAMP);
         assertEquals(eventEntity.getEndTimestamp(), TEST_END_TIMESTAMP);
     }
-    
+
     /**
      * Test the @see BleEventSeriesEntity#toJson
      */
