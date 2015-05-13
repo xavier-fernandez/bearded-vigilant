@@ -21,7 +21,7 @@ package com.bearded.modules.sensor.internal.cloud;
 
 import android.support.annotation.NonNull;
 
-import com.bearded.cloud.UploadStateListener;
+import com.bearded.common.cloud.UploadStateListener;
 
 import retrofit.Callback;
 import retrofit.http.Field;

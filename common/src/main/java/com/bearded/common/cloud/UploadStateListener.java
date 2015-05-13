@@ -17,7 +17,7 @@
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 
-package com.bearded.cloud;
+package com.bearded.common.cloud;
 
 public interface UploadStateListener {
 
