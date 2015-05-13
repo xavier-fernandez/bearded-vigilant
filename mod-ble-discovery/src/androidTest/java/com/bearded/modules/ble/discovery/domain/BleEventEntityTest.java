@@ -15,6 +15,7 @@ import java.util.Random;
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 import static com.bearded.common.time.TimeUtils.timestampToISOString;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.BinSize;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.EndTimestamp;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.ReceivedSignalStrength;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.StartTimestamp;
@@ -28,6 +29,7 @@ public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao,
     @NonNull
     private static final String TEST_START_TIMESTAMP = timestampToISOString(TEST_END_TIME.minusMinutes(1));
     private static final byte TEST_RSSI = (byte) (0 - new Random().nextInt(101));
+    private static final short TEST_BIN_SIZE = (short) (0 - new Random().nextInt(200));
 
     public BleEventEntityTest() {
         super(BleEventEntityDao.class);
@@ -44,6 +46,7 @@ public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao,
         entity.setStartTimestamp(TEST_START_TIMESTAMP);
         entity.setEndTimestamp(TEST_END_TIMESTAMP);
         entity.setReceivedSignalStrength(TEST_RSSI);
+        entity.setBinSize(TEST_BIN_SIZE);
         return entity;
     }
 
@@ -56,6 +59,7 @@ public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao,
         assertEquals(eventEntity.getStartTimestamp(), TEST_START_TIMESTAMP);
         assertEquals(eventEntity.getEndTimestamp(), TEST_END_TIMESTAMP);
         assertEquals(eventEntity.getReceivedSignalStrength(), TEST_RSSI);
+        assertEquals(eventEntity.getBinSize(), TEST_BIN_SIZE);
     }
 
     /**
@@ -68,5 +72,6 @@ public class BleEventEntityTest extends AbstractDaoTestLongPk<BleEventEntityDao,
         assertEquals(jsonObject.get(StartTimestamp.name).getAsString(), TEST_START_TIMESTAMP);
         assertEquals(jsonObject.get(EndTimestamp.name).getAsString(), TEST_END_TIMESTAMP);
         assertEquals(jsonObject.get(ReceivedSignalStrength.name).getAsByte(), TEST_RSSI);
+        assertEquals(jsonObject.get(BinSize.name).getAsShort(), TEST_BIN_SIZE);
     }
 }

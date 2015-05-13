@@ -49,8 +49,9 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
                 "'EVENT_SERIES_ID' INTEGER NOT NULL ," + // 1: eventSeriesId
                 "'LOCATION_ID' INTEGER," + // 2: location_id
                 "'START_TIMESTAMP' TEXT NOT NULL ," + // 3: startTimestamp
-                "'END_TIMESTAMP' TEXT," + // 4: endTimestamp
-                "'RECEIVED_SIGNAL_STRENGTH' INTEGER NOT NULL );"); // 5: receivedSignalStrength
+                "'END_TIMESTAMP' TEXT NOT NULL ," + // 4: endTimestamp
+                "'RECEIVED_SIGNAL_STRENGTH' INTEGER NOT NULL ," + // 5: receivedSignalStrength
+                "'BIN_SIZE' INTEGER NOT NULL );"); // 6: binSize
     }
 
     /**
@@ -79,12 +80,9 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
             stmt.bindLong(3, location_id);
         }
         stmt.bindString(4, entity.getStartTimestamp());
-
-        String endTimestamp = entity.getEndTimestamp();
-        if (endTimestamp != null) {
-            stmt.bindString(5, endTimestamp);
-        }
+        stmt.bindString(5, entity.getEndTimestamp());
         stmt.bindLong(6, entity.getReceivedSignalStrength());
+        stmt.bindLong(7, entity.getBinSize());
     }
 
     @Override
@@ -111,8 +109,9 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
                 cursor.getLong(offset + 1), // eventSeriesId
                 cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // location_id
                 cursor.getString(offset + 3), // startTimestamp
-                cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // endTimestamp
-                (byte) cursor.getShort(offset + 5) // receivedSignalStrength
+                cursor.getString(offset + 4), // endTimestamp
+                (byte) cursor.getShort(offset + 5), // receivedSignalStrength
+                cursor.getShort(offset + 6) // binSize
         );
         return entity;
     }
@@ -126,8 +125,9 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
         entity.setEventSeriesId(cursor.getLong(offset + 1));
         entity.setLocation_id(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setStartTimestamp(cursor.getString(offset + 3));
-        entity.setEndTimestamp(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setEndTimestamp(cursor.getString(offset + 4));
         entity.setReceivedSignalStrength((byte) cursor.getShort(offset + 5));
+        entity.setBinSize(cursor.getShort(offset + 6));
     }
 
     /**
@@ -271,6 +271,7 @@ public class BleEventEntityDao extends AbstractDao<BleEventEntity, Long> {
         public final static Property StartTimestamp = new Property(3, String.class, "startTimestamp", false, "START_TIMESTAMP");
         public final static Property EndTimestamp = new Property(4, String.class, "endTimestamp", false, "END_TIMESTAMP");
         public final static Property ReceivedSignalStrength = new Property(5, byte.class, "receivedSignalStrength", false, "RECEIVED_SIGNAL_STRENGTH");
+        public final static Property BinSize = new Property(6, short.class, "binSize", false, "BIN_SIZE");
     }
 
 }

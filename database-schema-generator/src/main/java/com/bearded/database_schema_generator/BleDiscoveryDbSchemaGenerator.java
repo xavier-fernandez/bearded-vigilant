@@ -97,8 +97,9 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * event_series_id           INTEGER   FOREIGN KEY  REFERENCES  ble_event_series(_id)  NOT NULL,
      * location_id               INTEGER   FOREIGN KEY  REFERENCES  location(_id);
      * start_timestamp           TEXT      NOT NULL,
-     * end_timestamp             TEXT,
-     * received_signal_strength  INTEGER   NOT NULL
+     * end_timestamp             TEXT      NOT NULL,
+     * received_signal_strength  INTEGER   NOT NULL,
+     * bin_size                  INTEGER   NOT NULL
      * );
      */
     private static void createBleEventEntity(@NonNull final Schema dbSchema,
@@ -110,7 +111,8 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
         final Property locationFK = eventEntity.addLongProperty("location_id").getProperty();
         eventEntity.addToOne(locationEntity, locationFK);
         eventEntity.addStringProperty("startTimestamp").notNull();
-        eventEntity.addStringProperty("endTimestamp");
+        eventEntity.addStringProperty("endTimestamp").notNull();
         eventEntity.addByteProperty("receivedSignalStrength").notNull();
+        eventEntity.addShortProperty("binSize").notNull();
     }
 }
