@@ -29,11 +29,11 @@ import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 
 public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
 
-    private static final byte NUMBER_OF_SENSOR_ENTITIES = 5;
+    private static final byte NUMBER_OF_DEVICE_ENTITIES = 5;
 
     private DatabaseConnector mDatabaseConnector;
     private BleEventSeriesEntityFacade mSeriesFacade;
-    private BleDeviceEntity[] mSensorEntities;
+    private BleDeviceEntity[] mDeviceEntities;
 
     /**
      * {@inheritDoc}
@@ -43,16 +43,16 @@ public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
         super.setUp();
         mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
         mSeriesFacade = new BleEventSeriesEntityFacade();
-        generateSensorEntities();
+        generateDeviceEntities();
     }
 
-    private void generateSensorEntities() {
-        mSensorEntities = new BleDeviceEntity[NUMBER_OF_SENSOR_ENTITIES];
-        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            mSensorEntities[i] = new BleDeviceEntity();
-            mSensorEntities[i].setDeviceAddress(String.format("AA:BB:CC:DD:EE:F%d", i));
-            mSensorEntities[i].setAdvertiseName(String.format("Advertise Name %d", i));
-            mDatabaseConnector.getSession().insert(mSensorEntities[i]);
+    private void generateDeviceEntities() {
+        mDeviceEntities = new BleDeviceEntity[NUMBER_OF_DEVICE_ENTITIES];
+        for (int i = 0; i < NUMBER_OF_DEVICE_ENTITIES; i++) {
+            mDeviceEntities[i] = new BleDeviceEntity();
+            mDeviceEntities[i].setDeviceAddress(String.format("AA:BB:CC:DD:EE:F%d", i));
+            mDeviceEntities[i].setAdvertiseName(String.format("Advertise Name %d", i));
+            mDatabaseConnector.getSession().insert(mDeviceEntities[i]);
         }
     }
 
@@ -60,10 +60,10 @@ public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
     public void testPreConditions() {
         assertNotNull(mDatabaseConnector);
         assertNotNull(mSeriesFacade);
-        assertNotNull(mSensorEntities);
-        assertEquals(NUMBER_OF_SENSOR_ENTITIES, mSensorEntities.length);
-        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            assertNotNull(mSensorEntities[i]);
+        assertNotNull(mDeviceEntities);
+        assertEquals(NUMBER_OF_DEVICE_ENTITIES, mDeviceEntities.length);
+        for (int i = 0; i < NUMBER_OF_DEVICE_ENTITIES; i++) {
+            assertNotNull(mDeviceEntities[i]);
         }
     }
 
@@ -73,12 +73,12 @@ public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
      * @see BleEventSeriesEntityFacade#getActiveEventSeries(DaoSession, BleDeviceEntity)
      */
     @MediumTest
-    public void testSensorEntityInsertion() {
+    public void testDeviceEntityInsertion() {
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
-        final BleEventSeriesEntity series = mSeriesFacade.getActiveEventSeries(session, mSensorEntities[0]);
+        final BleEventSeriesEntity series = mSeriesFacade.getActiveEventSeries(session, mDeviceEntities[0]);
         assertNotNull(series);
-        assertEquals(series.getBleDeviceEntity(), mSensorEntities[0]);
+        assertEquals(series.getBleDeviceEntity(), mDeviceEntities[0]);
     }
 
     /**
@@ -87,14 +87,14 @@ public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
      * @see BleEventSeriesEntityFacade#getActiveEventSeries(DaoSession, BleDeviceEntity)
      */
     @MediumTest
-    public void testDuplicatedSensorEntityInsertion() {
+    public void testDuplicatedDeviceEntityInsertion() {
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
         final BleEventSeriesEntity series1 =
-                mSeriesFacade.getActiveEventSeries(session, mSensorEntities[0]);
+                mSeriesFacade.getActiveEventSeries(session, mDeviceEntities[0]);
         assertNotNull(series1);
         final BleEventSeriesEntity series2 =
-                mSeriesFacade.getActiveEventSeries(session, mSensorEntities[0]);
+                mSeriesFacade.getActiveEventSeries(session, mDeviceEntities[0]);
         assertNotNull(series2);
         assertEquals(series1, series2);
     }
@@ -105,13 +105,13 @@ public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
      * @see BleEventSeriesEntityFacade#getActiveEventSeries(DaoSession, BleDeviceEntity)
      */
     @MediumTest
-    public void testDifferentSensorEntitiesInsertion() {
+    public void testDifferentDeviceEntitiesInsertion() {
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
-        final BleEventSeriesEntity[] series = new BleEventSeriesEntity[NUMBER_OF_SENSOR_ENTITIES];
-        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            series[i] = mSeriesFacade.getActiveEventSeries(session, mSensorEntities[i]);
-            assertEquals(series[i].getBleDeviceEntity(), mSensorEntities[i]);
+        final BleEventSeriesEntity[] series = new BleEventSeriesEntity[NUMBER_OF_DEVICE_ENTITIES];
+        for (int i = 0; i < NUMBER_OF_DEVICE_ENTITIES; i++) {
+            series[i] = mSeriesFacade.getActiveEventSeries(session, mDeviceEntities[i]);
+            assertEquals(series[i].getBleDeviceEntity(), mDeviceEntities[i]);
         }
     }
 
@@ -121,19 +121,19 @@ public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
      * @see BleEventSeriesEntityFacade#getActiveEventSeries(DaoSession, BleDeviceEntity)
      */
     @MediumTest
-    public void testDuplicatedDifferentSensorEntitiesInsertion() {
+    public void testDuplicatedDifferentDeviceEntitiesInsertion() {
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
-        final BleEventSeriesEntity[] series = new BleEventSeriesEntity[NUMBER_OF_SENSOR_ENTITIES];
-        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            series[i] = mSeriesFacade.getActiveEventSeries(session, mSensorEntities[i]);
-            assertEquals(series[i].getBleDeviceEntity(), mSensorEntities[i]);
+        final BleEventSeriesEntity[] series = new BleEventSeriesEntity[NUMBER_OF_DEVICE_ENTITIES];
+        for (int i = 0; i < NUMBER_OF_DEVICE_ENTITIES; i++) {
+            series[i] = mSeriesFacade.getActiveEventSeries(session, mDeviceEntities[i]);
+            assertEquals(series[i].getBleDeviceEntity(), mDeviceEntities[i]);
         }
         // Retrieves an the inserted sensors again, and checks if the retrieved elements
         // are the same as in the first insertion.
-        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
+        for (int i = 0; i < NUMBER_OF_DEVICE_ENTITIES; i++) {
             final BleEventSeriesEntity duplicatedSeries =
-                    mSeriesFacade.getActiveEventSeries(session, mSensorEntities[i]);
+                    mSeriesFacade.getActiveEventSeries(session, mDeviceEntities[i]);
             assertEquals(series[i], duplicatedSeries);
         }
     }
@@ -144,18 +144,18 @@ public class BleEventSeriesEntityFacadeTest extends InstrumentationTestCase {
      * @see BleEventSeriesEntityFacade#getAllClosedEventSeriesFromDevice(DaoSession, BleDeviceEntity)
      */
     @MediumTest
-    public void testGetAllClosedMeasurementSeriesFromSensor() {
+    public void testGetAllClosedMeasurementSeriesFromDevice() {
         testPreConditions();
         final DaoSession session = mDatabaseConnector.getSession();
         //Test if the sensor facade is empty.
-        assertEquals(mSeriesFacade.getAllClosedEventSeriesFromDevice(session, mSensorEntities[0]).size(), 0);
-        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            mSeriesFacade.getActiveEventSeries(session, mSensorEntities[i]);
-            assertEquals(0, mSeriesFacade.getAllClosedEventSeriesFromDevice(session, mSensorEntities[i]).size());
+        assertEquals(mSeriesFacade.getAllClosedEventSeriesFromDevice(session, mDeviceEntities[0]).size(), 0);
+        for (int i = 0; i < NUMBER_OF_DEVICE_ENTITIES; i++) {
+            mSeriesFacade.getActiveEventSeries(session, mDeviceEntities[i]);
+            assertEquals(0, mSeriesFacade.getAllClosedEventSeriesFromDevice(session, mDeviceEntities[i]).size());
         }
         mSeriesFacade.updateAllEventSeriesEndTimestamp(session);
-        for (int i = 0; i < NUMBER_OF_SENSOR_ENTITIES; i++) {
-            assertEquals(1, mSeriesFacade.getAllClosedEventSeriesFromDevice(session, mSensorEntities[i]).size());
+        for (int i = 0; i < NUMBER_OF_DEVICE_ENTITIES; i++) {
+            assertEquals(1, mSeriesFacade.getAllClosedEventSeriesFromDevice(session, mDeviceEntities[i]).size());
         }
     }
 
