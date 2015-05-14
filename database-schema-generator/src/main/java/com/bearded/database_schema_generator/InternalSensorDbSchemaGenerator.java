@@ -63,7 +63,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * The following method obtains all the sensor data obtainable with the Android sensor API.
      * Comments obtained in: http://developer.android.com/reference/android/hardware/Sensor.html
      * <p/>
-     * CREATE TABLE sensor (
+     * CREATE TABLE internal_sensor (
      * _id                           INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * sensor_name                   TEXT       NOT NULL      UNIQUE     INDEX,
      * sensor_type                   TEXT       NOT NULL,
