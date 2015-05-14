@@ -188,7 +188,7 @@ public class BleEventSeriesEntity implements com.bearded.common.persistance.Pars
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.add(StartTimestamp.name, new JsonPrimitive(startTimestamp));
-        jsonObject.add(EndTimestamp.name, new JsonPrimitive(endTimestamp));
+        jsonObject.add(EndTimestamp.name, (endTimestamp == null) ? null :new JsonPrimitive(endTimestamp));
         return jsonObject;
     }
     // KEEP METHODS END
