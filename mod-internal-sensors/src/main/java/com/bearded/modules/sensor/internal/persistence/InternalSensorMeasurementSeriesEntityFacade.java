@@ -144,7 +144,9 @@ class InternalSensorMeasurementSeriesEntityFacade {
         final List<InternalSensorMeasurementEntity> queryResult = measurementQuery.list();
         if (queryResult != null && queryResult.size() > 0) {
             series.setEndTimestamp(queryResult.get(0).getEndTimestamp());
-            session.update(series);
+        } else {
+            series.setEndTimestamp(TimeUtils.nowToISOString());
         }
+        session.update(series);
     }
 }

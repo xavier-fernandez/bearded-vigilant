@@ -142,9 +142,11 @@ class BleEventSeriesEntityFacade {
         measurementQuery.where(BleEventEntityDao.Properties.EventSeriesId.eq(series.getId()));
         measurementQuery.orderDesc(BleEventEntityDao.Properties.EndTimestamp);
         final List<BleEventEntity> queryResult = measurementQuery.list();
-        if (queryResult != null && queryResult.size() != 0) {
+        if (queryResult != null && queryResult.size() > 0) {
             series.setEndTimestamp(queryResult.get(0).getEndTimestamp());
-            session.update(series);
+        } else {
+            series.setEndTimestamp(TimeUtils.nowToISOString());
         }
+        session.update(series);
     }
 }
