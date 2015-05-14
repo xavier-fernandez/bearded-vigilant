@@ -118,8 +118,8 @@ class BleEventEntityFacade {
      * @return {@link List} of {@link BleEventEntity}
      */
     @NonNull
-    List<BleEventEntity> getAllMeasurementsFromSeries(@NonNull final DaoSession session,
-                                                      @NonNull final BleEventSeriesEntity series) {
+    List<BleEventEntity> getAllEventsFromSeries(@NonNull final DaoSession session,
+                                                @NonNull final BleEventSeriesEntity series) {
         final BleEventEntityDao dao = session.getBleEventEntityDao();
         final QueryBuilder<BleEventEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(BleEventEntityDao.Properties.EventSeriesId.eq(series.getId()));
