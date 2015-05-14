@@ -72,7 +72,6 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
         }
         final DaoSession session = mDatabaseConnector.getSession();
         //Checks if the database is empty.
-        new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
         final InternalSensorMeasurementEntityFacade measurementFacade =
                 new InternalSensorMeasurementEntityFacade(MEASUREMENT_ENTITY_TIMEOUT);
         assertEquals(0, measurementFacade.getAllMeasurementsFromSeries(session, mSeriesEntities[0]).size());
