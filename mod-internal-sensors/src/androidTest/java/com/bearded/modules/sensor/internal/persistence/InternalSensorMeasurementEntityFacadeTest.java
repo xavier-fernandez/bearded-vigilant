@@ -92,7 +92,7 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
         final List<InternalSensorMeasurementEntity> result =
                 measurementFacade.getAllMeasurementsFromSeries(session, mSeriesEntities[0]);
         assertEquals(1, result.size());
-        assertEquals(testValue, result.get(0).getSensorValue());
+        assertEquals(testValue, result.get(0).getMedianSensorValue());
     }
 
     /**
@@ -126,7 +126,7 @@ public class InternalSensorMeasurementEntityFacadeTest extends InstrumentationTe
         // Checks if the bin size is correct.
         assertEquals(testValues.length, result.get(1).getBinSize());
         // Check if the data wrapping is correct.
-        assertEquals(midValue, result.get(1).getSensorValue());
+        assertEquals(midValue, result.get(1).getMedianSensorValue());
     }
 
     /**

@@ -17,8 +17,9 @@ import de.greenrobot.dao.DaoException;
 
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.BinSize;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.EndTimestamp;
-import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.ReceivedSignalStrength;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.MedianReceivedSignalStrength;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleEventEntityDao.Properties.StartTimestamp;
+
 // KEEP INCLUDES END
 
 /**
@@ -37,7 +38,7 @@ public class BleEventEntity implements com.bearded.common.persistance.ParseableJ
      * Not-null value.
      */
     private String endTimestamp;
-    private byte receivedSignalStrength;
+    private byte medianReceivedSignalStrength;
     private short binSize;
 
     /**
@@ -67,13 +68,13 @@ public class BleEventEntity implements com.bearded.common.persistance.ParseableJ
         this.id = id;
     }
 
-    public BleEventEntity(Long id, long eventSeriesId, Long location_id, String startTimestamp, String endTimestamp, byte receivedSignalStrength, short binSize) {
+    public BleEventEntity(Long id, long eventSeriesId, Long location_id, String startTimestamp, String endTimestamp, byte medianReceivedSignalStrength, short binSize) {
         this.id = id;
         this.eventSeriesId = eventSeriesId;
         this.location_id = location_id;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
-        this.receivedSignalStrength = receivedSignalStrength;
+        this.medianReceivedSignalStrength = medianReceivedSignalStrength;
         this.binSize = binSize;
     }
 
@@ -137,12 +138,12 @@ public class BleEventEntity implements com.bearded.common.persistance.ParseableJ
         this.endTimestamp = endTimestamp;
     }
 
-    public byte getReceivedSignalStrength() {
-        return receivedSignalStrength;
+    public byte getMedianReceivedSignalStrength() {
+        return medianReceivedSignalStrength;
     }
 
-    public void setReceivedSignalStrength(byte receivedSignalStrength) {
-        this.receivedSignalStrength = receivedSignalStrength;
+    public void setMedianReceivedSignalStrength(byte medianReceivedSignalStrength) {
+        this.medianReceivedSignalStrength = medianReceivedSignalStrength;
     }
 
     public short getBinSize() {
@@ -260,7 +261,7 @@ public class BleEventEntity implements com.bearded.common.persistance.ParseableJ
         final JsonObject bleEvent = new JsonObject();
         bleEvent.add(StartTimestamp.name, new JsonPrimitive(this.startTimestamp));
         bleEvent.add(EndTimestamp.name, new JsonPrimitive(this.endTimestamp));
-        bleEvent.add(ReceivedSignalStrength.name, new JsonPrimitive(this.receivedSignalStrength));
+        bleEvent.add(MedianReceivedSignalStrength.name, new JsonPrimitive(this.medianReceivedSignalStrength));
         bleEvent.add(BinSize.name, new JsonPrimitive(this.binSize));
         return bleEvent;
     }

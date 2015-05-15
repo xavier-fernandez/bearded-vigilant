@@ -87,7 +87,7 @@ class BleEventEntityFacade {
         final BleEventEntity eventEntity = new BleEventEntity();
         eventEntity.setStartTimestamp(TimeUtils.timestampToISOString(buffer.firstElementTime));
         eventEntity.setEndTimestamp(TimeUtils.nowToISOString());
-        eventEntity.setReceivedSignalStrength(buffer.getMidReceivedSignalStrength());
+        eventEntity.setMedianReceivedSignalStrength(buffer.getMedianReceivedSignalStrength());
         eventEntity.setBleEventSeriesEntity(series);
         eventEntity.setBinSize(buffer.getBinSize());
         session.insert(eventEntity);
@@ -145,12 +145,17 @@ class BleEventEntityFacade {
             this.mRssiBuffer.add(rssi);
         }
 
-        private byte getMidReceivedSignalStrength() {
-            float sum = 0;
-            for (final byte measurement : this.mRssiBuffer) {
-                sum += measurement;
+        private byte getMedianReceivedSignalStrength() {
+            if (mRssiBuffer.size() == 1) {
+                return mRssiBuffer.get(0);
             }
-            return (byte) (sum / this.mRssiBuffer.size());
+            Collections.sort(mRssiBuffer);
+            final int midElement = mRssiBuffer.size() / 2;
+            if (mRssiBuffer.size() % 2 == 1) {
+                return mRssiBuffer.get(midElement);
+            } else {
+                return (byte) ((mRssiBuffer.get(midElement - 1) + mRssiBuffer.get(midElement)) / 2);
+            }
         }
 
         private short getBinSize() {

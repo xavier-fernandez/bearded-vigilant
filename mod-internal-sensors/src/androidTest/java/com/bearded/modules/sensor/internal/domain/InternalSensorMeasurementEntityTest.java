@@ -15,7 +15,7 @@ import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 import static com.bearded.common.time.TimeUtils.timestampToISOString;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.BinSize;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.EndTimestamp;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.SensorValue;
+import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.MedianSensorValue;
 import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.StartTimestamp;
 
 public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<InternalSensorMeasurementEntityDao, InternalSensorMeasurementEntity> {
@@ -43,7 +43,7 @@ public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<I
         final InternalSensorMeasurementEntity entity = new InternalSensorMeasurementEntity();
         entity.setId(key);
         entity.setInternalSensorMeasurementSeriesEntity(seriesEntity);
-        entity.setSensorValue(TEST_SENSOR_VALUE);
+        entity.setMedianSensorValue(TEST_SENSOR_VALUE);
         entity.setStartTimestamp(TEST_START_TIMESTAMP);
         entity.setEndTimestamp(TEST_END_TIMESTAMP);
         entity.setBinSize((short) 1);
@@ -58,7 +58,7 @@ public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<I
         final InternalSensorMeasurementEntity entity = this.createEntity(1l);
         assertEquals(entity.getEndTimestamp(), TEST_END_TIMESTAMP);
         assertEquals(entity.getStartTimestamp(), TEST_START_TIMESTAMP);
-        assertEquals(entity.getSensorValue(), TEST_SENSOR_VALUE);
+        assertEquals(entity.getMedianSensorValue(), TEST_SENSOR_VALUE);
         assertEquals(entity.getBinSize(), 1);
     }
 
@@ -71,7 +71,7 @@ public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<I
         final JsonObject jsonObject = entity.toJsonObject();
         assertEquals(jsonObject.get(StartTimestamp.name).getAsString(), TEST_START_TIMESTAMP);
         assertEquals(jsonObject.get(EndTimestamp.name).getAsString(), TEST_END_TIMESTAMP);
-        assertEquals(jsonObject.get(SensorValue.name).getAsFloat(), TEST_SENSOR_VALUE);
+        assertEquals(jsonObject.get(MedianSensorValue.name).getAsFloat(), TEST_SENSOR_VALUE);
         assertEquals(jsonObject.get(BinSize.name).getAsInt(), 1);
     }
 }

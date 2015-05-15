@@ -48,7 +48,7 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'MEASUREMENT_SERIES_ID' INTEGER NOT NULL ," + // 1: measurement_series_id
                 "'LOCATION_ID' INTEGER," + // 2: location_id
-                "'SENSOR_VALUE' REAL NOT NULL ," + // 3: sensorValue
+                "'MEDIAN_SENSOR_VALUE' REAL NOT NULL ," + // 3: medianSensorValue
                 "'START_TIMESTAMP' TEXT NOT NULL ," + // 4: startTimestamp
                 "'END_TIMESTAMP' TEXT NOT NULL ," + // 5: endTimestamp
                 "'BIN_SIZE' INTEGER NOT NULL );"); // 6: binSize
@@ -79,7 +79,7 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         if (location_id != null) {
             stmt.bindLong(3, location_id);
         }
-        stmt.bindDouble(4, entity.getSensorValue());
+        stmt.bindDouble(4, entity.getMedianSensorValue());
         stmt.bindString(5, entity.getStartTimestamp());
         stmt.bindString(6, entity.getEndTimestamp());
         stmt.bindLong(7, entity.getBinSize());
@@ -108,7 +108,7 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
                 cursor.getLong(offset + 1), // measurement_series_id
                 cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // location_id
-                cursor.getFloat(offset + 3), // sensorValue
+                cursor.getFloat(offset + 3), // medianSensorValue
                 cursor.getString(offset + 4), // startTimestamp
                 cursor.getString(offset + 5), // endTimestamp
                 cursor.getShort(offset + 6) // binSize
@@ -124,7 +124,7 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMeasurement_series_id(cursor.getLong(offset + 1));
         entity.setLocation_id(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
-        entity.setSensorValue(cursor.getFloat(offset + 3));
+        entity.setMedianSensorValue(cursor.getFloat(offset + 3));
         entity.setStartTimestamp(cursor.getString(offset + 4));
         entity.setEndTimestamp(cursor.getString(offset + 5));
         entity.setBinSize(cursor.getShort(offset + 6));
@@ -268,7 +268,7 @@ public class InternalSensorMeasurementEntityDao extends AbstractDao<InternalSens
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Measurement_series_id = new Property(1, long.class, "measurement_series_id", false, "MEASUREMENT_SERIES_ID");
         public final static Property Location_id = new Property(2, Long.class, "location_id", false, "LOCATION_ID");
-        public final static Property SensorValue = new Property(3, float.class, "sensorValue", false, "SENSOR_VALUE");
+        public final static Property MedianSensorValue = new Property(3, float.class, "medianSensorValue", false, "MEDIAN_SENSOR_VALUE");
         public final static Property StartTimestamp = new Property(4, String.class, "startTimestamp", false, "START_TIMESTAMP");
         public final static Property EndTimestamp = new Property(5, String.class, "endTimestamp", false, "END_TIMESTAMP");
         public final static Property BinSize = new Property(6, short.class, "binSize", false, "BIN_SIZE");

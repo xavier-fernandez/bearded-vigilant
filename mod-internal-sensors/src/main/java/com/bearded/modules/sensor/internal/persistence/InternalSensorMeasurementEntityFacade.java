@@ -88,7 +88,7 @@ class InternalSensorMeasurementEntityFacade {
         measurementEntity.setStartTimestamp(TimeUtils.timestampToISOString(measurements.firstElementTime));
         measurementEntity.setEndTimestamp(TimeUtils.nowToISOString());
         measurementEntity.setBinSize(measurements.getBinSize());
-        measurementEntity.setSensorValue(measurements.getMidSensorValue());
+        measurementEntity.setMedianSensorValue(measurements.getMidSensorValue());
         measurementEntity.setInternalSensorMeasurementSeriesEntity(series);
         session.insert(measurementEntity);
         measurements.clear();
@@ -145,11 +145,16 @@ class InternalSensorMeasurementEntityFacade {
         }
 
         private float getMidSensorValue() {
-            float sum = 0;
-            for (final Float measurement : this.measurements) {
-                sum += measurement;
+            if (measurements.size() == 1) {
+                return measurements.get(0);
             }
-            return sum / this.measurements.size();
+            Collections.sort(measurements);
+            final int midElement = measurements.size() / 2;
+            if (measurements.size() % 2 == 1) {
+                return measurements.get(midElement);
+            } else {
+                return (byte) ((measurements.get(midElement - 1) + measurements.get(midElement)) / 2);
+            }
         }
 
         private short getBinSize() {

@@ -87,7 +87,7 @@ public class BleEventEntityFacadeTest extends InstrumentationTestCase {
         eventFacade.addMeasurement(session, mSeriesEntities[0], testValue);
         final List<BleEventEntity> result = eventFacade.getAllEventsFromSeries(session, mSeriesEntities[0]);
         assertEquals(1, result.size());
-        assertEquals(testValue, result.get(0).getReceivedSignalStrength());
+        assertEquals(testValue, result.get(0).getMedianReceivedSignalStrength());
     }
 
     /**
@@ -119,7 +119,7 @@ public class BleEventEntityFacadeTest extends InstrumentationTestCase {
         // Checks if the bin size is correct.
         assertEquals(testValues.length, result.get(1).getBinSize());
         // Check if the data wrapping is correct.
-        assertEquals(midValue, result.get(1).getReceivedSignalStrength());
+        assertEquals(midValue, result.get(1).getMedianReceivedSignalStrength());
     }
 
     /**
