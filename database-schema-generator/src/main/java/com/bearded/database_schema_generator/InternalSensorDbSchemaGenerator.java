@@ -84,18 +84,19 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     private static Entity createInternalSensorEntity(@NonNull final Schema dbSchema) {
         final Entity sensorEntity = createEntity(dbSchema, "InternalSensor");
         /**
-         * maximum range of the sensor in the sensor's unit.
+         * The sensor name as a {@link String}.
          */
         sensorEntity.addStringProperty("sensorName").notNull().index();
         /**
-         * The type of this sensor as a string.
+         * The type of this sensor as a {@link String}.
          */
         sensorEntity.addStringProperty("sensorType").notNull().index();
         /**
-         * Sensor unit string.
+         * The Sensor unit as a {@link String}.
          */
         sensorEntity.addStringProperty("sensorUnit").notNull();
-        /** the minimum delay allowed between two events in microsecond or zero if this sensor only
+        /**
+         * The minimum delay allowed between two events in microsecond or zero if this sensor only
          * returns a value when the data it's measuring changes.
          */
         sensorEntity.addIntProperty("minimumDelayMicroseconds");
@@ -151,7 +152,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     }
 
     /**
-     * CREATE TABLE internal_sen6sor_measurement_series (
+     * CREATE TABLE internal_sensor_measurement_series (
      * _id              INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * sensor_id        INTEGER    FOREIGN KEY   REFERENCES  sensor (_id)  NonNull,
      * start_timestamp  TEXT       NOT NULL,
