@@ -27,7 +27,7 @@ import de.greenrobot.daogenerator.Schema;
 
 class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
-    private static final String MODULE_PACKAGE = "com.bearded.modules.sensor.internal";
+    private static final String MODULE_PACKAGE = "com.bearded.modules.sensor";
 
     private static final String ENTITY_PACKAGE = String.format("%s.domain", MODULE_PACKAGE);
     private static final String DAO_PACKAGE = String.format("%s.persistence.dao", MODULE_PACKAGE);
@@ -35,8 +35,8 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final int SCHEMA_VERSION = 1;
 
-    private static final String OUT_DIR = "./mod-internal-sensors/src/main/java";
-    private static final String TEST_DIR = "./mod-internal-sensors/src/androidTest/java";
+    private static final String OUT_DIR = "./mod-sensor-common/src/main/java";
+    private static final String TEST_DIR = "./mod-sensor-common/src/androidTest/java";
 
     static void generateInternalSensorDatabaseSchema() throws Exception {
         System.out.println(String.format("Creating database schema with name: %s", MODULE_PACKAGE));

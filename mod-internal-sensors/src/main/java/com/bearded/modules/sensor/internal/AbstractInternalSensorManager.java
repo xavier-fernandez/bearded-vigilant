@@ -29,7 +29,7 @@ import android.util.Log;
 
 import com.bearded.common.modules.AbstractCloudModule;
 import com.bearded.common.sensor.SensorType;
-import com.bearded.modules.sensor.internal.persistence.SensorDatabaseFacade;
+import com.bearded.modules.sensor.persistence.SensorDatabaseFacade;
 
 import org.joda.time.DateTime;
 
