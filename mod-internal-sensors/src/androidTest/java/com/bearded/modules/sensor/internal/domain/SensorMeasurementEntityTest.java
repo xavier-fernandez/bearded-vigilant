@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao;
+import com.bearded.modules.sensor.internal.persistence.dao.SensorMeasurementEntityDao;
 import com.google.gson.JsonObject;
 
 import org.joda.time.DateTime;
@@ -13,12 +13,12 @@ import org.joda.time.DateTime;
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 import static com.bearded.common.time.TimeUtils.timestampToISOString;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.BinSize;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.EndTimestamp;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.MedianSensorValue;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao.Properties.StartTimestamp;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorMeasurementEntityDao.Properties.BinSize;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorMeasurementEntityDao.Properties.EndTimestamp;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorMeasurementEntityDao.Properties.MedianSensorValue;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorMeasurementEntityDao.Properties.StartTimestamp;
 
-public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<InternalSensorMeasurementEntityDao, InternalSensorMeasurementEntity> {
+public class SensorMeasurementEntityTest extends AbstractDaoTestLongPk<SensorMeasurementEntityDao, SensorMeasurementEntity> {
 
     private static final float TEST_SENSOR_VALUE = 15f;
     @NonNull
@@ -28,8 +28,8 @@ public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<I
     @NonNull
     private static final String TEST_START_TIMESTAMP = timestampToISOString(TEST_END_TIME.minusMinutes(1));
 
-    public InternalSensorMeasurementEntityTest() {
-        super(InternalSensorMeasurementEntityDao.class);
+    public SensorMeasurementEntityTest() {
+        super(SensorMeasurementEntityDao.class);
     }
 
     /**
@@ -37,12 +37,12 @@ public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<I
      */
     @Override
     @NonNull
-    protected InternalSensorMeasurementEntity createEntity(@Nullable final Long key) {
-        final InternalSensorMeasurementSeriesEntity seriesEntity =
-                new InternalSensorMeasurementSeriesEntityTest().createEntity(1l);
-        final InternalSensorMeasurementEntity entity = new InternalSensorMeasurementEntity();
+    protected SensorMeasurementEntity createEntity(@Nullable final Long key) {
+        final SensorMeasurementSeriesEntity seriesEntity =
+                new SensorMeasurementSeriesEntityTest().createEntity(1l);
+        final SensorMeasurementEntity entity = new SensorMeasurementEntity();
         entity.setId(key);
-        entity.setInternalSensorMeasurementSeriesEntity(seriesEntity);
+        entity.setSensorMeasurementSeriesEntity(seriesEntity);
         entity.setMedianSensorValue(TEST_SENSOR_VALUE);
         entity.setStartTimestamp(TEST_START_TIMESTAMP);
         entity.setEndTimestamp(TEST_END_TIMESTAMP);
@@ -55,7 +55,7 @@ public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<I
      */
     @MediumTest
     public void testEntityAttributes() {
-        final InternalSensorMeasurementEntity entity = this.createEntity(1l);
+        final SensorMeasurementEntity entity = this.createEntity(1l);
         assertEquals(entity.getEndTimestamp(), TEST_END_TIMESTAMP);
         assertEquals(entity.getStartTimestamp(), TEST_START_TIMESTAMP);
         assertEquals(entity.getMedianSensorValue(), TEST_SENSOR_VALUE);
@@ -63,11 +63,11 @@ public class InternalSensorMeasurementEntityTest extends AbstractDaoTestLongPk<I
     }
 
     /**
-     * Test the @see InternalSensorEntity#toJson
+     * Test the @see SensorEntity#toJson
      */
     @SmallTest
     public void testToJson() {
-        final InternalSensorMeasurementEntity entity = this.createEntity(1l);
+        final SensorMeasurementEntity entity = this.createEntity(1l);
         final JsonObject jsonObject = entity.toJsonObject();
         assertEquals(jsonObject.get(StartTimestamp.name).getAsString(), TEST_START_TIMESTAMP);
         assertEquals(jsonObject.get(EndTimestamp.name).getAsString(), TEST_END_TIMESTAMP);

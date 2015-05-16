@@ -25,7 +25,7 @@ import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
 
-class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
+class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final String MODULE_PACKAGE = "com.bearded.modules.sensor.internal";
 
@@ -63,7 +63,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * The following method obtains all the sensor data obtainable with the Android sensor API.
      * Comments obtained in: http://developer.android.com/reference/android/hardware/Sensor.html
      * <p/>
-     * CREATE TABLE internal_sensor (
+     * CREATE TABLE sensor (
      * _id                           INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * sensor_name                   TEXT       NOT NULL      UNIQUE     INDEX,
      * sensor_type                   TEXT       NOT NULL,
@@ -82,7 +82,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      */
     @NonNull
     private static Entity createInternalSensorEntity(@NonNull final Schema dbSchema) {
-        final Entity sensorEntity = createEntity(dbSchema, "InternalSensor");
+        final Entity sensorEntity = createEntity(dbSchema, "Sensor");
         /**
          * The sensor name as a {@link String}.
          */
@@ -152,7 +152,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     }
 
     /**
-     * CREATE TABLE internal_sensor_measurement_series (
+     * CREATE TABLE sensor_measurement_series (
      * _id              INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * sensor_id        INTEGER    FOREIGN KEY   REFERENCES  sensor (_id)  NonNull,
      * start_timestamp  TEXT       NOT NULL,
@@ -162,7 +162,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     @NonNull
     private static Entity createSensorMeasurementSeriesEntity(@NonNull final Schema dbSchema,
                                                               @NonNull final Entity sensorEntity) {
-        final Entity seriesEntity = createEntity(dbSchema, "InternalSensorMeasurementSeries");
+        final Entity seriesEntity = createEntity(dbSchema, "SensorMeasurementSeries");
         final Property sensorFK = seriesEntity.addLongProperty("sensor_id").notNull().getProperty();
         seriesEntity.addToOne(sensorEntity, sensorFK);
         seriesEntity.addStringProperty("startTimestamp").notNull();
@@ -171,7 +171,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     }
 
     /**
-     * CREATE TABLE internal_sensor_measurement (
+     * CREATE TABLE sensor_measurement (
      * _id                    INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * measurement_series_id  INTEGER    FOREIGN KEY   REFERENCES  measurement_series  NOT NULL,
      * location_id            INTEGER    FOREIGN KEY   REFERENCES  location,
@@ -184,7 +184,7 @@ class InternalSensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
     private static void createSensorMeasurementEntity(@NonNull final Schema dbSchema,
                                                       @NonNull final Entity seriesEntity,
                                                       @NonNull final Entity locationEntity) {
-        final Entity entity = createEntity(dbSchema, "InternalSensorMeasurement");
+        final Entity entity = createEntity(dbSchema, "SensorMeasurement");
         final Property seriesFK = entity.addLongProperty("measurement_series_id").notNull().getProperty();
         entity.addToOne(seriesEntity, seriesFK);
         final Property locationFK = entity.addLongProperty("location_id").getProperty();

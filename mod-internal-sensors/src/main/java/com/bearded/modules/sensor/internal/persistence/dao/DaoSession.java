@@ -2,10 +2,10 @@ package com.bearded.modules.sensor.internal.persistence.dao;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
-import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
-import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
 import com.bearded.modules.sensor.internal.domain.LocationEntity;
+import com.bearded.modules.sensor.internal.domain.SensorEntity;
+import com.bearded.modules.sensor.internal.domain.SensorMeasurementEntity;
+import com.bearded.modules.sensor.internal.domain.SensorMeasurementSeriesEntity;
 
 import java.util.Map;
 
@@ -23,64 +23,64 @@ import de.greenrobot.dao.internal.DaoConfig;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig internalSensorEntityDaoConfig;
-    private final DaoConfig internalSensorMeasurementSeriesEntityDaoConfig;
+    private final DaoConfig sensorEntityDaoConfig;
+    private final DaoConfig sensorMeasurementSeriesEntityDaoConfig;
     private final DaoConfig locationEntityDaoConfig;
-    private final DaoConfig internalSensorMeasurementEntityDaoConfig;
+    private final DaoConfig sensorMeasurementEntityDaoConfig;
 
-    private final InternalSensorEntityDao internalSensorEntityDao;
-    private final InternalSensorMeasurementSeriesEntityDao internalSensorMeasurementSeriesEntityDao;
+    private final SensorEntityDao sensorEntityDao;
+    private final SensorMeasurementSeriesEntityDao sensorMeasurementSeriesEntityDao;
     private final LocationEntityDao locationEntityDao;
-    private final InternalSensorMeasurementEntityDao internalSensorMeasurementEntityDao;
+    private final SensorMeasurementEntityDao sensorMeasurementEntityDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
 
-        internalSensorEntityDaoConfig = daoConfigMap.get(InternalSensorEntityDao.class).clone();
-        internalSensorEntityDaoConfig.initIdentityScope(type);
+        sensorEntityDaoConfig = daoConfigMap.get(SensorEntityDao.class).clone();
+        sensorEntityDaoConfig.initIdentityScope(type);
 
-        internalSensorMeasurementSeriesEntityDaoConfig = daoConfigMap.get(InternalSensorMeasurementSeriesEntityDao.class).clone();
-        internalSensorMeasurementSeriesEntityDaoConfig.initIdentityScope(type);
+        sensorMeasurementSeriesEntityDaoConfig = daoConfigMap.get(SensorMeasurementSeriesEntityDao.class).clone();
+        sensorMeasurementSeriesEntityDaoConfig.initIdentityScope(type);
 
         locationEntityDaoConfig = daoConfigMap.get(LocationEntityDao.class).clone();
         locationEntityDaoConfig.initIdentityScope(type);
 
-        internalSensorMeasurementEntityDaoConfig = daoConfigMap.get(InternalSensorMeasurementEntityDao.class).clone();
-        internalSensorMeasurementEntityDaoConfig.initIdentityScope(type);
+        sensorMeasurementEntityDaoConfig = daoConfigMap.get(SensorMeasurementEntityDao.class).clone();
+        sensorMeasurementEntityDaoConfig.initIdentityScope(type);
 
-        internalSensorEntityDao = new InternalSensorEntityDao(internalSensorEntityDaoConfig, this);
-        internalSensorMeasurementSeriesEntityDao = new InternalSensorMeasurementSeriesEntityDao(internalSensorMeasurementSeriesEntityDaoConfig, this);
+        sensorEntityDao = new SensorEntityDao(sensorEntityDaoConfig, this);
+        sensorMeasurementSeriesEntityDao = new SensorMeasurementSeriesEntityDao(sensorMeasurementSeriesEntityDaoConfig, this);
         locationEntityDao = new LocationEntityDao(locationEntityDaoConfig, this);
-        internalSensorMeasurementEntityDao = new InternalSensorMeasurementEntityDao(internalSensorMeasurementEntityDaoConfig, this);
+        sensorMeasurementEntityDao = new SensorMeasurementEntityDao(sensorMeasurementEntityDaoConfig, this);
 
-        registerDao(InternalSensorEntity.class, internalSensorEntityDao);
-        registerDao(InternalSensorMeasurementSeriesEntity.class, internalSensorMeasurementSeriesEntityDao);
+        registerDao(SensorEntity.class, sensorEntityDao);
+        registerDao(SensorMeasurementSeriesEntity.class, sensorMeasurementSeriesEntityDao);
         registerDao(LocationEntity.class, locationEntityDao);
-        registerDao(InternalSensorMeasurementEntity.class, internalSensorMeasurementEntityDao);
+        registerDao(SensorMeasurementEntity.class, sensorMeasurementEntityDao);
     }
 
     public void clear() {
-        internalSensorEntityDaoConfig.getIdentityScope().clear();
-        internalSensorMeasurementSeriesEntityDaoConfig.getIdentityScope().clear();
+        sensorEntityDaoConfig.getIdentityScope().clear();
+        sensorMeasurementSeriesEntityDaoConfig.getIdentityScope().clear();
         locationEntityDaoConfig.getIdentityScope().clear();
-        internalSensorMeasurementEntityDaoConfig.getIdentityScope().clear();
+        sensorMeasurementEntityDaoConfig.getIdentityScope().clear();
     }
 
-    public InternalSensorEntityDao getInternalSensorEntityDao() {
-        return internalSensorEntityDao;
+    public SensorEntityDao getSensorEntityDao() {
+        return sensorEntityDao;
     }
 
-    public InternalSensorMeasurementSeriesEntityDao getInternalSensorMeasurementSeriesEntityDao() {
-        return internalSensorMeasurementSeriesEntityDao;
+    public SensorMeasurementSeriesEntityDao getSensorMeasurementSeriesEntityDao() {
+        return sensorMeasurementSeriesEntityDao;
     }
 
     public LocationEntityDao getLocationEntityDao() {
         return locationEntityDao;
     }
 
-    public InternalSensorMeasurementEntityDao getInternalSensorMeasurementEntityDao() {
-        return internalSensorMeasurementEntityDao;
+    public SensorMeasurementEntityDao getSensorMeasurementEntityDao() {
+        return sensorMeasurementEntityDao;
     }
 
 }

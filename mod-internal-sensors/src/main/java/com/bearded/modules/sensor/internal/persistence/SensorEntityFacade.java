@@ -27,9 +27,9 @@ import android.util.Log;
 import com.bearded.common.annotation.ReportingMode;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.common.sensor.SensorUtils;
-import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
+import com.bearded.modules.sensor.internal.domain.SensorEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
-import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao;
+import com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,41 +40,41 @@ import de.greenrobot.dao.query.QueryBuilder;
 
 import static com.bearded.common.sensor.SensorType.getSensorTypeFromId;
 
-class InternalSensorEntityFacade {
+class SensorEntityFacade {
 
-    private static final String TAG = InternalSensorEntityFacade.class.getSimpleName();
+    private static final String TAG = SensorEntityFacade.class.getSimpleName();
 
     @NonNull
-    private final Map<String, InternalSensorEntity> mKnownSensors;
+    private final Map<String, SensorEntity> mKnownSensors;
 
-    InternalSensorEntityFacade() {
-        mKnownSensors = Collections.synchronizedMap(new HashMap<String, InternalSensorEntity>());
+    SensorEntityFacade() {
+        mKnownSensors = Collections.synchronizedMap(new HashMap<String, SensorEntity>());
     }
 
     /**
      * Obtains a sensor entity, if it is available, from the database.
      * Creates and inserts a sensor entity in the database, if it is not available.
      *
-     * @param session for obtaining or creating a {@link InternalSensorEntity} from the database.
+     * @param session for obtaining or creating a {@link SensorEntity} from the database.
      * @param sensor  that wants to be retrieved from the database.
-     * @return {@link InternalSensorEntity} of the sensor.
+     * @return {@link SensorEntity} of the sensor.
      */
     @NonNull
-    InternalSensorEntity getSensorEntity(@NonNull final DaoSession session,
-                                         @NonNull final Sensor sensor) {
+    SensorEntity getSensorEntity(@NonNull final DaoSession session,
+                                 @NonNull final Sensor sensor) {
         if (mKnownSensors.containsKey(sensor.getName())) {
             return mKnownSensors.get(sensor.getName());
         }
-        final InternalSensorEntityDao dao = session.getInternalSensorEntityDao();
-        final QueryBuilder<InternalSensorEntity> queryBuilder = dao.queryBuilder();
-        queryBuilder.where(InternalSensorEntityDao.Properties.SensorName.eq(sensor.getName()));
+        final SensorEntityDao dao = session.getSensorEntityDao();
+        final QueryBuilder<SensorEntity> queryBuilder = dao.queryBuilder();
+        queryBuilder.where(SensorEntityDao.Properties.SensorName.eq(sensor.getName()));
         final String sensorTypeName = getSensorTypeFromId(sensor.getType()).getSensorTypeName();
-        queryBuilder.where(InternalSensorEntityDao.Properties.SensorType.eq(sensorTypeName));
-        final List<InternalSensorEntity> internalSensorEntityList = queryBuilder.list();
-        if (internalSensorEntityList.isEmpty()) {
+        queryBuilder.where(SensorEntityDao.Properties.SensorType.eq(sensorTypeName));
+        final List<SensorEntity> sensorEntityList = queryBuilder.list();
+        if (sensorEntityList.isEmpty()) {
             return insertSensor(session, sensor);
         }
-        final InternalSensorEntity sensorEntity = internalSensorEntityList.get(0);
+        final SensorEntity sensorEntity = sensorEntityList.get(0);
         mKnownSensors.put(sensor.getName(), sensorEntity);
         return sensorEntity;
     }
@@ -83,12 +83,12 @@ class InternalSensorEntityFacade {
      * Obtains all sensor entities stored in the database.
      *
      * @param session needed to retrieve all sensors from the database.
-     * @return {@link List} with all {@link InternalSensorEntity}
+     * @return {@link List} with all {@link SensorEntity}
      */
     @NonNull
-    List<InternalSensorEntity> getAllSensorEntities(@NonNull final DaoSession session) {
-        final InternalSensorEntityDao dao = session.getInternalSensorEntityDao();
-        final QueryBuilder<InternalSensorEntity> queryBuilder = dao.queryBuilder();
+    List<SensorEntity> getAllSensorEntities(@NonNull final DaoSession session) {
+        final SensorEntityDao dao = session.getSensorEntityDao();
+        final QueryBuilder<SensorEntity> queryBuilder = dao.queryBuilder();
         return queryBuilder.listLazy();
     }
 
@@ -96,13 +96,13 @@ class InternalSensorEntityFacade {
      * Inserts a sensor, and all the obtainable information inside the database.
      *
      * @param sensor that will be inserted inside the database.
-     * @return {@link InternalSensorEntity} of the sensor.
+     * @return {@link SensorEntity} of the sensor.
      */
     @NonNull
     @TargetApi(22)
-    private InternalSensorEntity insertSensor(@NonNull final DaoSession session,
-                                              @NonNull final Sensor sensor) {
-        final InternalSensorEntity sensorEntity = new InternalSensorEntity();
+    private SensorEntity insertSensor(@NonNull final DaoSession session,
+                                      @NonNull final Sensor sensor) {
+        final SensorEntity sensorEntity = new SensorEntity();
         sensorEntity.setSensorName(sensor.getName());
         final SensorType sensorType = getSensorTypeFromId(sensor.getType());
         sensorEntity.setSensorType(sensorType.getSensorTypeName());

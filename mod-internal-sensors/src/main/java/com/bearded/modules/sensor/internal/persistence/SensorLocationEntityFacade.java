@@ -37,10 +37,10 @@ import de.greenrobot.dao.query.QueryBuilder;
 
 import static com.bearded.modules.sensor.internal.persistence.dao.LocationEntityDao.Properties.Id;
 
-class InternalSensorLocationEntityFacade {
+class SensorLocationEntityFacade {
 
     @NonNull
-    private static final String TAG = InternalSensorLocationEntityFacade.class.getSimpleName();
+    private static final String TAG = SensorLocationEntityFacade.class.getSimpleName();
     private static final int LOCATION_BIN_SIZE_MS = 15 * 1000; // 15 seconds
     @Nullable
     private LocationEntity mLastInsertedLocationEntity = null;

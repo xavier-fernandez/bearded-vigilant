@@ -9,25 +9,25 @@ import android.support.annotation.NonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.FifoMaxEventCount;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.FifoReservedEventCount;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MaximumDelayMicroseconds;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MaximumRange;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MinimumDelayMicroseconds;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.PowerInMilliAmperes;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.ReportingMode;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorName;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorResolution;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorType;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorUnit;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorVendor;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorVersion;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.FifoMaxEventCount;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.FifoReservedEventCount;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.MaximumDelayMicroseconds;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.MaximumRange;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.MinimumDelayMicroseconds;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.PowerInMilliAmperes;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.ReportingMode;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorName;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorResolution;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorType;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorUnit;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorVendor;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorVersion;
 // KEEP INCLUDES END
 
 /**
- * Entity mapped to table InternalSensor.
+ * Entity mapped to table Sensor.
  */
-public class InternalSensorEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<InternalSensorEntity> {
+public class SensorEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<SensorEntity> {
 
     private Long id;
     /**
@@ -56,14 +56,14 @@ public class InternalSensorEntity implements com.bearded.common.persistance.Pars
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    public InternalSensorEntity() {
+    public SensorEntity() {
     }
 
-    public InternalSensorEntity(Long id) {
+    public SensorEntity(Long id) {
         this.id = id;
     }
 
-    public InternalSensorEntity(Long id, String sensorName, String sensorType, String sensorUnit, Integer minimumDelayMicroseconds, Integer maximumDelayMicroseconds, Integer fifoMaxEventCount, Integer fifoReservedEventCount, Float maximumRange, String reportingMode, Float powerInMilliAmperes, Float sensorResolution, String sensorVendor, Integer sensorVersion) {
+    public SensorEntity(Long id, String sensorName, String sensorType, String sensorUnit, Integer minimumDelayMicroseconds, Integer maximumDelayMicroseconds, Integer fifoMaxEventCount, Integer fifoReservedEventCount, Float maximumRange, String reportingMode, Float powerInMilliAmperes, Float sensorResolution, String sensorVendor, Integer sensorVersion) {
         this.id = id;
         this.sensorName = sensorName;
         this.sensorType = sensorType;
@@ -217,7 +217,7 @@ public class InternalSensorEntity implements com.bearded.common.persistance.Pars
      * NOTE: This implementation compares the two elements comparing its sensor name.
      */
     @Override
-    public int compareTo(@NonNull final InternalSensorEntity anotherSensorEntity) {
+    public int compareTo(@NonNull final SensorEntity anotherSensorEntity) {
         return this.sensorName.compareTo(anotherSensorEntity.getSensorName());
     }
 

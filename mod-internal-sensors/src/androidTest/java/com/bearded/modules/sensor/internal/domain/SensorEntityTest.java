@@ -4,26 +4,26 @@ import android.support.annotation.NonNull;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao;
+import com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao;
 import com.google.gson.JsonObject;
 
 import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.FifoMaxEventCount;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.FifoReservedEventCount;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MaximumDelayMicroseconds;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MaximumRange;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.MinimumDelayMicroseconds;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.PowerInMilliAmperes;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.ReportingMode;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorName;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorResolution;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorType;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorUnit;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorVendor;
-import static com.bearded.modules.sensor.internal.persistence.dao.InternalSensorEntityDao.Properties.SensorVersion;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.FifoMaxEventCount;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.FifoReservedEventCount;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.MaximumDelayMicroseconds;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.MaximumRange;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.MinimumDelayMicroseconds;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.PowerInMilliAmperes;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.ReportingMode;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorName;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorResolution;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorType;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorUnit;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorVendor;
+import static com.bearded.modules.sensor.internal.persistence.dao.SensorEntityDao.Properties.SensorVersion;
 
-public class InternalSensorEntityTest extends AbstractDaoTestLongPk<InternalSensorEntityDao, InternalSensorEntity> {
+public class SensorEntityTest extends AbstractDaoTestLongPk<SensorEntityDao, SensorEntity> {
 
     @NonNull
     private static final String TEST_SENSOR_NAME = "TEST_NAME";
@@ -32,8 +32,8 @@ public class InternalSensorEntityTest extends AbstractDaoTestLongPk<InternalSens
     @NonNull
     private static final String TEST_SENSOR_UNIT = "TEST_SENSOR_UNIT";
 
-    public InternalSensorEntityTest() {
-        super(InternalSensorEntityDao.class);
+    public SensorEntityTest() {
+        super(SensorEntityDao.class);
     }
 
     /**
@@ -41,8 +41,8 @@ public class InternalSensorEntityTest extends AbstractDaoTestLongPk<InternalSens
      */
     @Override
     @MediumTest
-    protected InternalSensorEntity createEntity(@NonNull final Long key) {
-        final InternalSensorEntity entity = new InternalSensorEntity(key);
+    protected SensorEntity createEntity(@NonNull final Long key) {
+        final SensorEntity entity = new SensorEntity(key);
         entity.setId(key);
         entity.setSensorName(TEST_SENSOR_NAME);
         entity.setSensorType(TEST_SENSOR_TYPE);
@@ -55,18 +55,18 @@ public class InternalSensorEntityTest extends AbstractDaoTestLongPk<InternalSens
      */
     @MediumTest
     public void testEntityAttributes() {
-        final InternalSensorEntity entity = this.createEntity(1l);
+        final SensorEntity entity = this.createEntity(1l);
         assertEquals(entity.getSensorName(), TEST_SENSOR_NAME);
         assertEquals(entity.getSensorType(), TEST_SENSOR_TYPE);
         assertEquals(entity.getSensorUnit(), TEST_SENSOR_UNIT);
     }
 
     /**
-     * Test the @see InternalSensorEntity#toJson
+     * Test the @see SensorEntity#toJson
      */
     @SmallTest
     public void testToJson() {
-        final InternalSensorEntity entity = this.createEntity(1l);
+        final SensorEntity entity = this.createEntity(1l);
         final JsonObject jsonObject = entity.toJsonObject();
         assertEquals(jsonObject.get(SensorName.name).getAsString(), TEST_SENSOR_NAME);
         assertEquals(jsonObject.get(SensorType.name).getAsString(), TEST_SENSOR_TYPE);

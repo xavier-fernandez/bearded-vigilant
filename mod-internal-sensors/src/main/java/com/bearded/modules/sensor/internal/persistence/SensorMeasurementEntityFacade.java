@@ -22,10 +22,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bearded.common.time.TimeUtils;
-import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
-import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
+import com.bearded.modules.sensor.internal.domain.SensorMeasurementEntity;
+import com.bearded.modules.sensor.internal.domain.SensorMeasurementSeriesEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
-import com.bearded.modules.sensor.internal.persistence.dao.InternalSensorMeasurementEntityDao;
+import com.bearded.modules.sensor.internal.persistence.dao.SensorMeasurementEntityDao;
 
 import org.joda.time.DateTime;
 
@@ -37,18 +37,18 @@ import java.util.Map;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
-class InternalSensorMeasurementEntityFacade {
+class SensorMeasurementEntityFacade {
 
     @NonNull
-    private static final String TAG = InternalSensorMeasurementEntityFacade.class.getSimpleName();
+    private static final String TAG = SensorMeasurementEntityFacade.class.getSimpleName();
     @NonNull
-    private final Map<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer> mSensorMeasurements;
+    private final Map<SensorMeasurementSeriesEntity, SensorMeasurementsBuffer> mSensorMeasurements;
     @NonNull
     private final Integer mTimeoutMillis;
 
-    public InternalSensorMeasurementEntityFacade(final int timeoutMillis) {
+    public SensorMeasurementEntityFacade(final int timeoutMillis) {
         mSensorMeasurements = Collections.synchronizedMap(
-                new HashMap<InternalSensorMeasurementSeriesEntity, SensorMeasurementsBuffer>());
+                new HashMap<SensorMeasurementSeriesEntity, SensorMeasurementsBuffer>());
         if (timeoutMillis <= 0) {
             throw new IllegalArgumentException(
                     String.format("%s: Constructor -> TimeoutMillis needs to be a positive number.", TAG));
@@ -64,7 +64,7 @@ class InternalSensorMeasurementEntityFacade {
      * @param measurement that will be stored.
      */
     public synchronized void addMeasurement(@NonNull final DaoSession session,
-                                            @NonNull final InternalSensorMeasurementSeriesEntity series,
+                                            @NonNull final SensorMeasurementSeriesEntity series,
                                             final float measurement) {
         SensorMeasurementsBuffer measurements = mSensorMeasurements.get(series);
         if (measurements == null) {
@@ -82,14 +82,14 @@ class InternalSensorMeasurementEntityFacade {
     }
 
     private void storeMeasurement(@NonNull final DaoSession session,
-                                  @NonNull final InternalSensorMeasurementSeriesEntity series,
+                                  @NonNull final SensorMeasurementSeriesEntity series,
                                   @NonNull final SensorMeasurementsBuffer measurements) {
-        final InternalSensorMeasurementEntity measurementEntity = new InternalSensorMeasurementEntity();
+        final SensorMeasurementEntity measurementEntity = new SensorMeasurementEntity();
         measurementEntity.setStartTimestamp(TimeUtils.timestampToISOString(measurements.firstElementTime));
         measurementEntity.setEndTimestamp(TimeUtils.nowToISOString());
         measurementEntity.setBinSize(measurements.getBinSize());
         measurementEntity.setMedianSensorValue(measurements.getMidSensorValue());
-        measurementEntity.setInternalSensorMeasurementSeriesEntity(series);
+        measurementEntity.setSensorMeasurementSeriesEntity(series);
         session.insert(measurementEntity);
         measurements.clear();
         Log.d(TAG, String.format("addMeasurement -> The following measurement was inserted in the database -> %s",
@@ -102,7 +102,7 @@ class InternalSensorMeasurementEntityFacade {
      * @param session needed to insert all open measurements inside the database.
      */
     void storeAllOpenMeasurements(@NonNull final DaoSession session) {
-        for (final InternalSensorMeasurementSeriesEntity seriesEntity : mSensorMeasurements.keySet()) {
+        for (final SensorMeasurementSeriesEntity seriesEntity : mSensorMeasurements.keySet()) {
             final SensorMeasurementsBuffer measurementsBuffer = mSensorMeasurements.get(seriesEntity);
             if (measurementsBuffer.getBinSize() > 0) {
                 storeMeasurement(session, seriesEntity, measurementsBuffer);
@@ -115,14 +115,14 @@ class InternalSensorMeasurementEntityFacade {
      *
      * @param session needed to retrieve all measurements from the database.
      * @param series  that needs to retrieve all its measurements.
-     * @return {@link List} of {@link InternalSensorMeasurementEntity}
+     * @return {@link List} of {@link SensorMeasurementEntity}
      */
-    List<InternalSensorMeasurementEntity> getAllMeasurementsFromSeries(@NonNull final DaoSession session,
-                                                                       @NonNull final InternalSensorMeasurementSeriesEntity series) {
-        final InternalSensorMeasurementEntityDao dao = session.getInternalSensorMeasurementEntityDao();
-        final QueryBuilder<InternalSensorMeasurementEntity> queryBuilder = dao.queryBuilder();
-        queryBuilder.where(InternalSensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));
-        final List<InternalSensorMeasurementEntity> result = queryBuilder.list();
+    List<SensorMeasurementEntity> getAllMeasurementsFromSeries(@NonNull final DaoSession session,
+                                                               @NonNull final SensorMeasurementSeriesEntity series) {
+        final SensorMeasurementEntityDao dao = session.getSensorMeasurementEntityDao();
+        final QueryBuilder<SensorMeasurementEntity> queryBuilder = dao.queryBuilder();
+        queryBuilder.where(SensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));
+        final List<SensorMeasurementEntity> result = queryBuilder.list();
         Collections.sort(result);
         return result;
     }

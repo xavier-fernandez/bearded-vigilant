@@ -25,7 +25,7 @@ import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
+import com.bearded.modules.sensor.internal.domain.SensorEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -38,10 +38,10 @@ import static com.bearded.common.sensor.SensorType.PROXIMITY;
  * physical phones. This is caused because it is forbidden to fake sensor values in Android, and
  * the Sensor class is final, so we are not allowed to mock the sensor objects.
  */
-public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
+public class SensorEntityFacadeTest extends InstrumentationTestCase {
 
     protected DatabaseConnector mDatabaseConnector;
-    protected InternalSensorEntityFacade mSensorFacade;
+    protected SensorEntityFacade mSensorFacade;
     protected SensorManager mSensorManager;
     protected Sensor mLightSensor;
     protected Sensor mProximitySensor;
@@ -54,7 +54,7 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
         super.setUp();
         mDatabaseConnector = new DatabaseConnector(getInstrumentation().getContext(), "TEST_DB");
         mDatabaseConnector.cleanDatabase();
-        mSensorFacade = new InternalSensorEntityFacade();
+        mSensorFacade = new SensorEntityFacade();
         final Context context = getInstrumentation().getContext();
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mLightSensor = mSensorManager.getDefaultSensor(LIGHT.getSensorId());
@@ -77,16 +77,16 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     }
 
     /**
-     * Test the insertion of one single {@link InternalSensorEntity} inside the database.
+     * Test the insertion of one single {@link SensorEntity} inside the database.
      *
-     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     * @see SensorEntityFacade#getSensorEntity(DaoSession, Sensor)
      */
     @MediumTest
     public void testOneObjectInsertion() {
         testPreConditions();
         //Inserts a single sensor inside the database.
         final DaoSession session = mDatabaseConnector.getSession();
-        final InternalSensorEntity sensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
+        final SensorEntity sensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
         assertNotNull(sensorEntity);
         //Checks that the returned object belongs to the same sensor as the inserted sensor.
         assertEquals(sensorEntity.getSensorName(), mLightSensor.getName());
@@ -95,17 +95,17 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     }
 
     /**
-     * Test the insertion of one single {@link InternalSensorEntity} inside the database, asking
-     * for it several times. (Only one {@link InternalSensorEntity} is created.
+     * Test the insertion of one single {@link SensorEntity} inside the database, asking
+     * for it several times. (Only one {@link SensorEntity} is created.
      *
-     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     * @see SensorEntityFacade#getSensorEntity(DaoSession, Sensor)
      */
     @MediumTest
     public void testMultipleInsertionsSameSensor() {
         testPreConditions();
         //Insert a single sensor inside the database.
         final DaoSession session = mDatabaseConnector.getSession();
-        InternalSensorEntity sensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
+        SensorEntity sensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
         assertNotNull(sensorEntity);
         // Test multiple sensor insertion inside the database.
         for (int i = 0; i < 3; i++) {
@@ -116,19 +116,19 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     }
 
     /**
-     * Test the insertion of one multiple {@link InternalSensorEntity} inside the database.
+     * Test the insertion of one multiple {@link SensorEntity} inside the database.
      *
-     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     * @see SensorEntityFacade#getSensorEntity(DaoSession, Sensor)
      */
     @MediumTest
     public void testDifferentSensorsOneSingleInsertion() {
         testPreConditions();
         //Insert a light sensor inside the database.
         final DaoSession session = mDatabaseConnector.getSession();
-        final InternalSensorEntity lightSensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
+        final SensorEntity lightSensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
         assertNotNull(lightSensorEntity);
         //Insert a proximity sensor inside the database.
-        final InternalSensorEntity proximitySensorEntity = mSensorFacade.getSensorEntity(session, mProximitySensor);
+        final SensorEntity proximitySensorEntity = mSensorFacade.getSensorEntity(session, mProximitySensor);
         assertNotNull(proximitySensorEntity);
         //Checks if two sensors are inside the database.
         assertEquals(2, mSensorFacade.getAllSensorEntities(session).size());
@@ -137,18 +137,18 @@ public class InternalSensorEntityFacadeTest extends InstrumentationTestCase {
     }
 
     /**
-     * Test the insertion of one multiple {@link InternalSensorEntity} inside the database
+     * Test the insertion of one multiple {@link SensorEntity} inside the database
      * while this elements are not ordered.
      *
-     * @see InternalSensorEntityFacade#getSensorEntity(DaoSession, Sensor)
+     * @see SensorEntityFacade#getSensorEntity(DaoSession, Sensor)
      */
     @MediumTest
     public void testDisorderedMultipleInsertion() {
         testPreConditions();
         //Insert a single sensor of each type inside the database.
         final DaoSession session = mDatabaseConnector.getSession();
-        final InternalSensorEntity lightSensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
-        final InternalSensorEntity proximitySensorEntity = mSensorFacade.getSensorEntity(session, mProximitySensor);
+        final SensorEntity lightSensorEntity = mSensorFacade.getSensorEntity(session, mLightSensor);
+        final SensorEntity proximitySensorEntity = mSensorFacade.getSensorEntity(session, mProximitySensor);
         assertNotNull(lightSensorEntity);
         assertNotNull(proximitySensorEntity);
         // Test multiple sensor insertion inside the database.

@@ -29,7 +29,7 @@ import android.util.Log;
 
 import com.bearded.common.modules.AbstractCloudModule;
 import com.bearded.common.sensor.SensorType;
-import com.bearded.modules.sensor.internal.persistence.InternalSensorDatabaseFacade;
+import com.bearded.modules.sensor.internal.persistence.SensorDatabaseFacade;
 
 import org.joda.time.DateTime;
 
@@ -52,7 +52,7 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
     @Nullable
     private final Sensor mInternalSensor;
     @Nullable
-    private final InternalSensorDatabaseFacade mDatabaseFacade;
+    private final SensorDatabaseFacade mDatabaseFacade;
 
     protected AbstractInternalSensorManager(@NonNull final Context context,
                                             @NonNull final SensorType sensorType,
@@ -66,7 +66,7 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
             mDatabaseFacade = null;
         } else {
             getSensorManager().registerListener(this, getSensor(), SENSOR_DELAY_NORMAL);
-            mDatabaseFacade = new InternalSensorDatabaseFacade(context, sensorType, binSizeMillis);
+            mDatabaseFacade = new SensorDatabaseFacade(context, sensorType, binSizeMillis);
         }
     }
 
@@ -91,12 +91,12 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
     }
 
     /**
-     * Obtains the {@link InternalSensorDatabaseFacade} of the module {@link Sensor}
+     * Obtains the {@link SensorDatabaseFacade} of the module {@link Sensor}
      *
-     * @return the module {@link InternalSensorDatabaseFacade}
+     * @return the module {@link SensorDatabaseFacade}
      */
     @Nullable
-    protected InternalSensorDatabaseFacade getDatabaseFacade() {
+    protected SensorDatabaseFacade getDatabaseFacade() {
         return mDatabaseFacade;
     }
 

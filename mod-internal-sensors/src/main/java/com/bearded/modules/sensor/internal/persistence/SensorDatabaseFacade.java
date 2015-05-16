@@ -25,39 +25,39 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.sensor.SensorType;
-import com.bearded.modules.sensor.internal.domain.InternalSensorEntity;
-import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementEntity;
-import com.bearded.modules.sensor.internal.domain.InternalSensorMeasurementSeriesEntity;
+import com.bearded.modules.sensor.internal.domain.SensorEntity;
+import com.bearded.modules.sensor.internal.domain.SensorMeasurementEntity;
+import com.bearded.modules.sensor.internal.domain.SensorMeasurementSeriesEntity;
 import com.bearded.modules.sensor.internal.persistence.dao.DaoSession;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.List;
 
-public class InternalSensorDatabaseFacade {
+public class SensorDatabaseFacade {
 
-    private static final String TAG = InternalSensorDatabaseFacade.class.getSimpleName();
+    private static final String TAG = SensorDatabaseFacade.class.getSimpleName();
 
     private static final String DATABASE_NAME_SUFFIX = "internal-sensor-db";
 
     @NonNull
-    private final InternalSensorEntityFacade mSensorEntityFacade;
+    private final SensorEntityFacade mSensorEntityFacade;
     @NonNull
-    private final InternalSensorMeasurementSeriesEntityFacade mMeasurementSeriesEntityFacade;
+    private final SensorMeasurementSeriesEntityFacade mMeasurementSeriesEntityFacade;
     @NonNull
-    private final InternalSensorMeasurementEntityFacade mMeasurementEntityFacade;
+    private final SensorMeasurementEntityFacade mMeasurementEntityFacade;
 
     @NonNull
     private final DatabaseConnector mDatabaseHandler;
 
-    public InternalSensorDatabaseFacade(@NonNull final Context context,
-                                        @NonNull final SensorType sensorType,
-                                        final int binSizeMilliseconds) {
+    public SensorDatabaseFacade(@NonNull final Context context,
+                                @NonNull final SensorType sensorType,
+                                final int binSizeMilliseconds) {
         final String databaseName = String.format("%s-%s", sensorType.getSensorTypeName(), DATABASE_NAME_SUFFIX);
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
-        mSensorEntityFacade = new InternalSensorEntityFacade();
-        mMeasurementSeriesEntityFacade = new InternalSensorMeasurementSeriesEntityFacade();
-        mMeasurementEntityFacade = new InternalSensorMeasurementEntityFacade(binSizeMilliseconds);
+        mSensorEntityFacade = new SensorEntityFacade();
+        mMeasurementSeriesEntityFacade = new SensorMeasurementSeriesEntityFacade();
+        mMeasurementEntityFacade = new SensorMeasurementEntityFacade(binSizeMilliseconds);
     }
 
     /**
@@ -70,8 +70,8 @@ public class InternalSensorDatabaseFacade {
             session.runInTx(new Runnable() {
                 @Override
                 public void run() {
-                    final InternalSensorEntity sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);
-                    final InternalSensorMeasurementSeriesEntity series = mMeasurementSeriesEntityFacade.getActiveMeasurementSeries(session, sensorEntity);
+                    final SensorEntity sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);
+                    final SensorMeasurementSeriesEntity series = mMeasurementSeriesEntityFacade.getActiveMeasurementSeries(session, sensorEntity);
                     mMeasurementEntityFacade.addMeasurement(session, series, measurement);
                 }
             });
@@ -89,9 +89,9 @@ public class InternalSensorDatabaseFacade {
             final DaoSession session = mDatabaseHandler.getSession();
             mMeasurementSeriesEntityFacade.updateAllMeasurementSeriesEndTimestamp(session);
             final JsonArray sensorArray = new JsonArray();
-            final List<InternalSensorEntity> sensors = mSensorEntityFacade.getAllSensorEntities(session);
+            final List<SensorEntity> sensors = mSensorEntityFacade.getAllSensorEntities(session);
             Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing %d sensors.", sensors.size()));
-            for (final InternalSensorEntity sensor : sensors) {
+            for (final SensorEntity sensor : sensors) {
                 final JsonObject sensorJsonObject = prepareSensorJson(session, sensor);
                 if (sensorJsonObject != null) {
                     sensorArray.add(sensorJsonObject);
@@ -111,17 +111,17 @@ public class InternalSensorDatabaseFacade {
 
     @Nullable
     private JsonObject prepareSensorJson(@NonNull final DaoSession session,
-                                         @NonNull final InternalSensorEntity sensor) {
+                                         @NonNull final SensorEntity sensor) {
         Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing sensor %s with name: %s.", sensor.getId(), sensor.getSensorName()));
         final JsonObject sensorJsonObject = sensor.toJsonObject();
         final JsonArray sensorSeriesJsonArray = new JsonArray();
-        final List<InternalSensorMeasurementSeriesEntity> closedSeries =
+        final List<SensorMeasurementSeriesEntity> closedSeries =
                 mMeasurementSeriesEntityFacade.getAllClosedMeasurementSeriesFromSensor(session, sensor);
         if (closedSeries.isEmpty()) {
             Log.w(TAG, String.format("prepareSensorJson -> Sensor with name %s do not have any measurement series.", sensor.getSensorName()));
             return null;
         }
-        for (final InternalSensorMeasurementSeriesEntity series : closedSeries) {
+        for (final SensorMeasurementSeriesEntity series : closedSeries) {
             final JsonObject seriesJsonObject = prepareSeriesJson(session, series);
             if (seriesJsonObject != null) {
                 sensorSeriesJsonArray.add(seriesJsonObject);
@@ -133,16 +133,16 @@ public class InternalSensorDatabaseFacade {
 
     @Nullable
     private JsonObject prepareSeriesJson(@NonNull final DaoSession session,
-                                         @NonNull final InternalSensorMeasurementSeriesEntity series) {
+                                         @NonNull final SensorMeasurementSeriesEntity series) {
         Log.d(TAG, String.format("prepareSeriesJson -> Preparing series id with name: %s.", series.getId()));
         final JsonObject seriesJsonObject = series.toJsonObject();
         final JsonArray seriesMeasurementsArray = new JsonArray();
-        final List<InternalSensorMeasurementEntity> measurements = mMeasurementEntityFacade.getAllMeasurementsFromSeries(session, series);
+        final List<SensorMeasurementEntity> measurements = mMeasurementEntityFacade.getAllMeasurementsFromSeries(session, series);
         if (measurements == null || measurements.isEmpty()) {
             Log.w(TAG, String.format("prepareSeriesJson -> Series with id %d do not have any measurement.", series.getId()));
             return null;
         }
-        for (final InternalSensorMeasurementEntity measurementEntity : measurements) {
+        for (final SensorMeasurementEntity measurementEntity : measurements) {
             final JsonObject measurementJsonObject = measurementEntity.toJsonObject();
             Log.d(TAG, String.format("prepareSeriesJson -> Preparing measurement: %s.", measurementJsonObject.toString()));
             seriesMeasurementsArray.add(measurementJsonObject);

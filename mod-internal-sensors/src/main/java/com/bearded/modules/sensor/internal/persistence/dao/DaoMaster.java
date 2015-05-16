@@ -19,30 +19,30 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(InternalSensorEntityDao.class);
-        registerDaoClass(InternalSensorMeasurementSeriesEntityDao.class);
+        registerDaoClass(SensorEntityDao.class);
+        registerDaoClass(SensorMeasurementSeriesEntityDao.class);
         registerDaoClass(LocationEntityDao.class);
-        registerDaoClass(InternalSensorMeasurementEntityDao.class);
+        registerDaoClass(SensorMeasurementEntityDao.class);
     }
 
     /**
      * Creates underlying database table using DAOs.
      */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
-        InternalSensorEntityDao.createTable(db, ifNotExists);
-        InternalSensorMeasurementSeriesEntityDao.createTable(db, ifNotExists);
+        SensorEntityDao.createTable(db, ifNotExists);
+        SensorMeasurementSeriesEntityDao.createTable(db, ifNotExists);
         LocationEntityDao.createTable(db, ifNotExists);
-        InternalSensorMeasurementEntityDao.createTable(db, ifNotExists);
+        SensorMeasurementEntityDao.createTable(db, ifNotExists);
     }
 
     /**
      * Drops underlying database table using DAOs.
      */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
-        InternalSensorEntityDao.dropTable(db, ifExists);
-        InternalSensorMeasurementSeriesEntityDao.dropTable(db, ifExists);
+        SensorEntityDao.dropTable(db, ifExists);
+        SensorMeasurementSeriesEntityDao.dropTable(db, ifExists);
         LocationEntityDao.dropTable(db, ifExists);
-        InternalSensorMeasurementEntityDao.dropTable(db, ifExists);
+        SensorMeasurementEntityDao.dropTable(db, ifExists);
     }
 
     public DaoSession newSession() {
