@@ -21,6 +21,7 @@ package com.bearded.modules.sensor.internal.persistence;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.sensor.SensorType;
@@ -80,9 +81,9 @@ public class InternalSensorDatabaseFacade {
     /**
      * Converts the stored data into JSON, for sending the data to the cloud.
      *
-     * @return {@link String} with the serialized data JSON file.
+     * @return {@link String} with the serialized data JSON file - <code>null</code> if there is no data.
      */
-    @NonNull
+    @Nullable
     public JsonObject prepareDataForCloudUpload() {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
@@ -91,28 +92,62 @@ public class InternalSensorDatabaseFacade {
             final List<InternalSensorEntity> sensors = mSensorEntityFacade.getAllSensorEntities(session);
             Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing %d sensors.", sensors.size()));
             for (final InternalSensorEntity sensor : sensors) {
-                Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing sensor %s with name: %s.", sensor.getId(), sensor.getSensorName()));
-                final JsonObject sensorJsonObject = sensor.toJsonObject();
-                final JsonArray sensorSeriesJsonArray = new JsonArray();
-                for (final InternalSensorMeasurementSeriesEntity series : mMeasurementSeriesEntityFacade.getAllClosedMeasurementSeriesFromSensor(session, sensor)) {
-                    Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing series id with name: %s.", series.getId()));
-                    final JsonObject seriesJsonObject = series.toJsonObject();
-                    final JsonArray seriesMeasurementsArray = new JsonArray();
-                    for (final InternalSensorMeasurementEntity measurementEntity : mMeasurementEntityFacade.getAllMeasurementsFromSeries(session, series)) {
-                        final JsonObject measurementJsonObject = measurementEntity.toJsonObject();
-                        Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing measurement: %s.", measurementJsonObject.toString()));
-                        seriesMeasurementsArray.add(measurementJsonObject);
-                    }
-                    seriesJsonObject.add("measurements", seriesMeasurementsArray);
-                    sensorSeriesJsonArray.add(seriesJsonObject);
+                final JsonObject sensorJsonObject = prepareSensorJson(session, sensor);
+                if (sensorJsonObject != null) {
+                    sensorArray.add(sensorJsonObject);
                 }
-                sensorJsonObject.add("measurementSeries", sensorSeriesJsonArray);
-                sensorArray.add(sensorJsonObject);
             }
+            if (sensorArray.size() == 0) {
+                Log.w(TAG, "prepareDataForCloudUpload -> No data for cloud upload.");
+                return null;
+            }
+
             Log.i(TAG, "prepareDataForCloudUpload -> " + sensorArray.toString());
             final JsonObject databaseJsonObject = new JsonObject();
             databaseJsonObject.add("sensors", sensorArray);
             return databaseJsonObject;
         }
+    }
+
+    @Nullable
+    private JsonObject prepareSensorJson(@NonNull final DaoSession session,
+                                         @NonNull final InternalSensorEntity sensor) {
+        Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing sensor %s with name: %s.", sensor.getId(), sensor.getSensorName()));
+        final JsonObject sensorJsonObject = sensor.toJsonObject();
+        final JsonArray sensorSeriesJsonArray = new JsonArray();
+        final List<InternalSensorMeasurementSeriesEntity> closedSeries =
+                mMeasurementSeriesEntityFacade.getAllClosedMeasurementSeriesFromSensor(session, sensor);
+        if (closedSeries.isEmpty()) {
+            Log.w(TAG, String.format("prepareSensorJson -> Sensor with name %s do not have any measurement series.", sensor.getSensorName()));
+            return null;
+        }
+        for (final InternalSensorMeasurementSeriesEntity series : closedSeries) {
+            final JsonObject seriesJsonObject = prepareSeriesJson(session, series);
+            if (seriesJsonObject != null) {
+                sensorSeriesJsonArray.add(seriesJsonObject);
+            }
+        }
+        sensorJsonObject.add("measurementSeries", sensorSeriesJsonArray);
+        return sensorJsonObject;
+    }
+
+    @Nullable
+    private JsonObject prepareSeriesJson(@NonNull final DaoSession session,
+                                         @NonNull final InternalSensorMeasurementSeriesEntity series) {
+        Log.d(TAG, String.format("prepareSeriesJson -> Preparing series id with name: %s.", series.getId()));
+        final JsonObject seriesJsonObject = series.toJsonObject();
+        final JsonArray seriesMeasurementsArray = new JsonArray();
+        final List<InternalSensorMeasurementEntity> measurements = mMeasurementEntityFacade.getAllMeasurementsFromSeries(session, series);
+        if (measurements == null || measurements.isEmpty()) {
+            Log.w(TAG, String.format("prepareSeriesJson -> Series with id %d do not have any measurement.", series.getId()));
+            return null;
+        }
+        for (final InternalSensorMeasurementEntity measurementEntity : measurements) {
+            final JsonObject measurementJsonObject = measurementEntity.toJsonObject();
+            Log.d(TAG, String.format("prepareSeriesJson -> Preparing measurement: %s.", measurementJsonObject.toString()));
+            seriesMeasurementsArray.add(measurementJsonObject);
+        }
+        seriesJsonObject.add("measurements", seriesMeasurementsArray);
+        return seriesJsonObject;
     }
 }
