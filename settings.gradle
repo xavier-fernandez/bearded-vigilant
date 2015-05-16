@@ -1,6 +1,6 @@
 include ':common'
+include ':sensor-common'
 include ':database-schema-generator'
 include ':bearded'
 include ':mod-ble-discovery'
-include ':mod-sensor-common'
 include ':mod-internal-sensors'

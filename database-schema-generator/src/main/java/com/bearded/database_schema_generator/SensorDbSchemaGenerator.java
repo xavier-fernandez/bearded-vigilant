@@ -35,8 +35,8 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
 
     private static final int SCHEMA_VERSION = 1;
 
-    private static final String OUT_DIR = "./mod-sensor-common/src/main/java";
-    private static final String TEST_DIR = "./mod-sensor-common/src/androidTest/java";
+    private static final String OUT_DIR = "./sensor-common/src/main/java";
+    private static final String TEST_DIR = "./sensor-common/src/androidTest/java";
 
     static void generateInternalSensorDatabaseSchema() throws Exception {
         System.out.println(String.format("Creating database schema with name: %s", MODULE_PACKAGE));

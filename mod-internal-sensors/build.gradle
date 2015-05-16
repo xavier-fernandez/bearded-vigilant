@@ -10,6 +10,6 @@ android {
     }
 
     dependencies {
-        compile project(':mod-sensor-common')
+        compile project(':sensor-common')
     }
 }
