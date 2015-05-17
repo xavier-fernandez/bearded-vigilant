@@ -12,6 +12,8 @@ import de.greenrobot.dao.test.AbstractDaoTestLongPk;
 
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.AdvertiseName;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.DeviceAddress;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.IsEdrOrBr;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.IsLowEnergy;
 
 public class BleDeviceEntityTest extends AbstractDaoTestLongPk<BleDeviceEntityDao, BleDeviceEntity> {
 
@@ -56,5 +58,7 @@ public class BleDeviceEntityTest extends AbstractDaoTestLongPk<BleDeviceEntityDa
         final JsonObject jsonObject = entity.toJsonObject();
         assertEquals(jsonObject.get(DeviceAddress.name).getAsString(), TEST_DEVICE_ADDRESS);
         assertEquals(jsonObject.get(AdvertiseName.name).getAsString(), TEST_ADVERTISE_NAME);
+        assertNull(jsonObject.get(IsEdrOrBr.name));
+        assertNull(jsonObject.get(IsLowEnergy.name));
     }
 }

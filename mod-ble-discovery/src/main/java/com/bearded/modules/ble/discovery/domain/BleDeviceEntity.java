@@ -11,6 +11,8 @@ import com.google.gson.JsonPrimitive;
 
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.AdvertiseName;
 import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.DeviceAddress;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.IsEdrOrBr;
+import static com.bearded.modules.ble.discovery.persistence.dao.BleDeviceEntityDao.Properties.IsLowEnergy;
 // KEEP INCLUDES END
 
 /**
@@ -101,7 +103,9 @@ public class BleDeviceEntity implements com.bearded.common.persistance.Parseable
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
         jsonObject.add(DeviceAddress.name, new JsonPrimitive(deviceAddress));
-        jsonObject.add(AdvertiseName.name, new JsonPrimitive(advertiseName));
+        jsonObject.add(AdvertiseName.name, (advertiseName == null) ? null : new JsonPrimitive(advertiseName));
+        jsonObject.add(IsEdrOrBr.name, (isEdrOrBr == null) ? null : new JsonPrimitive(isEdrOrBr));
+        jsonObject.add(IsLowEnergy.name, (isLowEnergy == null) ? null : new JsonPrimitive(isLowEnergy));
         return jsonObject;
     }
 
