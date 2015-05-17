@@ -27,7 +27,7 @@ import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Propert
 /**
  * Entity mapped to table Sensor.
  */
-public class SensorEntity implements com.bearded.common.persistance.ParseableJson, Comparable<SensorEntity> {
+public class SensorEntity implements com.bearded.common.persistance.ParseableJson, java.lang.Comparable<SensorEntity> {
 
     private Long id;
     /**

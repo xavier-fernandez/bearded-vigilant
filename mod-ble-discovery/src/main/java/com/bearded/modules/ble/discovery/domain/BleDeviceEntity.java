@@ -24,6 +24,8 @@ public class BleDeviceEntity implements com.bearded.common.persistance.Parseable
      */
     private String deviceAddress;
     private String advertiseName;
+    private Boolean isEdrOrBr;
+    private Boolean isLowEnergy;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -35,10 +37,12 @@ public class BleDeviceEntity implements com.bearded.common.persistance.Parseable
         this.id = id;
     }
 
-    public BleDeviceEntity(Long id, String deviceAddress, String advertiseName) {
+    public BleDeviceEntity(Long id, String deviceAddress, String advertiseName, Boolean isEdrOrBr, Boolean isLowEnergy) {
         this.id = id;
         this.deviceAddress = deviceAddress;
         this.advertiseName = advertiseName;
+        this.isEdrOrBr = isEdrOrBr;
+        this.isLowEnergy = isLowEnergy;
     }
 
     public Long getId() {
@@ -69,6 +73,22 @@ public class BleDeviceEntity implements com.bearded.common.persistance.Parseable
 
     public void setAdvertiseName(String advertiseName) {
         this.advertiseName = advertiseName;
+    }
+
+    public Boolean getIsEdrOrBr() {
+        return isEdrOrBr;
+    }
+
+    public void setIsEdrOrBr(Boolean isEdrOrBr) {
+        this.isEdrOrBr = isEdrOrBr;
+    }
+
+    public Boolean getIsLowEnergy() {
+        return isLowEnergy;
+    }
+
+    public void setIsLowEnergy(Boolean isLowEnergy) {
+        this.isLowEnergy = isLowEnergy;
     }
 
     // KEEP METHODS - put your custom methods here

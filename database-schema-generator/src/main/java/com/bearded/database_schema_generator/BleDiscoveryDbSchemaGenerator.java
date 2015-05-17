@@ -61,14 +61,19 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * CREATE TABLE ble_device (
      * _id             INTEGER  PRIMARY KEY AUTOINCREMENT,
      * device_address  TEXT     NOT NULL,
-     * advertise_name  TEXT
+     * advertise_name  TEXT,
+     * edr_or_br       BOOLEAN
      * );
      */
     @NonNull
     private static Entity createBleDeviceEntity(@NonNull final Schema dbSchema) {
         final Entity deviceEntity = createEntity(dbSchema, "BleDevice");
-        deviceEntity.addStringProperty("deviceAddress").notNull();
-        deviceEntity.addStringProperty("advertiseName");
+        deviceEntity.addStringProperty("deviceAddress").notNull().indexAsc("ble_device_address_index", true);
+        deviceEntity.addStringProperty("advertiseName").indexAsc("ble_device_advertise_name_index", false);
+        // Indicates if the device supports data transmission using old Bluetooth protocols.
+        deviceEntity.addBooleanProperty("isEdrOrBr");
+        // Indicates if the device supports data transmission using low-energy Bluetooth protocols.
+        deviceEntity.addBooleanProperty("isLowEnergy");
         return deviceEntity;
     }
 
@@ -76,7 +81,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * CREATE TABLE ble_event_series (
      * _id              INTEGER    PRIMARY KEY   AUTOINCREMENT,
      * ble_device_id    INTEGER    FOREIGN KEY   REFERENCES  ble_device (_id)  NOT NULL,
-     * start_timestamp  TEXT       NonNull,
+     * start_timestamp  TEXT       NOT NULL,
      * end_timestamp    TEXT,
      * );
      */
