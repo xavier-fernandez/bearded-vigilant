@@ -1,5 +1,5 @@
 include ':common'
 include ':sensor-common', ':ble-common'
 include ':database-schema-generator'
-include ':bearded'
+include ':service'
 include ':mod-ble-discovery', ':mod-internal-sensors', ':mod-ble-sensors'
