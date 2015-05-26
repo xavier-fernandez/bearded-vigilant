@@ -1,3 +1,3 @@
 <manifest
-    package="com.bearded.modules.sensor.internal">
+    package="com.bearded.modules.sensor.ble">
 </manifest>
