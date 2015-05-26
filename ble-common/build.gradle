@@ -10,6 +10,6 @@ android {
     }
 
     dependencies {
-        compile project(':ble-common')
+        compile project(':common')
     }
 }
