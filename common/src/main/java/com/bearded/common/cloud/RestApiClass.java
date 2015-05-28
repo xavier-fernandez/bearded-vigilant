@@ -21,8 +21,6 @@ package com.bearded.common.cloud;
 
 import android.util.Log;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 
@@ -37,9 +35,10 @@ public abstract class RestApiClass {
     }
 
     private void setupRestClientApi() {
+        Log.i(TAG, "setupRestClientApi -> Setting the rest client API");
         final RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
-                .setClient(new OkClient(new OkHttpClient()))
+                .setClient(new OkClient())
                 .build();
         adapter.setLogLevel(RestAdapter.LogLevel.FULL);
         adapter.create(this.getClass());
