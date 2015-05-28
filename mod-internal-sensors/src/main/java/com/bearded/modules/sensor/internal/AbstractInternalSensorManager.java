@@ -144,6 +144,6 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
      */
     @Override
     public void pushCloudDataToTheCloud() {
-        //TODO: implement
+        mInternalSensorCloudUploader.uploadInternalSensorData(null, null);
     }
 }

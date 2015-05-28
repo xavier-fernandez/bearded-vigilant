@@ -3,136 +3,147 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="664.8125" y="80.0">com.bearded.modules.sensor.persistence.SensorEntityFacade</node>
-    <node x="82.55113636363637" y="500.0">com.bearded.modules.sensor.internal.AmbientTemperatureInternalSensorModule</node>
-    <node x="103.56534090909088" y="80.0">com.bearded.modules.sensor.domain.LocationEntity</node>
-    <node x="446.87499999999994" y="160.0">com.bearded.modules.sensor.persistence.SensorMeasurementSeriesEntityFacade</node>
-    <node x="404.5511363636364" y="500.0">com.bearded.modules.sensor.internal.RelativeHumidityInternalSensorModule</node>
+    <node x="764.8125" y="80.0">com.bearded.modules.sensor.persistence.SensorEntityFacade</node>
+    <node x="105.0" y="340.0">com.bearded.common.modules.AbstractCloudModule</node>
+    <node x="911.3125" y="500.0">com.bearded.modules.sensor.internal.AmbientTemperatureInternalSensorModule</node>
+    <node x="109.0100574712643" y="80.0">com.bearded.modules.sensor.domain.LocationEntity</node>
+    <node x="546.875" y="160.0">com.bearded.modules.sensor.persistence.SensorMeasurementSeriesEntityFacade</node>
+    <node x="614.3125" y="500.0">com.bearded.modules.sensor.internal.RelativeHumidityInternalSensorModule</node>
+    <node x="210.5" y="240.0">com.bearded.common.modules.CloudModule</node>
     <node x="0.0" y="160.0">com.bearded.modules.sensor.persistence.SensorLocationEntityFacade</node>
-    <node x="363.49999999999994" y="80.0">com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity</node>
-    <node x="429.24999999999994" y="420.0">com.bearded.modules.sensor.internal.AbstractInternalSensorManager</node>
-    <node x="261.74999999999994" y="240.0">com.bearded.modules.sensor.persistence.SensorMeasurementEntityFacade</node>
-    <node x="84.74999999999994" y="240.0">com.bearded.modules.sensor.persistence.DatabaseConnector</node>
-    <node x="701.5511363636364" y="500.0">com.bearded.modules.sensor.internal.LightInternalSensorModule</node>
-    <node x="455.74999999999994" y="340.0">com.bearded.modules.sensor.persistence.SensorDatabaseFacade</node>
-    <node x="623.405303030303" y="0.0">com.bearded.modules.sensor.domain.SensorEntity</node>
-    <node x="228.99999999999994" y="160.0">com.bearded.modules.sensor.domain.SensorMeasurementEntity</node>
+    <node x="229.0" y="160.0">com.bearded.common.modules.Module</node>
+    <node x="463.5" y="80.0">com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity</node>
+    <node x="662.8125" y="420.0">com.bearded.modules.sensor.internal.AbstractInternalSensorManager</node>
+    <node x="361.75" y="240.0">com.bearded.modules.sensor.persistence.SensorMeasurementEntityFacade</node>
+    <node x="858.3125" y="240.0">com.bearded.modules.sensor.persistence.DatabaseConnector</node>
+    <node x="392.31250000000006" y="500.0">com.bearded.modules.sensor.internal.LightInternalSensorModule</node>
+    <node x="645.0625" y="340.0">com.bearded.modules.sensor.persistence.SensorDatabaseFacade</node>
+    <node x="1035.3125" y="240.0">com.bearded.common.cloud.RestApiClass</node>
+    <node x="1171.3125" y="240.0">com.bearded.modules.sensor.internal.cloud.InternalSensorCloudApi</node>
+    <node x="1074.6372126436781" y="340.0">com.bearded.modules.sensor.internal.cloud.InternalSensorCloudUploader</node>
+    <node x="700.1372126436781" y="0.0">com.bearded.modules.sensor.domain.SensorEntity</node>
+    <node x="329.0" y="160.0">com.bearded.modules.sensor.domain.SensorMeasurementEntity</node>
+    <node x="31.5" y="240.0">com.bearded.common.cloud.UploadStateListener</node>
   </nodes>
   <notes />
   <edges>
+    <edge source="com.bearded.modules.sensor.persistence.SensorDatabaseFacade" target="com.bearded.modules.sensor.persistence.SensorEntityFacade">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
     <edge source="com.bearded.modules.sensor.persistence.SensorDatabaseFacade" target="com.bearded.modules.sensor.persistence.SensorMeasurementEntityFacade">
-      <point x="-11.0625" y="-15.0" />
-      <point x="533.1875" y="290.0" />
-      <point x="440.99999999999994" y="290.0" />
-      <point x="59.75" y="15.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="com.bearded.modules.sensor.persistence.SensorMeasurementEntityFacade" target="com.bearded.modules.sensor.domain.SensorMeasurementEntity">
-      <point x="-59.75" y="-15.0" />
-      <point x="321.49999999999994" y="215.0" />
-      <point x="326.99999999999994" y="215.0" />
-      <point x="0.0" y="15.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="com.bearded.modules.sensor.domain.SensorMeasurementEntity" target="com.bearded.modules.sensor.domain.LocationEntity">
-      <point x="-49.0" y="-15.0" />
-      <point x="277.99999999999994" y="135.0" />
-      <point x="206.89867424242425" y="135.0" />
-      <point x="41.33333333333337" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.persistence.SensorMeasurementSeriesEntityFacade" target="com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity">
-      <point x="0.0" y="-15.0" />
-      <point x="584.875" y="135.0" />
-      <point x="567.375" y="135.0" />
-      <point x="87.375" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.persistence.SensorEntityFacade" target="com.bearded.modules.sensor.domain.SensorEntity">
-      <point x="38.75" y="-15.0" />
-      <point x="781.0625" y="60.0" />
-      <point x="721.405303030303" y="60.0" />
-      <point x="42.0" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.persistence.SensorMeasurementEntityFacade" target="com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity">
-      <point x="59.75" y="-15.0" />
-      <point x="440.99999999999994" y="215.0" />
-      <point x="435.49999999999994" y="215.0" />
-      <point x="435.49999999999994" y="135.0" />
-      <point x="450.87499999999994" y="135.0" />
-      <point x="-29.125" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.persistence.SensorDatabaseFacade" target="com.bearded.modules.sensor.persistence.DatabaseConnector">
-      <point x="-55.3125" y="-15.0" />
-      <point x="488.93749999999994" y="310.0" />
-      <point x="202.49999999999994" y="310.0" />
-      <point x="39.25" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity" target="com.bearded.modules.sensor.domain.SensorEntity">
-      <point x="0.0" y="-15.0" />
-      <point x="479.99999999999994" y="50.0" />
-      <point x="637.405303030303" y="50.0" />
-      <point x="-42.0" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.internal.AbstractInternalSensorManager" target="com.bearded.modules.sensor.persistence.SensorDatabaseFacade">
-      <point x="-57.5" y="-15.0" />
-      <point x="486.74999999999994" y="395.0" />
-      <point x="499.99999999999994" y="395.0" />
-      <point x="-44.25" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.persistence.SensorMeasurementSeriesEntityFacade" target="com.bearded.modules.sensor.domain.SensorEntity">
-      <point x="92.0" y="-15.0" />
-      <point x="676.875" y="135.0" />
-      <point x="619.405303030303" y="135.0" />
-      <point x="619.405303030303" y="60.0" />
-      <point x="665.405303030303" y="60.0" />
-      <point x="-14.0" y="15.0" />
-    </edge>
-    <edge source="com.bearded.modules.sensor.persistence.SensorDatabaseFacade" target="com.bearded.modules.sensor.persistence.SensorEntityFacade">
-      <point x="55.3125" y="-15.0" />
-      <point x="599.5625" y="310.0" />
-      <point x="736.8125" y="310.0" />
-      <point x="736.8125" y="135.0" />
-      <point x="703.5625" y="135.0" />
-      <point x="-38.75" y="15.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="com.bearded.modules.sensor.domain.SensorMeasurementEntity" target="com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity">
-      <point x="49.0" y="-15.0" />
-      <point x="375.99999999999994" y="135.0" />
-      <point x="392.62499999999994" y="135.0" />
-      <point x="-87.375" y="15.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="com.bearded.modules.sensor.persistence.SensorDatabaseFacade" target="com.bearded.modules.sensor.persistence.SensorMeasurementSeriesEntityFacade">
-      <point x="33.1875" y="-15.0" />
-      <point x="577.4375" y="300.0" />
-      <point x="599.1903409090909" y="300.0" />
-      <point x="599.1903409090909" y="215.0" />
-      <point x="653.875" y="215.0" />
-      <point x="69.0" y="15.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.common.modules.AbstractCloudModule" target="com.bearded.common.modules.CloudModule">
+      <point x="42.5" y="-15.0" />
+      <point x="232.5" y="320.0" />
+      <point x="269.0" y="320.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.persistence.SensorMeasurementSeriesEntityFacade" target="com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="com.bearded.modules.sensor.internal.AmbientTemperatureInternalSensorModule" target="com.bearded.modules.sensor.internal.AbstractInternalSensorManager">
       <point x="0.0" y="-15.0" />
-      <point x="233.55113636363637" y="475.0" />
-      <point x="467.58333333333326" y="475.0" />
-      <point x="-76.66666666666669" y="15.0" />
+      <point x="1062.3125" y="475.0" />
+      <point x="854.4791666666667" y="475.0" />
+      <point x="76.66666666666674" y="15.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.internal.AbstractInternalSensorManager" target="com.bearded.modules.sensor.internal.cloud.InternalSensorCloudUploader">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.internal.cloud.InternalSensorCloudUploader" target="com.bearded.modules.sensor.internal.cloud.InternalSensorCloudApi">
+      <point x="54.25" y="-15.0" />
+      <point x="1237.3872126436781" y="320.0" />
+      <point x="1262.3125" y="320.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.bearded.common.modules.CloudModule" target="com.bearded.common.modules.Module">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
     </edge>
     <edge source="com.bearded.modules.sensor.internal.RelativeHumidityInternalSensorModule" target="com.bearded.modules.sensor.internal.AbstractInternalSensorManager">
       <point x="0.0" y="-15.0" />
-      <point x="543.0511363636364" y="475.0" />
-      <point x="544.25" y="475.0" />
+      <point x="752.8125" y="475.0" />
+      <point x="777.8125" y="475.0" />
       <point x="0.0" y="15.0" />
     </edge>
+    <edge source="com.bearded.modules.sensor.internal.AbstractInternalSensorManager" target="com.bearded.common.modules.AbstractCloudModule">
+      <point x="-92.0" y="-15.0" />
+      <point x="685.8125" y="400.0" />
+      <point x="190.0" y="400.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.persistence.SensorEntityFacade" target="com.bearded.modules.sensor.domain.SensorEntity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.persistence.SensorMeasurementEntityFacade" target="com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
     <edge source="com.bearded.modules.sensor.persistence.SensorLocationEntityFacade" target="com.bearded.modules.sensor.domain.LocationEntity">
-      <point x="52.25" y="-15.0" />
-      <point x="156.75" y="135.0" />
-      <point x="165.56534090909088" y="135.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.persistence.SensorDatabaseFacade" target="com.bearded.modules.sensor.persistence.DatabaseConnector">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.common.modules.AbstractCloudModule" target="com.bearded.common.cloud.UploadStateListener">
+      <point x="-42.5" y="-15.0" />
+      <point x="147.5" y="320.0" />
+      <point x="111.0" y="320.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.domain.SensorMeasurementSeriesEntity" target="com.bearded.modules.sensor.domain.SensorEntity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.internal.AbstractInternalSensorManager" target="com.bearded.modules.sensor.persistence.SensorDatabaseFacade">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.persistence.SensorMeasurementSeriesEntityFacade" target="com.bearded.modules.sensor.domain.SensorEntity">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.bearded.modules.sensor.internal.cloud.InternalSensorCloudUploader" target="com.bearded.common.cloud.RestApiClass">
+      <point x="-54.25" y="-15.0" />
+      <point x="1128.8872126436781" y="320.0" />
+      <point x="1093.3125" y="320.0" />
       <point x="0.0" y="15.0" />
     </edge>
     <edge source="com.bearded.modules.sensor.internal.LightInternalSensorModule" target="com.bearded.modules.sensor.internal.AbstractInternalSensorManager">
-      <point x="0.0" y="-15.0" />
-      <point x="802.5511363636364" y="475.0" />
-      <point x="620.9166666666666" y="475.0" />
-      <point x="76.66666666666669" y="15.0" />
+      <point x="-5.6843418860808015E-14" y="-15.0" />
+      <point x="493.3125" y="475.0" />
+      <point x="701.1458333333334" y="475.0" />
+      <point x="-76.66666666666663" y="15.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.7486064150598556" x="677.9635620117188" y="294.5205078125" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="0.7634643377001455" x="677.0" y="425.4528122020973" />
+  <SelectedNodes>
+    <node>com.bearded.modules.sensor.persistence.SensorEntityFacade</node>
+  </SelectedNodes>
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
