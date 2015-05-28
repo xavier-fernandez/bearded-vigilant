@@ -23,13 +23,24 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.bearded.common.modules.AbstractCloudModule;
+import com.bearded.modules.ble.discovery.persistence.BleDiscoveryDatabaseFacade;
+import com.sensirion.libble.BleManager;
+import com.sensirion.libble.devices.BleDevice;
+import com.sensirion.libble.listeners.devices.DeviceStateListener;
+import com.sensirion.libble.listeners.devices.ScanListener;
 
 import org.joda.time.DateTime;
 
-public class BleDiscoveryModule extends AbstractCloudModule {
+public class BleDiscoveryModule extends AbstractCloudModule implements ScanListener, DeviceStateListener {
 
     private static final String TAG = BleDiscoveryModule.class.getSimpleName();
     private static final int BLE_DISCOVERY_MODULE_VERSION = 1;
+    @NonNull
+    private final BleDiscoveryDatabaseFacade mDatabaseFacade;
+
+    public BleDiscoveryModule(){
+        mDatabaseFacade = new BleDiscoveryDatabaseFacade();
+    }
 
     /**
      * {@inheritDoc}
@@ -70,5 +81,32 @@ public class BleDiscoveryModule extends AbstractCloudModule {
     @Override
     public void pushCloudDataToTheCloud() {
         //TODO: Implement
+    }
+
+    @Override
+    public void onScanStateChanged(final boolean isScanEnabled) {
+        if (!isScanEnabled) {
+            BleManager.getInstance().startScanning();
+        }
+    }
+
+    @Override
+    public void onDeviceConnected(@NonNull final BleDevice device) {
+        // Do nothing
+    }
+
+    @Override
+    public void onDeviceDisconnected(@NonNull final BleDevice device) {
+        // Do nothing
+    }
+
+    @Override
+    public void onDeviceDiscovered(@NonNull final BleDevice device) {
+        mDatabaseFacade.
+    }
+
+    @Override
+    public void onDeviceAllServicesDiscovered(@NonNull final BleDevice device) {
+        // Do nothing
     }
 }
