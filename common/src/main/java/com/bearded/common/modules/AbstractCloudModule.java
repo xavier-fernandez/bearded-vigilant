@@ -21,12 +21,14 @@ package com.bearded.common.modules;
 
 import android.support.annotation.Nullable;
 
+import com.bearded.common.cloud.UploadStateListener;
+
 import org.joda.time.DateTime;
 
 /**
  * Base class for all the modules that wants to push automatically the data for cloud upload.
  */
-public abstract class AbstractCloudModule implements CloudModule {
+public abstract class AbstractCloudModule implements CloudModule, UploadStateListener {
 
     private static final long DEFAULT_WAITING_TIME_BETWEEN_CLOUD_UPLOADS = 15 * 1000; // 15 seconds
 
