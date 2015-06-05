@@ -100,13 +100,28 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
         // Do nothing
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onDeviceDiscovered(@NonNull final BleDevice device) {
-        mDatabaseFacade.
+        //TODO: Implement
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onDeviceAllServicesDiscovered(@NonNull final BleDevice device) {
         // Do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onUploadCompleted(final int code) {
+        // TODO: Implement
     }
 }
