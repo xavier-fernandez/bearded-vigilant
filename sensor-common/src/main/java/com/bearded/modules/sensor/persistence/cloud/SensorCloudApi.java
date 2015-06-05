@@ -17,7 +17,7 @@
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
 
-package com.bearded.modules.sensor.internal.cloud;
+package com.bearded.modules.sensor.persistence.cloud;
 
 import android.support.annotation.NonNull;
 
@@ -30,7 +30,7 @@ import retrofit.http.POST;
 /**
  * Interface defining the API for sending the internal sensor data to the Cloud.
  */
-public interface InternalSensorCloudApi {
+public interface SensorCloudApi {
 
     /**
      * Uploads a bunch of internal sensor data to the cloud.
@@ -38,7 +38,7 @@ public interface InternalSensorCloudApi {
      * @param jsonString with the JSON {@link String} that is going to be sent to the cloud.
      * @param callback   that is going to receive information when the upload is completed.
      */
-    @POST("/internalSensorData")
-    void uploadInternalSensorData(@Field("internalSensorData") @NonNull final String jsonString,
-                                  @NonNull final Callback<UploadStateListener> callback);
+    @POST("/measurement")
+    void uploadSensorData(@Field("json-with-measurement-values") @NonNull final String jsonString,
+                          @NonNull final Callback<UploadStateListener> callback);
 }

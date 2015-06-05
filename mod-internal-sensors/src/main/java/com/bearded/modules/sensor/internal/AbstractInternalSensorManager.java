@@ -29,7 +29,7 @@ import android.util.Log;
 
 import com.bearded.common.modules.AbstractCloudModule;
 import com.bearded.common.sensor.SensorType;
-import com.bearded.modules.sensor.internal.cloud.InternalSensorCloudUploader;
+import com.bearded.modules.sensor.persistence.cloud.InternalSensorCloudUploader;
 import com.bearded.modules.sensor.persistence.SensorDatabaseFacade;
 
 import org.joda.time.DateTime;
@@ -144,7 +144,7 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
      */
     @Override
     public void pushCloudDataToTheCloud() {
-        mInternalSensorCloudUploader.uploadInternalSensorData(null, null);
+        mInternalSensorCloudUploader.uploadSensorData(null, null);
     }
 
 
