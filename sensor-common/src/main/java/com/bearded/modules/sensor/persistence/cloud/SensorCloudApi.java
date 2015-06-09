@@ -19,26 +19,22 @@
 
 package com.bearded.modules.sensor.persistence.cloud;
 
-import android.support.annotation.NonNull;
-
-import com.bearded.common.cloud.UploadStateListener;
-
 import retrofit.Callback;
 import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
 
 /**
  * Interface defining the API for sending the internal sensor data to the Cloud.
  */
-public interface SensorCloudApi {
+interface SensorCloudApi {
 
     /**
      * Uploads a bunch of internal sensor data to the cloud.
      *
      * @param jsonString with the JSON {@link String} that is going to be sent to the cloud.
-     * @param callback   that is going to receive information when the upload is completed.
      */
-    @POST("/measurement")
-    void uploadSensorData(@Field("json-with-measurement-values") @NonNull final String jsonString,
-                          @NonNull final Callback<UploadStateListener> callback);
+    @FormUrlEncoded
+    @POST("/api/vigilant/v1/vigilant-sensor-data")
+    void uploadSensorData(@Field("data") String jsonString, Callback<Integer> callback);
 }
