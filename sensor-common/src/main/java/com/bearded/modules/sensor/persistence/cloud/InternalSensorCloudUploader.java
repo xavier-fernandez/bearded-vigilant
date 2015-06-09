@@ -27,7 +27,7 @@ public class InternalSensorCloudUploader extends RestApiClass {
              */
             @Override
             public void success(@NonNull final Integer code, @NonNull final Response response) {
-                Log.d(TAG, "uploadSensorData -> The data have been sent succesfuly with the code: " + response.getStatus());
+                Log.d(TAG, "uploadSensorData -> The data have been sent successfully with the code: " + response.getStatus());
                 callback.onUploadCompleted(response.getStatus());
             }
 
