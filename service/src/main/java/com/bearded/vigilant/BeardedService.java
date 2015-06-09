@@ -1,13 +1,3 @@
-package com.bearded.vigilant;
-
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.bearded.common.modules.Module;
-
 /*
  * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  *
@@ -26,9 +16,25 @@ import com.bearded.common.modules.Module;
  * Contributors:
  *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
  */
+
+package com.bearded.vigilant;
+
+import android.app.Service;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.bearded.common.modules.CloudModule;
+import com.bearded.common.modules.Module;
+
 public class BeardedService extends Service {
 
     private static final String TAG = BeardedService.class.getSimpleName();
+    private static long ONE_MINUTE_MS = 60 * 1000l;
+    private static long TWO_MINUTE_MS = 2 * ONE_MINUTE_MS;
+    private final Handler mHandler = new Handler();
 
     /**
      * {@inheritDoc}
@@ -40,7 +46,32 @@ public class BeardedService extends Service {
         for (final Module module : moduleManager.getAvailableModules()) {
             Log.i(TAG, "onBind -> Found module: " + module);
         }
+        pushDataToTheCloudPeriodically(moduleManager);
         return Service.START_STICKY; //Service is restarted if terminates.
+    }
+
+    private void pushDataToTheCloudPeriodically(@NonNull final ModuleManager moduleManager) {
+        mHandler.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        pushAllModuleDataToTheCloud(moduleManager);
+                        mHandler.postDelayed(this, TWO_MINUTE_MS);
+                    }
+                });
+    }
+
+    private void pushAllModuleDataToTheCloud(@NonNull final ModuleManager moduleManager) {
+        for (final Module module : moduleManager.getAvailableModules()) {
+            if (module instanceof CloudModule) {
+                pushModuleDataToTheCloud((CloudModule) module);
+            }
+        }
+    }
+
+    private void pushModuleDataToTheCloud(@NonNull final CloudModule module) {
+        Log.i(TAG, String.format("pushModuleDataToTheCloud -> pushing data from the module %s to the cloud.", module.getModuleName()));
+        module.pushCloudDataToTheCloud();
     }
 
     /**
