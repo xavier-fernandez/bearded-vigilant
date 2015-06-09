@@ -29,8 +29,9 @@ import android.util.Log;
 
 import com.bearded.common.modules.AbstractCloudModule;
 import com.bearded.common.sensor.SensorType;
-import com.bearded.modules.sensor.persistence.cloud.InternalSensorCloudUploader;
 import com.bearded.modules.sensor.persistence.SensorDatabaseFacade;
+import com.bearded.modules.sensor.persistence.cloud.InternalSensorCloudUploader;
+import com.google.gson.JsonObject;
 
 import org.joda.time.DateTime;
 
@@ -61,6 +62,7 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
     protected AbstractInternalSensorManager(@NonNull final Context context,
                                             @NonNull final SensorType sensorType,
                                             final int binSizeMillis) {
+        super(context);
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensorType = sensorType;
         mInternalSensor = getSensorManager().getDefaultSensor(sensorType.getSensorId());
@@ -144,15 +146,25 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
      */
     @Override
     public void pushCloudDataToTheCloud() {
-        mInternalSensorCloudUploader.uploadSensorData(null, null);
+        if (mDatabaseFacade == null) {
+            Log.w(TAG, "pushCloudDataToTheCloud -> Database facade is null.");
+        } else {
+            final JsonObject sensorDataJson = mDatabaseFacade.getSensorDataJson(getDeviceMetadataJson());
+            if (sensorDataJson == null) {
+                Log.w(TAG, "pushCloudDataToTheCloud -> No data to upload.");
+            } else {
+                mInternalSensorCloudUploader.uploadSensorData(sensorDataJson.toString(), this);
+            }
+        }
     }
-
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void onUploadCompleted(final int code) {
-        //TODO: Implement
+        super.onUploadCompleted(code);
+        assert mDatabaseFacade != null;
+        mDatabaseFacade.removeAllUploadedSensorMeasurements();
     }
 }
