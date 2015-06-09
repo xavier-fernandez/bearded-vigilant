@@ -19,6 +19,7 @@
 
 package com.bearded.modules.ble.discovery;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -38,7 +39,8 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
     @NonNull
     private final BleDiscoveryDatabaseFacade mDatabaseFacade;
 
-    public BleDiscoveryModule(){
+    public BleDiscoveryModule(@NonNull final Context context) {
+        super(context);
         mDatabaseFacade = new BleDiscoveryDatabaseFacade();
     }
 
@@ -75,6 +77,12 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
     @Override
     public DateTime getLastSensorDataReceived() {
         //TODO: Implement
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public DateTime getLastCloudUploadTime() {
         return null;
     }
 
