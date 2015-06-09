@@ -46,7 +46,6 @@ public class SensorDatabaseFacade {
     private final SensorMeasurementSeriesEntityFacade mMeasurementSeriesEntityFacade;
     @NonNull
     private final SensorMeasurementEntityFacade mMeasurementEntityFacade;
-
     @NonNull
     private final DatabaseConnector mDatabaseHandler;
 
@@ -79,14 +78,38 @@ public class SensorDatabaseFacade {
     }
 
     /**
+     * Removes all the uploaded measurements from the internal database.
+     */
+    public void removeAllUploadedSensorMeasurements() {
+        synchronized (mDatabaseHandler) {
+            final DaoSession session = mDatabaseHandler.getSession();
+            session.runInTx(new Runnable() {
+                @Override
+                public void run() {
+                    for (final SensorEntity sensor : mSensorEntityFacade.getAllSensorEntities(session)) {
+                        for (final SensorMeasurementSeriesEntity series : mMeasurementSeriesEntityFacade.getAllClosedMeasurementSeriesFromSensor(session, sensor)) {
+                            for (final SensorMeasurementEntity measurement : mMeasurementEntityFacade.getAllMeasurementsFromSeries(session, series)) {
+                                session.delete(measurement);
+                            }
+                            session.delete(series);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    /**
      * Converts the stored data into JSON, for sending the data to the cloud.
      *
      * @return {@link String} with the serialized data JSON file - <code>null</code> if there is no data.
      */
     @Nullable
-    public JsonObject prepareDataForCloudUpload() {
+    public JsonObject getSensorDataJson(@NonNull final JsonObject metadata) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
+            final JsonObject databaseJsonObject = new JsonObject();
+            databaseJsonObject.add("deviceMetadata", metadata);
             mMeasurementSeriesEntityFacade.updateAllMeasurementSeriesEndTimestamp(session);
             final JsonArray sensorArray = new JsonArray();
             final List<SensorEntity> sensors = mSensorEntityFacade.getAllSensorEntities(session);
@@ -103,7 +126,6 @@ public class SensorDatabaseFacade {
             }
 
             Log.i(TAG, "prepareDataForCloudUpload -> " + sensorArray.toString());
-            final JsonObject databaseJsonObject = new JsonObject();
             databaseJsonObject.add("sensors", sensorArray);
             return databaseJsonObject;
         }

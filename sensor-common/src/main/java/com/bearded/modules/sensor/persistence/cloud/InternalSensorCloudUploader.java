@@ -1,21 +1,43 @@
 package com.bearded.modules.sensor.persistence.cloud;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.bearded.common.cloud.RestApiClass;
 import com.bearded.common.cloud.UploadStateListener;
 
 import retrofit.Callback;
-import retrofit.http.Field;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class InternalSensorCloudUploader extends RestApiClass implements SensorCloudApi {
+public class InternalSensorCloudUploader extends RestApiClass {
+
+    private final String TAG = getClass().getSimpleName();
 
     /**
-     * {@inheritDoc}
+     * @see SensorCloudApi#uploadSensorData
      */
-    @Override
-    public void uploadSensorData(@Field("internalSensorData") @NonNull final String jsonString,
-                                 @NonNull final Callback<UploadStateListener> callback) {
-        // TODO: Implement
+    public void uploadSensorData(@NonNull final String jsonString,
+                                 @NonNull final UploadStateListener callback) {
+
+        final SensorCloudApi apiService = getRestAdapter().create(SensorCloudApi.class);
+        apiService.uploadSensorData(jsonString, new Callback<Integer>() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void success(@NonNull final Integer code, @NonNull final Response response) {
+                Log.d(TAG, "uploadSensorData -> The data have been sent succesfuly with the code: " + response.getStatus());
+                callback.onUploadCompleted(response.getStatus());
+            }
+
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void failure(@NonNull final RetrofitError error) {
+                callback.onUploadFailure(error.getResponse().getStatus());
+            }
+        });
     }
 }
