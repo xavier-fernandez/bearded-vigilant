@@ -260,12 +260,12 @@ public class SensorMeasurementEntity implements com.bearded.common.persistance.P
     @Override
     public JsonObject toJsonObject() {
         final JsonObject jsonObject = new JsonObject();
-        jsonObject.add(Location_id.name, (getLocationEntity() == null)
-                ? null : getLocationEntity().toJsonObject());
         jsonObject.add(StartTimestamp.name, new JsonPrimitive(this.startTimestamp));
         jsonObject.add(EndTimestamp.name, new JsonPrimitive(this.endTimestamp));
         jsonObject.add(MedianSensorValue.name, new JsonPrimitive(this.medianSensorValue));
         jsonObject.add(BinSize.name, new JsonPrimitive(this.binSize));
+        jsonObject.add(Location_id.name, (getLocationEntity() == null)
+                ? null : getLocationEntity().toJsonObject());
         return jsonObject;
     }
 
