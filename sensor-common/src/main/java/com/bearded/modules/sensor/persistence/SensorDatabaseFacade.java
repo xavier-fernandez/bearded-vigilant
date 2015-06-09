@@ -126,7 +126,7 @@ public class SensorDatabaseFacade {
             }
 
             Log.i(TAG, "prepareDataForCloudUpload -> " + sensorArray.toString());
-            databaseJsonObject.add("sensors", sensorArray);
+            databaseJsonObject.add("sensorData", sensorArray);
             return databaseJsonObject;
         }
     }
