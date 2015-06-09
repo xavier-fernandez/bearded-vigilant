@@ -19,9 +19,16 @@
 
 package com.bearded.common.modules;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.bearded.common.cloud.UploadStateListener;
+import com.google.gson.JsonObject;
 
 import org.joda.time.DateTime;
 
@@ -30,13 +37,26 @@ import org.joda.time.DateTime;
  */
 public abstract class AbstractCloudModule implements CloudModule, UploadStateListener {
 
-    private static final long DEFAULT_WAITING_TIME_BETWEEN_CLOUD_UPLOADS = 15 * 1000; // 15 seconds
+    private final String TAG = this.getClass().getSimpleName();
 
-    private final long mWaitingTimeBetweenCloudUploadsMs;
-    private DateTime mLastCloudUploadTime;
+    @NonNull
+    private final String mDeviceMacAddress;
+    @Nullable
+    private DateTime mLastCloudUpload;
 
-    protected AbstractCloudModule() {
-        mWaitingTimeBetweenCloudUploadsMs = DEFAULT_WAITING_TIME_BETWEEN_CLOUD_UPLOADS;
+    protected AbstractCloudModule(@NonNull final Context context) {
+        final WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        final WifiInfo info = manager.getConnectionInfo();
+        mDeviceMacAddress = info.getMacAddress().toUpperCase();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onUploadCompleted(final int code) {
+        Log.d(TAG, String.format("onUploadCompleted -> Upload completed with code: %d", code));
+        mLastCloudUpload = DateTime.now();
     }
 
     /**
@@ -45,6 +65,31 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
     @Nullable
     @Override
     public DateTime getLastCloudUploadTime() {
-        return mLastCloudUploadTime;
+        return mLastCloudUpload;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onUploadFailure(final int errorCode) {
+        Log.d(TAG, String.format("onUploadCompleted -> The error code %d was thrown", errorCode));
+    }
+
+    /**
+     * Obtains the device metadata.
+     *
+     * @return {@link com.google.gson.JsonObject} with the device metadata
+     */
+    @NonNull
+    protected JsonObject getDeviceMetadataJson() {
+        final JsonObject databaseJsonObject = new JsonObject();
+        databaseJsonObject.addProperty("OperatingSystem", String.format("Android %s", Build.VERSION.RELEASE));
+        databaseJsonObject.addProperty("MacAddress", mDeviceMacAddress);
+        databaseJsonObject.addProperty("DeviceModel", Build.MODEL);
+        databaseJsonObject.addProperty("DeviceManufacturer", Build.MANUFACTURER);
+        databaseJsonObject.addProperty("DeviceManufacturer", Build.DISPLAY);
+        databaseJsonObject.addProperty("AndroidID", Build.ID);
+        return databaseJsonObject;
     }
 }
