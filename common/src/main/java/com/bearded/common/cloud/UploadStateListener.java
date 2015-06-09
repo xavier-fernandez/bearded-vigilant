@@ -22,9 +22,16 @@ package com.bearded.common.cloud;
 public interface UploadStateListener {
 
     /**
-     * Advise a listener of the termination of an upload process.
+     * Notify a listener a successful cloud upload.
      *
      * @param code with the download state.
      */
     void onUploadCompleted(final int code);
+
+    /**
+     * Notify a listener of a failed cloud upload.
+     *
+     * @param errorCode thrown when trying to upload data to the cloud.
+     */
+    void onUploadFailure(final int errorCode);
 }
