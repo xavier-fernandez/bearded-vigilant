@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- Enables the access to internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Enables the access to the device MAC address -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!-- Declares an android application.-->
     <application android:allowBackup="true"/>
 </manifest>
