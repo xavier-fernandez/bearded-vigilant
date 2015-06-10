@@ -84,12 +84,10 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
     @NonNull
     protected JsonObject getDeviceMetadataJson() {
         final JsonObject databaseJsonObject = new JsonObject();
-        databaseJsonObject.addProperty("OperatingSystem", String.format("Android %s", Build.VERSION.RELEASE));
         databaseJsonObject.addProperty("MacAddress", mDeviceMacAddress);
-        databaseJsonObject.addProperty("DeviceModel", Build.MODEL);
         databaseJsonObject.addProperty("DeviceManufacturer", Build.MANUFACTURER);
-        databaseJsonObject.addProperty("DeviceManufacturer", Build.DISPLAY);
-        databaseJsonObject.addProperty("AndroidID", Build.ID);
+        databaseJsonObject.addProperty("DeviceModel", Build.MODEL);
+        databaseJsonObject.addProperty("OperatingSystem", String.format("Android %s", Build.VERSION.RELEASE));
         return databaseJsonObject;
     }
 }
