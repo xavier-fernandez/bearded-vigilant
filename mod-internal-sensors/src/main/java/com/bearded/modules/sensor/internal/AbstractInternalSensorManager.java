@@ -30,7 +30,7 @@ import android.util.Log;
 import com.bearded.common.modules.AbstractCloudModule;
 import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.persistence.SensorDatabaseFacade;
-import com.bearded.modules.sensor.persistence.cloud.InternalSensorCloudUploader;
+import com.bearded.modules.sensor.persistence.cloud.SensorCloudUploader;
 import com.google.gson.JsonObject;
 
 import org.joda.time.DateTime;
@@ -56,7 +56,7 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
     @Nullable
     private final SensorDatabaseFacade mDatabaseFacade;
     @NonNull
-    private final InternalSensorCloudUploader mInternalSensorCloudUploader;
+    private final SensorCloudUploader mInternalSensorCloudUploader;
 
 
     protected AbstractInternalSensorManager(@NonNull final Context context,
@@ -74,7 +74,7 @@ abstract class AbstractInternalSensorManager extends AbstractCloudModule impleme
             getSensorManager().registerListener(this, getSensor(), SENSOR_DELAY_NORMAL);
             mDatabaseFacade = new SensorDatabaseFacade(context, sensorType, binSizeMillis);
         }
-        mInternalSensorCloudUploader = new InternalSensorCloudUploader();
+        mInternalSensorCloudUploader = new SensorCloudUploader();
     }
 
     /**

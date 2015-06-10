@@ -10,7 +10,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class InternalSensorCloudUploader extends RestApiClass {
+public class SensorCloudUploader extends RestApiClass {
 
     private final String TAG = getClass().getSimpleName();
 
