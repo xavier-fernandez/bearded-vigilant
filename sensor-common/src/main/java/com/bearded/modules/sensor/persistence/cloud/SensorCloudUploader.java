@@ -36,7 +36,7 @@ public class SensorCloudUploader extends RestApiClass {
              */
             @Override
             public void failure(@NonNull final RetrofitError error) {
-                callback.onUploadFailure(error.getResponse().getStatus());
+                callback.onUploadFailure(error.getMessage());
             }
         });
     }
