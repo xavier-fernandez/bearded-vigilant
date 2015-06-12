@@ -41,7 +41,7 @@ class SensorLocationEntityFacade {
 
     @NonNull
     private static final String TAG = SensorLocationEntityFacade.class.getSimpleName();
-    private static final int LOCATION_BIN_SIZE_MS = 15 * 1000; // 15 seconds
+    private static final int LOCATION_BIN_SIZE_MS = 10 * 1000; // 10 seconds
     @Nullable
     private LocationEntity mLastInsertedLocationEntity = null;
     @Nullable
