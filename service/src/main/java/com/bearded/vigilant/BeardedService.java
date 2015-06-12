@@ -33,7 +33,6 @@ public class BeardedService extends Service {
 
     private static final String TAG = BeardedService.class.getSimpleName();
     private static long ONE_MINUTE_MS = 60 * 1000l;
-    private static long TWO_MINUTE_MS = 2 * ONE_MINUTE_MS;
     private final Handler mHandler = new Handler();
 
     /**
@@ -56,7 +55,7 @@ public class BeardedService extends Service {
                     @Override
                     public void run() {
                         pushAllModuleDataToTheCloud(moduleManager);
-                        mHandler.postDelayed(this, TWO_MINUTE_MS);
+                        mHandler.postDelayed(this, ONE_MINUTE_MS);
                     }
                 });
     }
