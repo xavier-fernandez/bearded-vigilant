@@ -36,7 +36,7 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
 
     private static final String TAG = AmbientTemperatureInternalSensorModule.class.getSimpleName();
 
-    private static final int MODULE_TIMEOUT_MILLISECONDS = 15 * 1000;
+    private static final int DATA_BIN_TIME_MS = 4 * 1000; // 4 SECONDS
 
     private static final int AMBIENT_TEMPERATURE_INTERNAL_SENSOR_MODULE_VERSION = 1;
 
@@ -44,7 +44,7 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
     private DateTime mLastSensorValueReceivedTime;
 
     public AmbientTemperatureInternalSensorModule(@NonNull final Context context) {
-        super(context, SensorType.AMBIENT_TEMPERATURE, MODULE_TIMEOUT_MILLISECONDS);
+        super(context, SensorType.AMBIENT_TEMPERATURE, DATA_BIN_TIME_MS);
     }
 
     /**

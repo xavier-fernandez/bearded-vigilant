@@ -36,7 +36,7 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
     private static final String TAG = LightInternalSensorModule.class.getSimpleName();
 
-    private static final int MODULE_TIMEOUT_MILLISECONDS = 15 * 1000;
+    private static final int DATA_BIN_TIME_MS = 4 * 1000; // 4 SECONDS
 
     private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
 
@@ -46,7 +46,7 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
     private DateTime mLastSensorValueReceivedTime;
 
     public LightInternalSensorModule(@NonNull final Context context) {
-        super(context, SENSOR_TYPE, MODULE_TIMEOUT_MILLISECONDS);
+        super(context, SENSOR_TYPE, DATA_BIN_TIME_MS);
     }
 
     /**
