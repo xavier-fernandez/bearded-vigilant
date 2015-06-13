@@ -40,16 +40,17 @@ public class SensorEntityDao extends AbstractDao<SensorEntity, Long> {
                 "'SENSOR_NAME' TEXT NOT NULL ," + // 1: sensorName
                 "'SENSOR_TYPE' TEXT NOT NULL ," + // 2: sensorType
                 "'SENSOR_UNIT' TEXT NOT NULL ," + // 3: sensorUnit
-                "'MINIMUM_DELAY_MICROSECONDS' INTEGER," + // 4: minimumDelayMicroseconds
-                "'MAXIMUM_DELAY_MICROSECONDS' INTEGER," + // 5: maximumDelayMicroseconds
-                "'FIFO_MAX_EVENT_COUNT' INTEGER," + // 6: fifoMaxEventCount
-                "'FIFO_RESERVED_EVENT_COUNT' INTEGER," + // 7: fifoReservedEventCount
-                "'MAXIMUM_RANGE' REAL," + // 8: maximumRange
-                "'REPORTING_MODE' TEXT," + // 9: reportingMode
-                "'POWER_IN_MILLI_AMPERES' REAL," + // 10: powerInMilliAmperes
-                "'SENSOR_RESOLUTION' REAL," + // 11: sensorResolution
-                "'SENSOR_VENDOR' TEXT," + // 12: sensorVendor
-                "'SENSOR_VERSION' INTEGER);"); // 13: sensorVersion
+                "'SENSOR_ADDRESS' TEXT," + // 4: sensorAddress
+                "'MINIMUM_DELAY_MICROSECONDS' INTEGER," + // 5: minimumDelayMicroseconds
+                "'MAXIMUM_DELAY_MICROSECONDS' INTEGER," + // 6: maximumDelayMicroseconds
+                "'FIFO_MAX_EVENT_COUNT' INTEGER," + // 7: fifoMaxEventCount
+                "'FIFO_RESERVED_EVENT_COUNT' INTEGER," + // 8: fifoReservedEventCount
+                "'MAXIMUM_RANGE' REAL," + // 9: maximumRange
+                "'REPORTING_MODE' TEXT," + // 10: reportingMode
+                "'POWER_IN_MILLI_AMPERES' REAL," + // 11: powerInMilliAmperes
+                "'SENSOR_RESOLUTION' REAL," + // 12: sensorResolution
+                "'SENSOR_VENDOR' TEXT," + // 13: sensorVendor
+                "'SENSOR_VERSION' INTEGER);"); // 14: sensorVersion
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_Sensor_SENSOR_NAME ON Sensor" +
                 " (SENSOR_NAME);");
@@ -80,54 +81,59 @@ public class SensorEntityDao extends AbstractDao<SensorEntity, Long> {
         stmt.bindString(3, entity.getSensorType());
         stmt.bindString(4, entity.getSensorUnit());
 
+        String sensorAddress = entity.getSensorAddress();
+        if (sensorAddress != null) {
+            stmt.bindString(5, sensorAddress);
+        }
+
         Integer minimumDelayMicroseconds = entity.getMinimumDelayMicroseconds();
         if (minimumDelayMicroseconds != null) {
-            stmt.bindLong(5, minimumDelayMicroseconds);
+            stmt.bindLong(6, minimumDelayMicroseconds);
         }
 
         Integer maximumDelayMicroseconds = entity.getMaximumDelayMicroseconds();
         if (maximumDelayMicroseconds != null) {
-            stmt.bindLong(6, maximumDelayMicroseconds);
+            stmt.bindLong(7, maximumDelayMicroseconds);
         }
 
         Integer fifoMaxEventCount = entity.getFifoMaxEventCount();
         if (fifoMaxEventCount != null) {
-            stmt.bindLong(7, fifoMaxEventCount);
+            stmt.bindLong(8, fifoMaxEventCount);
         }
 
         Integer fifoReservedEventCount = entity.getFifoReservedEventCount();
         if (fifoReservedEventCount != null) {
-            stmt.bindLong(8, fifoReservedEventCount);
+            stmt.bindLong(9, fifoReservedEventCount);
         }
 
         Float maximumRange = entity.getMaximumRange();
         if (maximumRange != null) {
-            stmt.bindDouble(9, maximumRange);
+            stmt.bindDouble(10, maximumRange);
         }
 
         String reportingMode = entity.getReportingMode();
         if (reportingMode != null) {
-            stmt.bindString(10, reportingMode);
+            stmt.bindString(11, reportingMode);
         }
 
         Float powerInMilliAmperes = entity.getPowerInMilliAmperes();
         if (powerInMilliAmperes != null) {
-            stmt.bindDouble(11, powerInMilliAmperes);
+            stmt.bindDouble(12, powerInMilliAmperes);
         }
 
         Float sensorResolution = entity.getSensorResolution();
         if (sensorResolution != null) {
-            stmt.bindDouble(12, sensorResolution);
+            stmt.bindDouble(13, sensorResolution);
         }
 
         String sensorVendor = entity.getSensorVendor();
         if (sensorVendor != null) {
-            stmt.bindString(13, sensorVendor);
+            stmt.bindString(14, sensorVendor);
         }
 
         Integer sensorVersion = entity.getSensorVersion();
         if (sensorVersion != null) {
-            stmt.bindLong(14, sensorVersion);
+            stmt.bindLong(15, sensorVersion);
         }
     }
 
@@ -149,16 +155,17 @@ public class SensorEntityDao extends AbstractDao<SensorEntity, Long> {
                 cursor.getString(offset + 1), // sensorName
                 cursor.getString(offset + 2), // sensorType
                 cursor.getString(offset + 3), // sensorUnit
-                cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // minimumDelayMicroseconds
-                cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // maximumDelayMicroseconds
-                cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // fifoMaxEventCount
-                cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // fifoReservedEventCount
-                cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8), // maximumRange
-                cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // reportingMode
-                cursor.isNull(offset + 10) ? null : cursor.getFloat(offset + 10), // powerInMilliAmperes
-                cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11), // sensorResolution
-                cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // sensorVendor
-                cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13) // sensorVersion
+                cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // sensorAddress
+                cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // minimumDelayMicroseconds
+                cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // maximumDelayMicroseconds
+                cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // fifoMaxEventCount
+                cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // fifoReservedEventCount
+                cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9), // maximumRange
+                cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // reportingMode
+                cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11), // powerInMilliAmperes
+                cursor.isNull(offset + 12) ? null : cursor.getFloat(offset + 12), // sensorResolution
+                cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // sensorVendor
+                cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14) // sensorVersion
         );
         return entity;
     }
@@ -172,16 +179,17 @@ public class SensorEntityDao extends AbstractDao<SensorEntity, Long> {
         entity.setSensorName(cursor.getString(offset + 1));
         entity.setSensorType(cursor.getString(offset + 2));
         entity.setSensorUnit(cursor.getString(offset + 3));
-        entity.setMinimumDelayMicroseconds(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setMaximumDelayMicroseconds(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setFifoMaxEventCount(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setFifoReservedEventCount(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setMaximumRange(cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8));
-        entity.setReportingMode(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setPowerInMilliAmperes(cursor.isNull(offset + 10) ? null : cursor.getFloat(offset + 10));
-        entity.setSensorResolution(cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11));
-        entity.setSensorVendor(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setSensorVersion(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
+        entity.setSensorAddress(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setMinimumDelayMicroseconds(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setMaximumDelayMicroseconds(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setFifoMaxEventCount(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setFifoReservedEventCount(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setMaximumRange(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
+        entity.setReportingMode(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setPowerInMilliAmperes(cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11));
+        entity.setSensorResolution(cursor.isNull(offset + 12) ? null : cursor.getFloat(offset + 12));
+        entity.setSensorVendor(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setSensorVersion(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
     }
 
     /**
@@ -222,16 +230,17 @@ public class SensorEntityDao extends AbstractDao<SensorEntity, Long> {
         public final static Property SensorName = new Property(1, String.class, "sensorName", false, "SENSOR_NAME");
         public final static Property SensorType = new Property(2, String.class, "sensorType", false, "SENSOR_TYPE");
         public final static Property SensorUnit = new Property(3, String.class, "sensorUnit", false, "SENSOR_UNIT");
-        public final static Property MinimumDelayMicroseconds = new Property(4, Integer.class, "minimumDelayMicroseconds", false, "MINIMUM_DELAY_MICROSECONDS");
-        public final static Property MaximumDelayMicroseconds = new Property(5, Integer.class, "maximumDelayMicroseconds", false, "MAXIMUM_DELAY_MICROSECONDS");
-        public final static Property FifoMaxEventCount = new Property(6, Integer.class, "fifoMaxEventCount", false, "FIFO_MAX_EVENT_COUNT");
-        public final static Property FifoReservedEventCount = new Property(7, Integer.class, "fifoReservedEventCount", false, "FIFO_RESERVED_EVENT_COUNT");
-        public final static Property MaximumRange = new Property(8, Float.class, "maximumRange", false, "MAXIMUM_RANGE");
-        public final static Property ReportingMode = new Property(9, String.class, "reportingMode", false, "REPORTING_MODE");
-        public final static Property PowerInMilliAmperes = new Property(10, Float.class, "powerInMilliAmperes", false, "POWER_IN_MILLI_AMPERES");
-        public final static Property SensorResolution = new Property(11, Float.class, "sensorResolution", false, "SENSOR_RESOLUTION");
-        public final static Property SensorVendor = new Property(12, String.class, "sensorVendor", false, "SENSOR_VENDOR");
-        public final static Property SensorVersion = new Property(13, Integer.class, "sensorVersion", false, "SENSOR_VERSION");
+        public final static Property SensorAddress = new Property(4, String.class, "sensorAddress", false, "SENSOR_ADDRESS");
+        public final static Property MinimumDelayMicroseconds = new Property(5, Integer.class, "minimumDelayMicroseconds", false, "MINIMUM_DELAY_MICROSECONDS");
+        public final static Property MaximumDelayMicroseconds = new Property(6, Integer.class, "maximumDelayMicroseconds", false, "MAXIMUM_DELAY_MICROSECONDS");
+        public final static Property FifoMaxEventCount = new Property(7, Integer.class, "fifoMaxEventCount", false, "FIFO_MAX_EVENT_COUNT");
+        public final static Property FifoReservedEventCount = new Property(8, Integer.class, "fifoReservedEventCount", false, "FIFO_RESERVED_EVENT_COUNT");
+        public final static Property MaximumRange = new Property(9, Float.class, "maximumRange", false, "MAXIMUM_RANGE");
+        public final static Property ReportingMode = new Property(10, String.class, "reportingMode", false, "REPORTING_MODE");
+        public final static Property PowerInMilliAmperes = new Property(11, Float.class, "powerInMilliAmperes", false, "POWER_IN_MILLI_AMPERES");
+        public final static Property SensorResolution = new Property(12, Float.class, "sensorResolution", false, "SENSOR_RESOLUTION");
+        public final static Property SensorVendor = new Property(13, String.class, "sensorVendor", false, "SENSOR_VENDOR");
+        public final static Property SensorVersion = new Property(14, Integer.class, "sensorVersion", false, "SENSOR_VERSION");
     }
 
 }

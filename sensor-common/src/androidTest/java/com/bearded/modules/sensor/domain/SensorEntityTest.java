@@ -16,6 +16,7 @@ import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Propert
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.MinimumDelayMicroseconds;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.PowerInMilliAmperes;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.ReportingMode;
+import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorAddress;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorName;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorResolution;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorType;
@@ -31,6 +32,8 @@ public class SensorEntityTest extends AbstractDaoTestLongPk<SensorEntityDao, Sen
     private static final String TEST_SENSOR_TYPE = "TEST_SENSOR_TYPE";
     @NonNull
     private static final String TEST_SENSOR_UNIT = "TEST_SENSOR_UNIT";
+    @NonNull
+    private static final String TEST_SENSOR_ADDRESS = "AA:BB:CC:DD:EE:FF";
 
     public SensorEntityTest() {
         super(SensorEntityDao.class);
@@ -47,6 +50,7 @@ public class SensorEntityTest extends AbstractDaoTestLongPk<SensorEntityDao, Sen
         entity.setSensorName(TEST_SENSOR_NAME);
         entity.setSensorType(TEST_SENSOR_TYPE);
         entity.setSensorUnit(TEST_SENSOR_UNIT);
+        entity.setSensorAddress(TEST_SENSOR_ADDRESS);
         return entity;
     }
 
@@ -68,6 +72,7 @@ public class SensorEntityTest extends AbstractDaoTestLongPk<SensorEntityDao, Sen
     public void testToJson() {
         final SensorEntity entity = this.createEntity(1l);
         final JsonObject jsonObject = entity.toJsonObject();
+        assertEquals(jsonObject.get(SensorAddress.name).getAsString(), TEST_SENSOR_ADDRESS);
         assertEquals(jsonObject.get(SensorName.name).getAsString(), TEST_SENSOR_NAME);
         assertEquals(jsonObject.get(SensorType.name).getAsString(), TEST_SENSOR_TYPE);
         assertEquals(jsonObject.get(SensorUnit.name).getAsString(), TEST_SENSOR_UNIT);

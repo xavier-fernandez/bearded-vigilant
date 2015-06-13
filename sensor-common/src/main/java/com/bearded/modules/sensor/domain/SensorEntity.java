@@ -16,6 +16,7 @@ import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Propert
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.MinimumDelayMicroseconds;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.PowerInMilliAmperes;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.ReportingMode;
+import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorAddress;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorName;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorResolution;
 import static com.bearded.modules.sensor.persistence.dao.SensorEntityDao.Properties.SensorType;
@@ -42,6 +43,7 @@ public class SensorEntity implements com.bearded.common.persistance.ParseableJso
      * Not-null value.
      */
     private String sensorUnit;
+    private String sensorAddress;
     private Integer minimumDelayMicroseconds;
     private Integer maximumDelayMicroseconds;
     private Integer fifoMaxEventCount;
@@ -63,11 +65,12 @@ public class SensorEntity implements com.bearded.common.persistance.ParseableJso
         this.id = id;
     }
 
-    public SensorEntity(Long id, String sensorName, String sensorType, String sensorUnit, Integer minimumDelayMicroseconds, Integer maximumDelayMicroseconds, Integer fifoMaxEventCount, Integer fifoReservedEventCount, Float maximumRange, String reportingMode, Float powerInMilliAmperes, Float sensorResolution, String sensorVendor, Integer sensorVersion) {
+    public SensorEntity(Long id, String sensorName, String sensorType, String sensorUnit, String sensorAddress, Integer minimumDelayMicroseconds, Integer maximumDelayMicroseconds, Integer fifoMaxEventCount, Integer fifoReservedEventCount, Float maximumRange, String reportingMode, Float powerInMilliAmperes, Float sensorResolution, String sensorVendor, Integer sensorVersion) {
         this.id = id;
         this.sensorName = sensorName;
         this.sensorType = sensorType;
         this.sensorUnit = sensorUnit;
+        this.sensorAddress = sensorAddress;
         this.minimumDelayMicroseconds = minimumDelayMicroseconds;
         this.maximumDelayMicroseconds = maximumDelayMicroseconds;
         this.fifoMaxEventCount = fifoMaxEventCount;
@@ -128,6 +131,14 @@ public class SensorEntity implements com.bearded.common.persistance.ParseableJso
      */
     public void setSensorUnit(String sensorUnit) {
         this.sensorUnit = sensorUnit;
+    }
+
+    public String getSensorAddress() {
+        return sensorAddress;
+    }
+
+    public void setSensorAddress(String sensorAddress) {
+        this.sensorAddress = sensorAddress;
     }
 
     public Integer getMinimumDelayMicroseconds() {
@@ -231,6 +242,9 @@ public class SensorEntity implements com.bearded.common.persistance.ParseableJso
         jsonObject.add(SensorName.name, new JsonPrimitive(this.sensorName));
         jsonObject.add(SensorType.name, new JsonPrimitive(this.sensorType));
         jsonObject.add(SensorUnit.name, new JsonPrimitive(this.sensorUnit));
+        jsonObject.add(SensorAddress.name,
+                (this.sensorAddress == null) ?
+                        null : new JsonPrimitive(this.sensorAddress));
         jsonObject.add(MinimumDelayMicroseconds.name,
                 (this.minimumDelayMicroseconds == null) ?
                         null : new JsonPrimitive(this.minimumDelayMicroseconds));

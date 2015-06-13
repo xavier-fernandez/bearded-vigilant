@@ -47,7 +47,7 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
         // The database schema will have 'keep' sections that will not be overridden when executing this class.
         dbSchema.enableKeepSectionsByDefault();
         // Creates the sensor entity.
-        final Entity sensorEntity = createInternalSensorEntity(dbSchema);
+        final Entity sensorEntity = createSensorEntity(dbSchema);
         // Creates the measurement series entity.
         final Entity measurementSeriesEntity = createSensorMeasurementSeriesEntity(dbSchema, sensorEntity);
         // Creates the location entity.
@@ -68,6 +68,7 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * sensor_name                   TEXT       NOT NULL      UNIQUE     INDEX,
      * sensor_type                   TEXT       NOT NULL,
      * sensor_unit                   TEXT       NOT NULL,
+     * sensor_address                TEXT,
      * minimum_delay_microseconds    INTEGER,
      * maximum_delay_microseconds    INTEGER,
      * fifo_max_event_count          INTEGER,
@@ -81,7 +82,7 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     @NonNull
-    private static Entity createInternalSensorEntity(@NonNull final Schema dbSchema) {
+    private static Entity createSensorEntity(@NonNull final Schema dbSchema) {
         final Entity sensorEntity = createEntity(dbSchema, "Sensor");
         /**
          * The sensor name as a {@link String}.
@@ -95,6 +96,10 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
          * The Sensor unit as a {@link String}.
          */
         sensorEntity.addStringProperty("sensorUnit").notNull();
+        /**
+         * Sensor Address, if it is not an internal sensor.
+         */
+        sensorEntity.addStringProperty("sensorAddress");
         /**
          * The minimum delay allowed between two events in microsecond or zero if this sensor only
          * returns a value when the data it's measuring changes.
