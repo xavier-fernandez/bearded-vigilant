@@ -71,12 +71,61 @@ class SensorEntityFacade {
         final String sensorTypeName = getSensorTypeFromId(sensor.getType()).getSensorTypeName();
         queryBuilder.where(SensorEntityDao.Properties.SensorType.eq(sensorTypeName));
         final List<SensorEntity> sensorEntityList = queryBuilder.list();
-        if (sensorEntityList.isEmpty()) {
-            return insertSensor(session, sensor);
+        SensorEntity sensorEntity = null;
+        try {
+            if (sensorEntityList.isEmpty()) {
+                sensorEntity = insertSensor(session, sensor);
+            } else {
+                sensorEntity = sensorEntityList.get(0);
+            }
+            return sensorEntity;
+        } finally {
+            mKnownSensors.put(sensor.getName(), sensorEntity);
         }
-        final SensorEntity sensorEntity = sensorEntityList.get(0);
-        mKnownSensors.put(sensor.getName(), sensorEntity);
-        return sensorEntity;
+    }
+
+    /**
+     * Obtains a sensor entity, if it is available, from the database.
+     * Creates and inserts a sensor entity in the database, if it is not available.
+     *
+     * @param session       for obtaining or creating a {@link SensorEntity} from the database.
+     * @param sensorAddress that wants to be retrieved from the database.
+     * @param sensorType    of the sensor.
+     * @param sensorUnit    of the sensor.
+     * @param sensorName    of the inserted sensor.
+     * @return {@link SensorEntity} of the sensor.
+     */
+    @NonNull
+    SensorEntity getSensorEntity(@NonNull final DaoSession session,
+                                 @NonNull final String sensorAddress,
+                                 @NonNull final SensorType sensorType,
+                                 @NonNull final String sensorUnit,
+                                 @NonNull final String sensorName) {
+        if (mKnownSensors.containsKey(sensorAddress)) {
+            return mKnownSensors.get(sensorAddress);
+        }
+        final SensorEntityDao dao = session.getSensorEntityDao();
+        final QueryBuilder<SensorEntity> queryBuilder = dao.queryBuilder();
+        queryBuilder.where(SensorEntityDao.Properties.SensorAddress.eq(sensorAddress));
+        queryBuilder.where(SensorEntityDao.Properties.SensorType.eq(sensorType.getSensorTypeName()));
+        final List<SensorEntity> sensorEntityList = queryBuilder.list();
+        SensorEntity sensorEntity = null;
+        try {
+            if (sensorEntityList.isEmpty()) {
+                sensorEntity = new SensorEntity();
+                sensorEntity.setSensorAddress(sensorAddress);
+                sensorEntity.setSensorType(sensorType.getSensorTypeName());
+                sensorEntity.setSensorUnit(sensorUnit);
+                sensorEntity.setSensorName(sensorName);
+                session.insert(sensorEntity);
+                return sensorEntity;
+            } else {
+                sensorEntity = sensorEntityList.get(0);
+                return sensorEntity;
+            }
+        } finally {
+            mKnownSensors.put(sensorAddress, sensorEntity);
+        }
     }
 
     /**
