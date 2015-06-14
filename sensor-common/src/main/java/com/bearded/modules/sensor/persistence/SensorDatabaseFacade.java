@@ -92,7 +92,7 @@ public class SensorDatabaseFacade {
      * Inserts into the database a sensor reading.
      */
     private void storeReading(@NonNull final SensorEntity sensorEntity,
-                                    final float measurement) {
+                              final float measurement) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
             session.runInTx(new Runnable() {

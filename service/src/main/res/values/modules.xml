@@ -5,5 +5,6 @@
         <item>com.bearded.modules.sensor.internal.LightInternalSensorModule</item>
         <item>com.bearded.modules.sensor.internal.RelativeHumidityInternalSensorModule</item>
         <item>com.bearded.modules.sensor.internal.AmbientTemperatureInternalSensorModule</item>
+        <item>com.bearded.modules.sensor.ble.BleAmbientTemperatureModule</item>
     </string-array>
 </resources>
