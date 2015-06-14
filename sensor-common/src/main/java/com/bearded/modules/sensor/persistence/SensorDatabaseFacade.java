@@ -69,19 +69,36 @@ public class SensorDatabaseFacade {
             final DaoSession session = mDatabaseHandler.getSession();
             sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensor);
         }
-        insertSensorReading(sensorEntity, measurement);
+        storeReading(sensorEntity, measurement);
     }
 
     /**
      * Inserts into the database a sensor reading.
      */
-    public void insertSensorReading(@NonNull final SensorEntity sensorEntity,
+    public void insertSensorReading(final float measurement,
+                                    @NonNull final String sensorAddress,
+                                    @NonNull final SensorType sensorType,
+                                    @NonNull final String sensorUnit,
+                                    @NonNull final String sensorName) {
+        final SensorEntity sensorEntity;
+        synchronized (mDatabaseHandler) {
+            final DaoSession session = mDatabaseHandler.getSession();
+            sensorEntity = mSensorEntityFacade.getSensorEntity(session, sensorAddress, sensorType, sensorUnit, sensorName);
+        }
+        storeReading(sensorEntity, measurement);
+    }
+
+    /**
+     * Inserts into the database a sensor reading.
+     */
+    private void storeReading(@NonNull final SensorEntity sensorEntity,
                                     final float measurement) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
             session.runInTx(new Runnable() {
                 @Override
                 public void run() {
+                    session.insertOrReplace(sensorEntity);
                     final SensorMeasurementSeriesEntity series = mMeasurementSeriesEntityFacade.getActiveMeasurementSeries(session, sensorEntity);
                     mMeasurementEntityFacade.addMeasurement(session, series, measurement);
                 }
