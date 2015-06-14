@@ -15,7 +15,7 @@ public enum KnownDevices {
             final List<String> deviceNames = new ArrayList<>();
             final List<String> temperatureGadgets = TEMPERATURE_GADGETS.getAdvertisedNames();
             for (final String humidityGadget : HUMIDITY_GADGETS.getAdvertisedNames()) {
-                if (temperatureGadgets.contains(humidityGadget)){
+                if (temperatureGadgets.contains(humidityGadget)) {
                     deviceNames.add(humidityGadget);
                 }
             }
