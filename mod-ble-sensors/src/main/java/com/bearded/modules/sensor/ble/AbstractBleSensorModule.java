@@ -30,6 +30,9 @@ import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.sensor.persistence.SensorDatabaseFacade;
 import com.bearded.modules.sensor.persistence.cloud.SensorCloudUploader;
 import com.google.gson.JsonObject;
+import com.sensirion.libble.BleManager;
+import com.sensirion.libble.listeners.devices.DeviceStateListener;
+import com.sensirion.libble.listeners.devices.ScanListener;
 
 import org.joda.time.DateTime;
 
@@ -39,7 +42,7 @@ import static com.bearded.common.time.TimeUtils.millisecondsFromNow;
  * This abstract class should be inherited by all the internal sensor modules which wants
  * to listen for notifications from the default sensor for the given {@link SensorType}
  */
-abstract class AbstractBleSensorModule extends AbstractCloudModule {
+abstract class AbstractBleSensorModule extends AbstractCloudModule implements DeviceStateListener, ScanListener {
 
     private static final String TAG = AbstractBleSensorModule.class.getSimpleName();
 
@@ -58,6 +61,9 @@ abstract class AbstractBleSensorModule extends AbstractCloudModule {
         mSensorType = sensorType;
         mDatabaseFacade = new SensorDatabaseFacade(context, sensorType, binSizeMillis);
         mInternalSensorCloudUploader = new SensorCloudUploader();
+        BleManager.getInstance().init(context.getApplicationContext());
+        BleManager.getInstance().registerNotificationListener(this);
+        BleManager.getInstance().startScanning();
     }
 
     /**
