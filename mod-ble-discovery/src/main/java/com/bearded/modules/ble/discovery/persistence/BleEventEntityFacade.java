@@ -19,6 +19,7 @@
 package com.bearded.modules.ble.discovery.persistence;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.time.TimeUtils;
@@ -117,7 +118,7 @@ class BleEventEntityFacade {
      * @param series  that needs to retrieve all its events.
      * @return {@link List} of {@link BleEventEntity}
      */
-    @NonNull
+    @Nullable
     List<BleEventEntity> getAllEventsFromSeries(@NonNull final DaoSession session,
                                                 @NonNull final BleEventSeriesEntity series) {
         final BleEventEntityDao dao = session.getBleEventEntityDao();
