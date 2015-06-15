@@ -72,7 +72,7 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
      * {@inheritDoc}
      */
     @Override
-    public void onUploadFailure(@NonNull final String errorMessage) {
+    public void onUploadFailure(@Nullable final String errorMessage) {
         Log.d(TAG, String.format("onUploadCompleted -> The following error was thrown when uploading the data to the cloud: %s", errorMessage));
     }
 

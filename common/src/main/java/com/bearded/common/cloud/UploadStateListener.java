@@ -19,7 +19,7 @@
 
 package com.bearded.common.cloud;
 
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public interface UploadStateListener {
 
@@ -35,5 +35,5 @@ public interface UploadStateListener {
      *
      * @param errorMessage describing the error when trying to upload data to the cloud.
      */
-    void onUploadFailure(@NonNull final String errorMessage);
+    void onUploadFailure(@Nullable final String errorMessage);
 }
