@@ -62,7 +62,8 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * _id             INTEGER  PRIMARY KEY AUTOINCREMENT,
      * device_address  TEXT     NOT NULL,
      * advertise_name  TEXT,
-     * edr_or_br       BOOLEAN
+     * edr_or_br       BOOLEAN,
+     * isLowEnergy     BOOLEAN
      * );
      */
     @NonNull
