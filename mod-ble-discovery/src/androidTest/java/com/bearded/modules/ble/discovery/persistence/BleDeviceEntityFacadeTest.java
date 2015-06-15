@@ -57,7 +57,7 @@ public class BleDeviceEntityFacadeTest extends InstrumentationTestCase {
     /**
      * Test the following method, this test checks if the class works with one single insertion.
      *
-     * @see BleDeviceEntityFacade#getBleDeviceEntity(DaoSession, String, String)
+     * @see BleDeviceEntityFacade#getBleDeviceEntity(DaoSession, String, String, Boolean, Boolean)
      */
     @MediumTest
     public void testOneObjectInsertion() {
@@ -66,7 +66,7 @@ public class BleDeviceEntityFacadeTest extends InstrumentationTestCase {
         //Inserts a single sensor inside the database.
         final String deviceAddress = "TEST BLE DEVICE";
         final String advertiseName = "TEST ADVERTISE NAME";
-        final BleDeviceEntity bleDeviceEntity = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName);
+        final BleDeviceEntity bleDeviceEntity = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName, null, null);
         assertNotNull(bleDeviceEntity);
         //Checks that the returned object belongs to the same sensor as the inserted sensor.
         assertEquals(bleDeviceEntity.getDeviceAddress(), deviceAddress);
@@ -78,7 +78,7 @@ public class BleDeviceEntityFacadeTest extends InstrumentationTestCase {
     /**
      * Test the following method, this test checks if the class works with multiple insertions of the same device.
      *
-     * @see BleDeviceEntityFacade#getBleDeviceEntity(DaoSession, String, String)
+     * @see BleDeviceEntityFacade#getBleDeviceEntity(DaoSession, String, String, Boolean, Boolean)
      */
     @MediumTest
     public void testMultipleInsertionsSameBleDevice() {
@@ -87,20 +87,20 @@ public class BleDeviceEntityFacadeTest extends InstrumentationTestCase {
         final DaoSession session = mDatabaseConnector.getSession();
         final String deviceAddress = "TEST BLE DEVICE";
         final String advertiseName = "TEST ADVERTISE NAME";
-        final BleDeviceEntity testDeviceEntity = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName);
+        final BleDeviceEntity testDeviceEntity = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName, null, null);
         assertNotNull(testDeviceEntity);
         // Test multiple sensor insertion inside the database.
         for (int i = 0; i < 3; i++) {
-            mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName);
+            mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName, null, null);
         }
-        assertEquals(testDeviceEntity, mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName));
+        assertEquals(testDeviceEntity, mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName, null, null));
         assertEquals(1, mBleDeviceFacade.getAllBleDevices(session).size());
     }
 
     /**
      * Test the following method, this test checks if the class works with multiple insertions.
      *
-     * @see BleDeviceEntityFacade#getBleDeviceEntity(DaoSession, String, String)
+     * @see BleDeviceEntityFacade#getBleDeviceEntity(DaoSession, String, String, Boolean, Boolean)
      */
     @MediumTest
     public void testDifferentBleDevicesMultipleInsertions() {
@@ -109,12 +109,12 @@ public class BleDeviceEntityFacadeTest extends InstrumentationTestCase {
         final DaoSession session = mDatabaseConnector.getSession();
         final String deviceAddress = "TEST BLE DEVICE";
         final String advertiseName = "TEST ADVERTISE NAME";
-        final BleDeviceEntity device1 = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName);
+        final BleDeviceEntity device1 = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress, advertiseName, null, null);
         assertNotNull(device1);
         //Insert a proximity sensor inside the database.
         final String deviceAddress2 = deviceAddress + "2";
         final String advertiseName2 = advertiseName + "2";
-        final BleDeviceEntity device2 = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress2, advertiseName2);
+        final BleDeviceEntity device2 = mBleDeviceFacade.getBleDeviceEntity(session, deviceAddress2, advertiseName2, null, null);
         assertNotNull(device2);
         //Checks if two sensors are inside the database.
         assertEquals(2, mBleDeviceFacade.getAllBleDevices(session).size());
