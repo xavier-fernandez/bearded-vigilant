@@ -24,7 +24,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.bearded.common.sensor.SensorType;
 import com.bearded.modules.ble.discovery.domain.BleDeviceEntity;
 import com.bearded.modules.ble.discovery.domain.BleEventEntity;
 import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
@@ -59,12 +58,30 @@ public class BleDiscoveryDatabaseFacade {
     }
 
     /**
+     * Inserts a BleEvent inside the database.
+     *
+     * @param deviceAddress of the device we are going to insert inside the database.
+     * @param advertiseName of the device is going to be inserted inside the database.
+     * @param rssi          of the BleEvent is going to be inserted inside the database.
+     */
+    public void insertBleEvent(@NonNull final String deviceAddress,
+                               @NonNull final String advertiseName,
+                               final byte rssi) {
+        synchronized (mDatabaseHandler) {
+            final DaoSession session = mDatabaseHandler.getSession();
+            final BleDeviceEntity deviceEntity = mSensorEntityFacade.getBleDeviceEntity(session, deviceAddress, advertiseName);
+            final BleEventSeriesEntity activeEventSeries = mBleEventSeriesEntityFacade.getActiveEventSeries(session, deviceEntity);
+            mBleEventEntityFacade.addMeasurement(session, activeEventSeries, rssi);
+        }
+    }
+
+    /**
      * Converts the stored data into JSON, for sending the data to the cloud.
      *
      * @return {@link String} with the serialized data JSON file - <code>null</code> if there is no data.
      */
     @Nullable
-    public JsonObject getSensorDataJson(@NonNull final JsonObject metadata) {
+    public JsonObject getBleDiscoveryDataJson(@NonNull final JsonObject metadata) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
             final JsonObject databaseJsonObject = new JsonObject();
@@ -74,7 +91,7 @@ public class BleDiscoveryDatabaseFacade {
             final List<BleDeviceEntity> sensors = mSensorEntityFacade.getAllBleDevices(session);
             Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing %d sensors.", sensors.size()));
             for (final BleDeviceEntity sensor : sensors) {
-                final JsonObject sensorJsonObject = prepareSensorJson(session, sensor);
+                final JsonObject sensorJsonObject = prepareBleDeviceJson(session, sensor);
                 if (sensorJsonObject != null) {
                     sensorArray.add(sensorJsonObject);
                 }
@@ -91,15 +108,15 @@ public class BleDiscoveryDatabaseFacade {
     }
 
     @Nullable
-    private JsonObject prepareSensorJson(@NonNull final DaoSession session,
-                                         @NonNull final BleDeviceEntity sensor) {
+    private JsonObject prepareBleDeviceJson(@NonNull final DaoSession session,
+                                            @NonNull final BleDeviceEntity sensor) {
         Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing sensor %s with name: %s.", sensor.getId(), sensor.getDeviceAddress()));
         final JsonObject sensorJsonObject = sensor.toJsonObject();
         final JsonArray sensorSeriesJsonArray = new JsonArray();
         final List<BleEventSeriesEntity> closedSeries =
                 mBleEventSeriesEntityFacade.getAllClosedEventSeriesFromDevice(session, sensor);
         if (closedSeries.isEmpty()) {
-            Log.w(TAG, String.format("prepareSensorJson -> Sensor with name %s do not have any measurement series.", sensor.getDeviceAddress()));
+            Log.w(TAG, String.format("prepareBleDeviceJson -> Sensor with name %s do not have any measurement series.", sensor.getDeviceAddress()));
             return null;
         }
         for (final BleEventSeriesEntity series : closedSeries) {
