@@ -30,6 +30,8 @@ import com.bearded.modules.ble.discovery.domain.BleEventSeriesEntity;
 import com.bearded.modules.ble.discovery.persistence.dao.DaoSession;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.sensirion.libble.devices.BleDevice;
+import com.sensirion.libble.devices.DeviceBluetoothType;
 
 import java.util.List;
 
@@ -60,18 +62,30 @@ public class BleDiscoveryDatabaseFacade {
     /**
      * Inserts a BleEvent inside the database.
      *
-     * @param deviceAddress of the device we are going to insert inside the database.
-     * @param advertiseName of the device is going to be inserted inside the database.
-     * @param rssi          of the BleEvent is going to be inserted inside the database.
+     * @param device of the BleEvent.
      */
-    public void insertBleEvent(@NonNull final String deviceAddress,
-                               @NonNull final String advertiseName,
-                               final byte rssi) {
+    public void insertBleEvent(@NonNull final BleDevice device) {
         synchronized (mDatabaseHandler) {
+            final String deviceAddress = device.getAddress();
+            if (deviceAddress == null){
+                return;
+            }
+            Boolean classic = null;
+            Boolean ble = null;
+            if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_CLASSIC){
+                classic = true;
+                ble = false;
+            } else if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_DUAL){
+                classic = true;
+                ble = true;
+            } else if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_LE){
+                classic = false;
+                ble = false;
+            }
             final DaoSession session = mDatabaseHandler.getSession();
-            final BleDeviceEntity deviceEntity = mSensorEntityFacade.getBleDeviceEntity(session, deviceAddress, advertiseName);
+            final BleDeviceEntity deviceEntity = mSensorEntityFacade.getBleDeviceEntity(session, device.getAddress(), device.getAdvertisedName(), classic, ble);
             final BleEventSeriesEntity activeEventSeries = mBleEventSeriesEntityFacade.getActiveEventSeries(session, deviceEntity);
-            mBleEventEntityFacade.addMeasurement(session, activeEventSeries, rssi);
+            mBleEventEntityFacade.addMeasurement(session, activeEventSeries, (byte) device.getRSSI());
         }
     }
 
@@ -147,5 +161,31 @@ public class BleDiscoveryDatabaseFacade {
         }
         seriesJsonObject.add("events", seriesMeasurementsArray);
         return seriesJsonObject;
+    }
+
+
+    /**
+     * Removes all the uploaded measurements from the internal database.
+     */
+    public void purgeAllUploadedBleEvents() {
+        synchronized (mDatabaseHandler) {
+            final DaoSession session = mDatabaseHandler.getSession();
+            session.runInTx(new Runnable() {
+                @Override
+                public void run() {
+                    for (final BleDeviceEntity sensor : mSensorEntityFacade.getAllBleDevices(session)) {
+                        for (final BleEventSeriesEntity series : mBleEventSeriesEntityFacade.getAllClosedEventSeriesFromDevice(session, sensor)) {
+                            final List<BleEventEntity> events = mBleEventEntityFacade.getAllEventsFromSeries(session, series);
+                            if (events != null) {
+                                for (final BleEventEntity measurement : events) {
+                                    session.delete(measurement);
+                                }
+                            }
+                            session.delete(series);
+                        }
+                    }
+                }
+            });
+        }
     }
 }
