@@ -44,7 +44,8 @@ import static com.bearded.common.time.TimeUtils.millisecondsFromNow;
  */
 abstract class AbstractBleSensorModule extends AbstractCloudModule implements DeviceStateListener, ScanListener {
 
-    private static final String TAG = AbstractBleSensorModule.class.getSimpleName();
+    @NonNull
+    private final String TAG = getClass().getSimpleName();
 
     @NonNull
     private final SensorType mSensorType;
@@ -53,6 +54,7 @@ abstract class AbstractBleSensorModule extends AbstractCloudModule implements De
     @NonNull
     private final SensorCloudUploader mInternalSensorCloudUploader;
 
+    private byte mConsecutiveTimeouts = 0;
 
     protected AbstractBleSensorModule(@NonNull final Context context,
                                       @NonNull final SensorType sensorType,
@@ -124,7 +126,26 @@ abstract class AbstractBleSensorModule extends AbstractCloudModule implements De
     @Override
     public void onUploadCompleted(final int code) {
         super.onUploadCompleted(code);
+        Log.d(TAG, String.format("onUploadCompleted with code: %d", code));
         assert mDatabaseFacade != null;
         mDatabaseFacade.removeAllUploadedSensorMeasurements();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onUploadFailure(@Nullable final String message) {
+        Log.d(TAG, String.format("onUploadFailure with message: %s", message));
+        if (message != null && message.startsWith("timeout")) {
+            assert mDatabaseFacade != null;
+            synchronized (this) {
+                if (mConsecutiveTimeouts++ > 3) {
+                    mConsecutiveTimeouts = 0;
+                    Log.w(TAG, "onUploadFailure -> Purging database, file is to big for sending it completely to the cloud.");
+                    mDatabaseFacade.removeAllUploadedSensorMeasurements();
+                }
+            }
+        }
     }
 }
