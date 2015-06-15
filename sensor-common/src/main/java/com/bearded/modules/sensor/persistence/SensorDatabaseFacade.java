@@ -38,7 +38,7 @@ public class SensorDatabaseFacade {
 
     private static final String TAG = SensorDatabaseFacade.class.getSimpleName();
 
-    private static final String DATABASE_NAME_SUFFIX = "internal-sensor-db";
+    private static final String DATABASE_NAME_SUFFIX = "sensor-db";
 
     @NonNull
     private final SensorEntityFacade mSensorEntityFacade;
