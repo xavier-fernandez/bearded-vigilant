@@ -160,16 +160,16 @@ class SensorEntityFacade {
         if (Build.VERSION.SDK_INT >= 21) {
             // getMaxDelay is only available in SDK 21+
             sensorEntity.setMaximumDelayMicroseconds(sensor.getMaxDelay());
-        }
-        sensorEntity.setFifoMaxEventCount(sensor.getFifoMaxEventCount());
-        sensorEntity.setFifoReservedEventCount(sensor.getFifoReservedEventCount());
-        sensorEntity.setMaximumRange(sensor.getMaximumRange());
-        if (Build.VERSION.SDK_INT >= 21) {
             // getReportingMode is only available in SDK 21+
             @ReportingMode
             final int reportingMode = sensor.getReportingMode();
             sensorEntity.setReportingMode(SensorUtils.getReportingTimeString(reportingMode));
         }
+        if (Build.VERSION.SDK_INT >= 19) {
+            sensorEntity.setFifoMaxEventCount(sensor.getFifoMaxEventCount());
+            sensorEntity.setFifoReservedEventCount(sensor.getFifoReservedEventCount());
+        }
+        sensorEntity.setMaximumRange(sensor.getMaximumRange());
         sensorEntity.setPowerInMilliAmperes(sensor.getPower());
         sensorEntity.setSensorResolution(sensor.getResolution());
         sensorEntity.setSensorVendor(sensor.getVendor());
