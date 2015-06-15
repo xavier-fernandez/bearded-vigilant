@@ -35,6 +35,6 @@ interface BluetoothDiscoveryAPI {
      * @param jsonString with the JSON {@link String} that is going to be sent to the cloud.
      */
     @FormUrlEncoded
-    @POST("/api/vigilant/v1/ble-discovery-event")
+    @POST("/api/vigilant/v1/ble/ble-discovery-event")
     void uploadBluetoothDiscoveryData(@Field("data") String jsonString, Callback<Integer> callback);
 }
