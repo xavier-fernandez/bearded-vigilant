@@ -7,5 +7,6 @@
         <item>com.bearded.modules.sensor.internal.AmbientTemperatureInternalSensorModule</item>
         <item>com.bearded.modules.sensor.ble.BleAmbientTemperatureModule</item>
         <item>com.bearded.modules.sensor.ble.BleRelativeHumidityModule</item>
+        <item>com.bearded.modules.ble.discovery.BleDiscoveryModule</item>
     </string-array>
 </resources>
