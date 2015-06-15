@@ -132,6 +132,9 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
             for (final BleDevice device : BleManager.getInstance().getDiscoveredBleDevices()) {
                 this.onDeviceDiscovered(device);
             }
+            for (final BleDevice device : BleManager.getInstance().getConnectedBleDevices()) {
+                this.onDeviceDiscovered(device);
+            }
         }
     }
 
