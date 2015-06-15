@@ -44,26 +44,29 @@ class BleDeviceEntityFacade {
      * @param session       needed to create and/or retrieve the {@link BleDeviceEntity} from the database.
      * @param deviceAddress of the {@link BleDeviceEntity}
      * @param advertiseName of the {@link BleDeviceEntity}
+     * @param isEdrOrBrDevice if the device accepts classic bluetooth connections
+     * @param isLowEnergyBluetoothDevice if the device accepts low energy Bluetooth connections.
      * @return {@link BleDeviceEntity} in case the device is already on the database.
      */
     @NonNull
     BleDeviceEntity getBleDeviceEntity(@NonNull final DaoSession session,
                                        @NonNull final String deviceAddress,
-                                       @Nullable final String advertiseName) {
+                                       @Nullable final String advertiseName,
+                                       @Nullable final Boolean isEdrOrBrDevice,
+                                       @Nullable final Boolean isLowEnergyBluetoothDevice) {
         if (mKnownBleDevices.containsKey(deviceAddress.trim())) {
             return mKnownBleDevices.get(deviceAddress);
         }
         final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
         final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(BleDeviceEntityDao.Properties.DeviceAddress.eq(deviceAddress.trim()));
-        if (advertiseName != null) {
-            queryBuilder.where(BleDeviceEntityDao.Properties.AdvertiseName.eq(deviceAddress.trim()));
-        }
-        BleDeviceEntity device = queryBuilder.unique();
+        BleDeviceEntity device = queryBuilder.list().get(0);
         if (device == null) {
             device = new BleDeviceEntity();
             device.setDeviceAddress(deviceAddress);
             device.setAdvertiseName(advertiseName);
+            device.setIsEdrOrBr(isEdrOrBrDevice);
+            device.setIsLowEnergy(isLowEnergyBluetoothDevice);
             session.insert(device);
         }
         mKnownBleDevices.put(device.getDeviceAddress(), device);
