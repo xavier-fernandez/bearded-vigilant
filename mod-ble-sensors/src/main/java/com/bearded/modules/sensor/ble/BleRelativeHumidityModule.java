@@ -29,9 +29,7 @@ import com.sensirion.libble.BleManager;
 import com.sensirion.libble.devices.BleDevice;
 import com.sensirion.libble.devices.KnownDevices;
 import com.sensirion.libble.listeners.services.HumidityListener;
-import com.sensirion.libble.listeners.services.TemperatureListener;
 import com.sensirion.libble.utils.HumidityUnit;
-import com.sensirion.libble.utils.TemperatureUnit;
 
 import org.joda.time.DateTime;
 
