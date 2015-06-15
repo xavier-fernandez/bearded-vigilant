@@ -41,7 +41,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
     @NonNull
     private static final String TAG = BleDiscoveryModule.class.getSimpleName();
     private static final int BLE_DISCOVERY_MODULE_VERSION = 1;
-    private static final int DATA_BIN_TIME_MS = 5 * 1000; // 5 SECONDS
+    private static final int DATA_BIN_TIME_MS = 1000; // 1 SECOND
     @NonNull
     private final BleDiscoveryDatabaseFacade mDatabaseFacade;
     @NonNull

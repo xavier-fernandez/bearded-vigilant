@@ -38,7 +38,7 @@ public class RelativeHumidityInternalSensorModule extends AbstractInternalSensor
 
     private static final int RELATIVE_HUMIDITY_INTERNAL_SENSOR_MODULE_VERSION = 1;
 
-    private static final int DATA_BIN_TIME_MS = 4 * 1000; // 4 SECONDS
+    private static final int DATA_BIN_TIME_MS = 1000; // 1 SECOND
 
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
