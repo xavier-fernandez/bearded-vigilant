@@ -67,18 +67,18 @@ public class BleDiscoveryDatabaseFacade {
     public void insertBleEvent(@NonNull final BleDevice device) {
         synchronized (mDatabaseHandler) {
             final String deviceAddress = device.getAddress();
-            if (deviceAddress == null){
+            if (deviceAddress == null) {
                 return;
             }
             Boolean classic = null;
             Boolean ble = null;
-            if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_CLASSIC){
+            if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_CLASSIC) {
                 classic = true;
                 ble = false;
-            } else if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_DUAL){
+            } else if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_DUAL) {
                 classic = true;
                 ble = true;
-            } else if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_LE){
+            } else if (device.getBluetoothType() == DeviceBluetoothType.DEVICE_TYPE_LE) {
                 classic = false;
                 ble = false;
             }

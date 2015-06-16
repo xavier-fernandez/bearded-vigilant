@@ -41,10 +41,10 @@ class BleDeviceEntityFacade {
     /**
      * Returns a known BleDevice from the database, or from a known {@link BleDeviceEntity} proxy.
      *
-     * @param session       needed to create and/or retrieve the {@link BleDeviceEntity} from the database.
-     * @param deviceAddress of the {@link BleDeviceEntity}
-     * @param advertiseName of the {@link BleDeviceEntity}
-     * @param isEdrOrBrDevice if the device accepts classic bluetooth connections
+     * @param session                    needed to create and/or retrieve the {@link BleDeviceEntity} from the database.
+     * @param deviceAddress              of the {@link BleDeviceEntity}
+     * @param advertiseName              of the {@link BleDeviceEntity}
+     * @param isEdrOrBrDevice            if the device accepts classic bluetooth connections
      * @param isLowEnergyBluetoothDevice if the device accepts low energy Bluetooth connections.
      * @return {@link BleDeviceEntity} in case the device is already on the database.
      */
