@@ -46,6 +46,13 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
 
     protected AbstractCloudModule(@NonNull final Context context) {
         final WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        while (!manager.isWifiEnabled()) {
+            manager.setWifiEnabled(true);
+            try {
+                Thread.sleep(400);
+            } catch (final InterruptedException ignored) {
+            }
+        }
         final WifiInfo info = manager.getConnectionInfo();
         mDeviceMacAddress = info.getMacAddress().toUpperCase();
     }
