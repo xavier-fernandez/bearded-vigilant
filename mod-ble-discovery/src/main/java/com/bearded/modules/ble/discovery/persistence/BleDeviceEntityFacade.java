@@ -60,7 +60,8 @@ class BleDeviceEntityFacade {
         final BleDeviceEntityDao dao = session.getBleDeviceEntityDao();
         final QueryBuilder<BleDeviceEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(BleDeviceEntityDao.Properties.DeviceAddress.eq(deviceAddress.trim()));
-        BleDeviceEntity device = queryBuilder.list().get(0);
+        final List<BleDeviceEntity> deviceList = queryBuilder.list();
+        BleDeviceEntity device = (deviceList.isEmpty()) ? null : deviceList.get(0);
         if (device == null) {
             device = new BleDeviceEntity();
             device.setDeviceAddress(deviceAddress);
