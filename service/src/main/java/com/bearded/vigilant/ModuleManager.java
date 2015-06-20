@@ -95,7 +95,7 @@ public class ModuleManager {
         try {
             module = (Module) moduleConstructor.newInstance(context);
         } catch (final InstantiationException ie) {
-            Log.e(TAG, String.format("loadModule -> The following error instantation exception was thrown when instantiating the module %s -> ", moduleClassLocation), ie);
+            Log.e(TAG, String.format("loadModule -> The following error instantiation exception was thrown when instantiating the module %s -> ", moduleClassLocation), ie);
             return null;
         } catch (final IllegalAccessException ia) {
             Log.e(TAG, String.format("loadModule -> The following error illegal access exception was thrown when instantiating the module %s -> ", moduleClassLocation), ia);
