@@ -94,8 +94,14 @@ public class ModuleManager {
         final Module module;
         try {
             module = (Module) moduleConstructor.newInstance(context);
-        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            Log.e(TAG, String.format("loadModule -> The following error was thrown when instantiating the module %s -> ", moduleClassLocation), e);
+        } catch (final InstantiationException ie) {
+            Log.e(TAG, String.format("loadModule -> The following error instantation exception was thrown when instantiating the module %s -> ", moduleClassLocation), ie);
+            return null;
+        } catch (final IllegalAccessException ia) {
+            Log.e(TAG, String.format("loadModule -> The following error illegal access exception was thrown when instantiating the module %s -> ", moduleClassLocation), ia);
+            return null;
+        } catch (final InvocationTargetException e) {
+            Log.e(TAG, String.format("loadModule -> The following invocation target exception was thrown when instantiating the module %s -> ", moduleClassLocation), e);
             return null;
         }
         return module;
