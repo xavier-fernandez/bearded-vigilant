@@ -68,7 +68,7 @@ public class BleServiceFactory {
      * @param service {@link android.bluetooth.BluetoothGattService} that should be wrapped.
      * @return {@link AbstractBleService} with the service class with the same lookup UUID as the BluetoothGattService. <code>null</code> if the class is not a valid class.
      */
-    public AbstractBleService createServiceFor(@NonNull final Peripheral parent, @NonNull final BluetoothGattService service) {
+    public AbstractBleService createServiceFor(@NonNull Peripheral parent, @NonNull BluetoothGattService service) {
         final String uuid = service.getUuid().toString();
         final Class serviceClass = mServiceLookUp.get(uuid);
 

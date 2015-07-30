@@ -66,6 +66,6 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
         }
         final float tempInCelsius = event.values[0];
         mLastSensorValueReceivedTime = DateTime.now();
-        Log.d(TAG, String.format("onSensorChanged -> Sensor with name %s retrieved: %f  of relative humidity.", getSensor().getName(), tempInCelsius));
+        Log.d(TAG, String.format("onSensorChanged -> Sensor with name %s retrieved: %f of relative humidity.", getSensor().getName(), tempInCelsius));
     }
 }

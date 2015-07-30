@@ -102,7 +102,7 @@ public class RHTDataPoint implements Comparable<RHTDataPoint> {
     @SuppressWarnings("unused")
     public float getDewPointCelsius() {
         float h = (float) (Math.log((mRelativeHumidity / 100f)) + (17.62f * mTemperatureInCelsius) / (243.12f + mTemperatureInCelsius));
-        return (float) (243.12f * h / (17.62f - h));
+        return 243.12f * h / (17.62f - h);
     }
 
     /**
@@ -236,7 +236,6 @@ public class RHTDataPoint implements Comparable<RHTDataPoint> {
          * @param t ambient temperature in Fahrenheit.
          * @return {@link java.lang.Float} with the Heat Index in Fahrenheit.
          */
-        @NonNull
         private static float calcHeatIndexInFahrenheit(float t, float h) {
 
             //Checks if the temperature and the humidity makes sense.
