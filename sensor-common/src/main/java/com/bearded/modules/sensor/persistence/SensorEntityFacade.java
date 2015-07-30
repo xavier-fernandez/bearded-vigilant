@@ -60,8 +60,8 @@ class SensorEntityFacade {
      * @return {@link SensorEntity} of the sensor.
      */
     @NonNull
-    SensorEntity getSensorEntity(@NonNull final DaoSession session,
-                                 @NonNull final Sensor sensor) {
+    SensorEntity getSensorEntity(@NonNull DaoSession session,
+                                 @NonNull Sensor sensor) {
         if (mKnownSensors.containsKey(sensor.getName())) {
             return mKnownSensors.get(sensor.getName());
         }
@@ -96,11 +96,11 @@ class SensorEntityFacade {
      * @return {@link SensorEntity} of the sensor.
      */
     @NonNull
-    SensorEntity getSensorEntity(@NonNull final DaoSession session,
-                                 @NonNull final String sensorAddress,
-                                 @NonNull final SensorType sensorType,
-                                 @NonNull final String sensorUnit,
-                                 @NonNull final String sensorName) {
+    SensorEntity getSensorEntity(@NonNull DaoSession session,
+                                 @NonNull String sensorAddress,
+                                 @NonNull SensorType sensorType,
+                                 @NonNull String sensorUnit,
+                                 @NonNull String sensorName) {
         if (mKnownSensors.containsKey(sensorAddress)) {
             return mKnownSensors.get(sensorAddress);
         }
@@ -135,7 +135,7 @@ class SensorEntityFacade {
      * @return {@link List} with all {@link SensorEntity}
      */
     @NonNull
-    List<SensorEntity> getAllSensorEntities(@NonNull final DaoSession session) {
+    List<SensorEntity> getAllSensorEntities(@NonNull DaoSession session) {
         final SensorEntityDao dao = session.getSensorEntityDao();
         final QueryBuilder<SensorEntity> queryBuilder = dao.queryBuilder();
         return queryBuilder.listLazy();
@@ -149,8 +149,8 @@ class SensorEntityFacade {
      */
     @NonNull
     @TargetApi(22)
-    private SensorEntity insertSensor(@NonNull final DaoSession session,
-                                      @NonNull final Sensor sensor) {
+    private SensorEntity insertSensor(@NonNull DaoSession session,
+                                      @NonNull Sensor sensor) {
         final SensorEntity sensorEntity = new SensorEntity();
         sensorEntity.setSensorName(sensor.getName());
         final SensorType sensorType = getSensorTypeFromId(sensor.getType());

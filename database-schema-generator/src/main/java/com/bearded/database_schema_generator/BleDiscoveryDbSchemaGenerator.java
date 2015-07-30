@@ -1,21 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
 package com.bearded.database_schema_generator;
 
 import android.support.annotation.NonNull;
@@ -67,7 +49,7 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     @NonNull
-    private static Entity createBleDeviceEntity(@NonNull final Schema dbSchema) {
+    private static Entity createBleDeviceEntity(@NonNull Schema dbSchema) {
         final Entity deviceEntity = createEntity(dbSchema, "BleDevice");
         deviceEntity.addStringProperty("deviceAddress").notNull().indexAsc("ble_device_address_index", true);
         deviceEntity.addStringProperty("advertiseName").indexAsc("ble_device_advertise_name_index", false);
@@ -87,8 +69,8 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     @NonNull
-    private static Entity createBleEventSeriesEntity(@NonNull final Schema dbSchema,
-                                                     @NonNull final Entity deviceEntity) {
+    private static Entity createBleEventSeriesEntity(@NonNull Schema dbSchema,
+                                                     @NonNull Entity deviceEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "BleEventSeries");
         final Property bleDeviceIdFK = seriesEntity.addLongProperty("bleDeviceId").notNull().getProperty();
         seriesEntity.addToOne(deviceEntity, bleDeviceIdFK);
@@ -108,9 +90,9 @@ abstract class BleDiscoveryDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * bin_size                          INTEGER   NOT NULL
      * );
      */
-    private static void createBleEventEntity(@NonNull final Schema dbSchema,
-                                             @NonNull final Entity eventSeriesEntity,
-                                             @NonNull final Entity locationEntity) {
+    private static void createBleEventEntity(@NonNull Schema dbSchema,
+                                             @NonNull Entity eventSeriesEntity,
+                                             @NonNull Entity locationEntity) {
         final Entity eventEntity = createEntity(dbSchema, "BleEvent");
         final Property eventSeriesIdFK = eventEntity.addLongProperty("eventSeriesId").notNull().getProperty();
         eventEntity.addToOne(eventSeriesEntity, eventSeriesIdFK);

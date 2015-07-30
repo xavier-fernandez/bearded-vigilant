@@ -27,7 +27,7 @@ public class BatteryService extends AbstractBleService<BatteryListener> {
     //BATTERY_SERVICE LEVEL
     private Integer mBatteryLevel = null;
 
-    public BatteryService(@NonNull final Peripheral parent, @NonNull final BluetoothGattService bluetoothGattService) {
+    public BatteryService(@NonNull Peripheral parent, @NonNull BluetoothGattService bluetoothGattService) {
         super(parent, bluetoothGattService);
         mBatteryLevelCharacteristic = getCharacteristic(BATTERY_LEVEL_CHARACTERISTIC_UUID);
         parent.readCharacteristic(mBatteryLevelCharacteristic);
@@ -49,7 +49,7 @@ public class BatteryService extends AbstractBleService<BatteryListener> {
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicUpdate(@NonNull final BluetoothGattCharacteristic updatedCharacteristic) {
+    public boolean onCharacteristicUpdate(@NonNull BluetoothGattCharacteristic updatedCharacteristic) {
         if (mBatteryLevelCharacteristic.equals(updatedCharacteristic)) {
             mBatteryLevel = mBatteryLevelCharacteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
             Log.i(TAG, String.format("onCharacteristicUpdate -> Battery it's at %d%% in the device %s.", mBatteryLevel, getDeviceAddress()));

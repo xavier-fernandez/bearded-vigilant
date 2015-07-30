@@ -71,7 +71,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
          * {@inheritDoc}
          */
         @Override
-        public void onConnectionStateChange(@NonNull final BluetoothGatt gatt, final int status, final int newState) {
+        public void onConnectionStateChange(@NonNull BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
             final String address = gatt.getDevice().getAddress();
 
@@ -103,7 +103,9 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
          * {@inheritDoc}
          */
         @Override
-        public void onCharacteristicRead(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattCharacteristic characteristic, final int status) {
+        public void onCharacteristicRead(@NonNull BluetoothGatt gatt,
+                                         @NonNull BluetoothGattCharacteristic characteristic,
+                                         int status) {
             super.onCharacteristicRead(gatt, characteristic, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 for (final BleService service : mServices) {
@@ -121,7 +123,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
          * {@inheritDoc}
          */
         @Override
-        public void onCharacteristicChanged(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattCharacteristic characteristic) {
+        public void onCharacteristicChanged(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
             if (mBluetoothGatt == null) {
                 Log.e(TAG, "onCharacteristicChanged -> Bluetooth gatt is not initialized yet.");
@@ -137,7 +139,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
          * {@inheritDoc}
          */
         @Override
-        public void onCharacteristicWrite(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattCharacteristic characteristic, final int status) {
+        public void onCharacteristicWrite(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicChanged(gatt, characteristic);
             Log.d(TAG, String.format("onCharacteristicWrite -> Received Characteristic %s with status %d", characteristic.getUuid(), status));
             if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -156,7 +158,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
          * {@inheritDoc}
          */
         @Override
-        public void onServicesDiscovered(@NonNull final BluetoothGatt gatt, final int status) {
+        public void onServicesDiscovered(@NonNull BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 final List<BluetoothGattService> discoveredServices = gatt.getServices();
@@ -181,7 +183,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
          * {@inheritDoc}
          */
         @Override
-        public void onDescriptorRead(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattDescriptor descriptor, final int status) {
+        public void onDescriptorRead(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattDescriptor descriptor, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (mForceOperationRunning) {
                     mLastActionUsedQueue.add(descriptor);
@@ -199,7 +201,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
          * {@inheritDoc}
          */
         @Override
-        public void onDescriptorWrite(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattDescriptor descriptor, final int status) {
+        public void onDescriptorWrite(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattDescriptor descriptor, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 Log.i(TAG, String.format("onDescriptorWrite -> Descriptor %s was written successfully.", descriptor.getUuid()));
                 if (mForceOperationRunning) {
@@ -214,7 +216,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
         }
     };
 
-    public Peripheral(@NonNull final BlePeripheralService parent, @NonNull final BluetoothDevice bluetoothDevice, final int rssi) {
+    public Peripheral(@NonNull BlePeripheralService parent, @NonNull BluetoothDevice bluetoothDevice, int rssi) {
         mPeripheralService = parent;
         mBluetoothDevice = bluetoothDevice;
         mBluetoothGatt = null;
@@ -232,7 +234,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * {@inheritDoc}
      */
     @Override
-    public void connect(@NonNull final Context context) {
+    public void connect(@NonNull Context context) {
         // We want to directly connect to the device, so we are setting the autoConnect parameter to false.
         mBluetoothDevice.connectGatt(context, false, mBleStackProtector);
     }
@@ -316,7 +318,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * {@inheritDoc}
      */
     @Override
-    public <T extends AbstractBleService> T getDeviceService(@NonNull final Class<T> type) {
+    public <T extends AbstractBleService> T getDeviceService(@NonNull Class<T> type) {
         for (final BleService service : mServices) {
             if (service.getClass().equals(type)) {
                 return (T) service;
@@ -329,7 +331,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * {@inheritDoc}
      */
     @Override
-    public BleService getDeviceService(@NonNull final String serviceName) {
+    public BleService getDeviceService(@NonNull String serviceName) {
         for (final BleService service : mServices) {
             if (service.isExplicitService(serviceName)) {
                 return service;
@@ -398,7 +400,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      *
      * @param characteristic The characteristic to read from.
      */
-    public void readCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public void readCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         if (mBluetoothGatt == null) {
             Log.e(TAG, "readCharacteristic -> Bluetooth gatt is not initialized yet.");
             return;
@@ -416,7 +418,8 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @return <code>true</code> if the characteristic was read - <code>false</code> otherwise.
      */
     @SuppressWarnings("unused")
-    public boolean readCharacteristicWithConfirmation(@NonNull final BluetoothGattCharacteristic characteristic, final int maxWaitingTime) {
+    public boolean readCharacteristicWithConfirmation(@NonNull BluetoothGattCharacteristic characteristic,
+                                                      int maxWaitingTime) {
         return forceReadCharacteristic(characteristic, maxWaitingTime, 1);
     }
 
@@ -427,7 +430,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @param characteristic that is going to be readed. Cannot be <code>null</code>
      * @return <code>true</code> if the characteristic was read - <code>false</code> otherwise.
      */
-    public boolean forceReadCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public boolean forceReadCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         return forceReadCharacteristic(characteristic, DEFAULT_TIMEOUT_BETWEEN_REQUEST_MILLISECONDS, DEFAULT_NUMBER_FORCE_REQUEST);
     }
 
@@ -440,7 +443,9 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @param maxNumberConnections maximumNumberOfReads. It has to be a positive number.
      * @return <code>true</code> if the characteristic was read - <code>false</code> otherwise.
      */
-    public boolean forceReadCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic, final int timeoutMs, final int maxNumberConnections) {
+    public boolean forceReadCharacteristic(@NonNull BluetoothGattCharacteristic characteristic,
+                                           int timeoutMs,
+                                           int maxNumberConnections) {
         return forceActionReadOrWrite(characteristic, timeoutMs, maxNumberConnections, true);
     }
 
@@ -451,7 +456,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      *
      * @param characteristic The characteristic to overwrite.
      */
-    public void writeCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public void writeCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         if (mBluetoothGatt == null) {
             Log.e(TAG, "writeCharacteristic -> Bluetooth gatt is not initialized yet.");
             return;
@@ -469,7 +474,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @return <code>true</code> if the characteristic was read - <code>false</code> otherwise.
      */
     @SuppressWarnings("unused")
-    public boolean writeCharacteristicWithConfirmation(@NonNull final BluetoothGattCharacteristic characteristic, final int maxWaitingTime) {
+    public boolean writeCharacteristicWithConfirmation(@NonNull BluetoothGattCharacteristic characteristic, int maxWaitingTime) {
         return forceWriteCharacteristic(characteristic, maxWaitingTime, 1);
     }
 
@@ -481,7 +486,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @return <code>true</code> if the characteristic was written - <code>false</code> otherwise.
      */
     @SuppressWarnings("unused")
-    public boolean forceWriteCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public boolean forceWriteCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         return forceWriteCharacteristic(characteristic, DEFAULT_TIMEOUT_BETWEEN_REQUEST_MILLISECONDS, DEFAULT_NUMBER_FORCE_REQUEST);
     }
 
@@ -494,7 +499,8 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @param maxRequestCount maximumNumberOfReads. It has to be a positive number.
      * @return <code>true</code> if the characteristic was written - <code>false</code> otherwise.
      */
-    public boolean forceWriteCharacteristic(final BluetoothGattCharacteristic characteristic, final int timeoutMs, final int maxRequestCount) {
+    public boolean forceWriteCharacteristic(@NonNull BluetoothGattCharacteristic characteristic,
+                                            int timeoutMs, int maxRequestCount) {
         return forceActionReadOrWrite(characteristic, timeoutMs, maxRequestCount, false);
     }
 
@@ -521,7 +527,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @return <code>true</code> if the characteristic was read - <code>false</code> otherwise.
      */
     @SuppressWarnings("unused")
-    public boolean readDescriptorWithConfirmation(@NonNull final BluetoothGattDescriptor descriptor, final int timeoutMs) {
+    public boolean readDescriptorWithConfirmation(@NonNull BluetoothGattDescriptor descriptor, int timeoutMs) {
         return forceDescriptorRead(descriptor, timeoutMs, 1);
     }
 
@@ -533,7 +539,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @return <code>true</code> if the characteristic was written - <code>false</code> otherwise.
      */
     @SuppressWarnings("unused")
-    public boolean forceDescriptorRead(@NonNull final BluetoothGattDescriptor descriptor) {
+    public boolean forceDescriptorRead(@NonNull BluetoothGattDescriptor descriptor) {
         return forceDescriptorRead(descriptor, DEFAULT_TIMEOUT_BETWEEN_REQUEST_MILLISECONDS, DEFAULT_NUMBER_FORCE_REQUEST);
     }
 
@@ -546,7 +552,9 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @param maxNumberRequest It needs to be a positive number.
      * @return <code>true</code> if the characteristic was written - <code>false</code> otherwise.
      */
-    public boolean forceDescriptorRead(@NonNull final BluetoothGattDescriptor descriptor, final int timeoutMs, final int maxNumberRequest) {
+    public boolean forceDescriptorRead(@NonNull BluetoothGattDescriptor descriptor,
+                                       int timeoutMs,
+                                       int maxNumberRequest) {
         return forceActionReadOrWrite(descriptor, timeoutMs, maxNumberRequest, true);
     }
 
@@ -555,7 +563,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      *
      * @param descriptor the descriptor we want to write in the device.
      */
-    public void writeDescriptor(@NonNull final BluetoothGattDescriptor descriptor) {
+    public void writeDescriptor(@NonNull BluetoothGattDescriptor descriptor) {
         if (mBluetoothGatt == null) {
             Log.e(TAG, "writeDescriptor -> Bluetooth gatt is not initialized yet.");
             return;
@@ -573,7 +581,8 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @return <code>true</code> if the characteristic was written - <code>false</code> otherwise.
      */
     @SuppressWarnings("unused")
-    public boolean writeDescriptorWithConfirmation(@NonNull final BluetoothGattDescriptor descriptor, final int timeoutMs) {
+    public boolean writeDescriptorWithConfirmation(@NonNull BluetoothGattDescriptor descriptor,
+                                                   int timeoutMs) {
         return forceDescriptorWrite(descriptor, timeoutMs, 1);
     }
 
@@ -586,7 +595,9 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @param maxNumberRequest It needs to be a positive number.
      * @return <code>true</code> if the characteristic was written - <code>false</code> otherwise.
      */
-    public boolean forceDescriptorWrite(@NonNull final BluetoothGattDescriptor descriptor, final int timeoutMs, final int maxNumberRequest) {
+    public boolean forceDescriptorWrite(@NonNull BluetoothGattDescriptor descriptor,
+                                        int timeoutMs,
+                                        int maxNumberRequest) {
         return forceActionReadOrWrite(descriptor, timeoutMs, maxNumberRequest, false);
     }
 
@@ -599,7 +610,10 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @param maxRequestCount maximumNumberOfReads. It has to be a positive number.
      * @return <code>true</code> if the characteristic was processed - <code>false</code> otherwise.
      */
-    private synchronized boolean forceActionReadOrWrite(@NonNull final Object action, final int timeoutMs, final int maxRequestCount, final boolean isReadAction) {
+    private synchronized boolean forceActionReadOrWrite(@NonNull Object action,
+                                                        int timeoutMs,
+                                                        final int maxRequestCount,
+                                                        final boolean isReadAction) {
         try {
             mForceOperationRunning = true;
             final long timeNow = System.currentTimeMillis();
@@ -630,7 +644,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
         }
     }
 
-    private void executeAction(@NonNull final Object action, final boolean isReadAction) {
+    private void executeAction(@NonNull Object action, boolean isReadAction) {
         if (isReadAction) {
             if (action instanceof BluetoothGattCharacteristic) {
                 readCharacteristic((BluetoothGattCharacteristic) action);
@@ -652,7 +666,8 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * @param characteristic Characteristic to act on.
      * @param enabled        if <code>true</code> enable notification - <code>false</code> disable notification.
      */
-    public void setCharacteristicNotification(@NonNull final BluetoothGattCharacteristic characteristic, final boolean enabled) {
+    public void setCharacteristicNotification(@NonNull BluetoothGattCharacteristic characteristic,
+                                              boolean enabled) {
         if (mBluetoothGatt == null) {
             Log.e(TAG, "readCharacteristic -> Bluetooth gatt is not initialized yet.");
             return;
@@ -665,7 +680,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * {@inheritDoc}
      */
     @Override
-    public void setAllNotificationsEnabled(final boolean enabled) {
+    public void setAllNotificationsEnabled(boolean enabled) {
         for (final BleService service : mServices) {
             service.setNotificationsEnabled(enabled);
         }
@@ -675,7 +690,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * {@inheritDoc}
      */
     @Override
-    public boolean registerDeviceListener(@NonNull final NotificationListener listener) {
+    public boolean registerDeviceListener(@NonNull NotificationListener listener) {
         mNotificationListeners.add(listener);
         boolean validServiceFound = false;
         for (final BleService service : mServices) {
@@ -691,7 +706,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * {@inheritDoc}
      */
     @Override
-    public void unregisterDeviceListener(@NonNull final NotificationListener listener) {
+    public void unregisterDeviceListener(@NonNull NotificationListener listener) {
         for (final BleService service : mServices) {
             service.unregisterNotificationListener(listener);
         }
@@ -718,7 +733,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      */
     @Override
     @SuppressWarnings("SimplifiableIfStatement")
-    public boolean equals(final Object otherPeripheral) {
+    public boolean equals(Object otherPeripheral) {
         if (otherPeripheral instanceof Peripheral) {
             return mAddress.equals(((Peripheral) otherPeripheral).getAddress());
         }
@@ -742,7 +757,7 @@ public class Peripheral implements BleDevice, Comparable<Peripheral> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(@Nullable final Peripheral anotherPeripheral) {
+    public int compareTo(@Nullable Peripheral anotherPeripheral) {
         if (isConnected()) {
             return 0;
         }

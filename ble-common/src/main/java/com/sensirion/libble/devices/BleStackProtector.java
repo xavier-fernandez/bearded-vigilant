@@ -43,7 +43,7 @@ class BleStackProtector extends BluetoothGattCallback {
      * {@inheritDoc}
      */
     @Override
-    public void onConnectionStateChange(@NonNull final BluetoothGatt gatt, final int status, final int newState) {
+    public void onConnectionStateChange(@NonNull BluetoothGatt gatt, int status, int newState) {
         Log.i(TAG, "onConnectionStateChange()");
         if (newState == BluetoothProfile.STATE_DISCONNECTED) {
             mActionQueue.clear();
@@ -54,7 +54,9 @@ class BleStackProtector extends BluetoothGattCallback {
      * {@inheritDoc}
      */
     @Override
-    public void onCharacteristicRead(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattCharacteristic characteristic, final int status) {
+    public void onCharacteristicRead(@NonNull BluetoothGatt gatt,
+                                     @NonNull BluetoothGattCharacteristic characteristic,
+                                     int status) {
         super.onCharacteristicRead(gatt, characteristic, status);
         mCurrentAction = null;
         execute(gatt);
@@ -64,7 +66,9 @@ class BleStackProtector extends BluetoothGattCallback {
      * {@inheritDoc}
      */
     @Override
-    public void onCharacteristicWrite(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattCharacteristic characteristic, final int status) {
+    public void onCharacteristicWrite(@NonNull BluetoothGatt gatt,
+                                      @NonNull BluetoothGattCharacteristic characteristic,
+                                      int status) {
         super.onCharacteristicWrite(gatt, characteristic, status);
         mCurrentAction = null;
         execute(gatt);
@@ -74,7 +78,9 @@ class BleStackProtector extends BluetoothGattCallback {
      * {@inheritDoc}
      */
     @Override
-    public void onDescriptorRead(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattDescriptor descriptor, final int status) {
+    public void onDescriptorRead(@NonNull BluetoothGatt gatt,
+                                 @NonNull BluetoothGattDescriptor descriptor,
+                                 int status) {
         super.onDescriptorRead(gatt, descriptor, status);
         mCurrentAction = null;
         execute(gatt);
@@ -84,7 +90,9 @@ class BleStackProtector extends BluetoothGattCallback {
      * {@inheritDoc}
      */
     @Override
-    public void onDescriptorWrite(@NonNull final BluetoothGatt gatt, @NonNull final BluetoothGattDescriptor descriptor, final int status) {
+    public void onDescriptorWrite(@NonNull BluetoothGatt gatt,
+                                  @NonNull BluetoothGattDescriptor descriptor,
+                                  int status) {
         super.onDescriptorWrite(gatt, descriptor, status);
         mCurrentAction = null;
         execute(gatt);
@@ -94,7 +102,7 @@ class BleStackProtector extends BluetoothGattCallback {
      * {@inheritDoc}
      */
     @Override
-    public void onReliableWriteCompleted(@NonNull final BluetoothGatt gatt, final int status) {
+    public void onReliableWriteCompleted(@NonNull BluetoothGatt gatt, int status) {
         super.onReliableWriteCompleted(gatt, status);
         mCurrentAction = null;
         execute(gatt);
@@ -103,7 +111,7 @@ class BleStackProtector extends BluetoothGattCallback {
     /**
      * Method that controls that all the instructions stored in the queue are executed one by one.
      */
-    public synchronized void execute(@NonNull final BluetoothGatt gatt) {
+    public synchronized void execute(@NonNull BluetoothGatt gatt) {
         try {
             if (mCurrentAction == null) {
                 executeQueue(gatt);
@@ -116,7 +124,7 @@ class BleStackProtector extends BluetoothGattCallback {
         }
     }
 
-    private void executeQueue(@NonNull final BluetoothGatt gatt) {
+    private void executeQueue(@NonNull BluetoothGatt gatt) {
         while (mActionQueue.size() > 0) {
             mLastAccessQueueTimestamp = System.currentTimeMillis();
             final ServiceAction action = mActionQueue.element();
@@ -145,7 +153,7 @@ class BleStackProtector extends BluetoothGattCallback {
      *
      * @param characteristic for read.
      */
-    public void addReadCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public void addReadCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         mActionQueue.add(new ReadCharacteristicAction(characteristic));
     }
 
@@ -154,7 +162,7 @@ class BleStackProtector extends BluetoothGattCallback {
      *
      * @param characteristic that wants to be wrote in the device.
      */
-    public void addWriteCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public void addWriteCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         mActionQueue.add(new WriteCharacteristicAction(characteristic));
     }
 
@@ -163,7 +171,7 @@ class BleStackProtector extends BluetoothGattCallback {
      *
      * @param descriptor for the queue.
      */
-    public void addReadDescriptor(@NonNull final BluetoothGattDescriptor descriptor) {
+    public void addReadDescriptor(@NonNull BluetoothGattDescriptor descriptor) {
         mActionQueue.add(new ReadDescriptorAction(descriptor));
     }
 
@@ -172,7 +180,7 @@ class BleStackProtector extends BluetoothGattCallback {
      *
      * @param descriptor for the queue.
      */
-    public void addWriteDescriptor(@NonNull final BluetoothGattDescriptor descriptor) {
+    public void addWriteDescriptor(@NonNull BluetoothGattDescriptor descriptor) {
         mActionQueue.add(new WriteDescriptorAction(descriptor));
     }
 
@@ -182,7 +190,7 @@ class BleStackProtector extends BluetoothGattCallback {
      * @param notificationCharacteristic for the queue.
      * @param enable                     if the notifications is going to be enabled or disabled
      */
-    public void addCharacteristicNotification(@NonNull final BluetoothGattCharacteristic notificationCharacteristic, final boolean enable) {
+    public void addCharacteristicNotification(@NonNull BluetoothGattCharacteristic notificationCharacteristic, boolean enable) {
         mActionQueue.add(new WriteCharacteristicNotification(notificationCharacteristic, enable));
     }
 
@@ -196,7 +204,7 @@ class BleStackProtector extends BluetoothGattCallback {
 
     //CLASSES THAT REPRESENTS THE ACTIONS
     private abstract static class ServiceAction {
-        public final boolean execute(@NonNull final BluetoothGatt gatt) {
+        public final boolean execute(@NonNull BluetoothGatt gatt) {
             try {
                 return unsafeExecute(gatt);
             } catch (final Exception e) {
@@ -205,7 +213,7 @@ class BleStackProtector extends BluetoothGattCallback {
             return false;
         }
 
-        abstract boolean unsafeExecute(final BluetoothGatt gatt) throws DeadObjectException;
+        abstract boolean unsafeExecute(@NonNull BluetoothGatt gatt) throws DeadObjectException;
 
         @Override
         public String toString() {
@@ -219,12 +227,12 @@ class BleStackProtector extends BluetoothGattCallback {
         @NonNull
         private final BluetoothGattDescriptor descriptor;
 
-        private ReadDescriptorAction(@NonNull final BluetoothGattDescriptor descriptor) {
+        private ReadDescriptorAction(@NonNull BluetoothGattDescriptor descriptor) {
             this.descriptor = descriptor;
         }
 
         @Override
-        protected boolean unsafeExecute(@NonNull final BluetoothGatt gatt) throws DeadObjectException {
+        protected boolean unsafeExecute(@NonNull BluetoothGatt gatt) throws DeadObjectException {
             return gatt.readDescriptor(this.descriptor);
         }
     }
@@ -238,7 +246,7 @@ class BleStackProtector extends BluetoothGattCallback {
         }
 
         @Override
-        boolean unsafeExecute(@NonNull final BluetoothGatt gatt) {
+        boolean unsafeExecute(@NonNull BluetoothGatt gatt) {
             return gatt.writeDescriptor(this.descriptor);
         }
     }
@@ -248,12 +256,12 @@ class BleStackProtector extends BluetoothGattCallback {
         @NonNull
         private final BluetoothGattCharacteristic characteristic;
 
-        private ReadCharacteristicAction(@NonNull final BluetoothGattCharacteristic characteristic) {
+        private ReadCharacteristicAction(@NonNull BluetoothGattCharacteristic characteristic) {
             this.characteristic = characteristic;
         }
 
         @Override
-        protected boolean unsafeExecute(@NonNull final BluetoothGatt gatt) throws DeadObjectException {
+        protected boolean unsafeExecute(@NonNull BluetoothGatt gatt) throws DeadObjectException {
             return gatt.readCharacteristic(this.characteristic);
         }
     }
@@ -264,12 +272,12 @@ class BleStackProtector extends BluetoothGattCallback {
         @NonNull
         private final BluetoothGattCharacteristic characteristic;
 
-        WriteCharacteristicAction(@NonNull final BluetoothGattCharacteristic characteristic) {
+        WriteCharacteristicAction(@NonNull BluetoothGattCharacteristic characteristic) {
             this.characteristic = characteristic;
         }
 
         @Override
-        boolean unsafeExecute(@NonNull final BluetoothGatt gatt) throws DeadObjectException {
+        boolean unsafeExecute(@NonNull BluetoothGatt gatt) throws DeadObjectException {
             final boolean characteristicSend = gatt.writeCharacteristic(this.characteristic);
             Log.w(TAG, String.format("execute -> Written characteristic with UUID: %s was a %s", this.characteristic.getUuid(), characteristicSend));
             return characteristicSend;
@@ -281,13 +289,13 @@ class BleStackProtector extends BluetoothGattCallback {
         private final BluetoothGattCharacteristic characteristic;
         private final boolean enable;
 
-        WriteCharacteristicNotification(@NonNull final BluetoothGattCharacteristic characteristic, final boolean enable) {
+        WriteCharacteristicNotification(@NonNull BluetoothGattCharacteristic characteristic, boolean enable) {
             this.characteristic = characteristic;
             this.enable = enable;
         }
 
         @Override
-        boolean unsafeExecute(@NonNull final BluetoothGatt gatt) throws DeadObjectException {
+        boolean unsafeExecute(@NonNull BluetoothGatt gatt) throws DeadObjectException {
             return gatt.setCharacteristicNotification(this.characteristic, this.enable);
         }
     }

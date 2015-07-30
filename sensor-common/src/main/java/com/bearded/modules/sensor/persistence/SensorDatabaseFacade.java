@@ -1,21 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
 package com.bearded.modules.sensor.persistence;
 
 import android.content.Context;
@@ -36,8 +18,10 @@ import java.util.List;
 
 public class SensorDatabaseFacade {
 
+    @NonNull
     private static final String TAG = SensorDatabaseFacade.class.getSimpleName();
 
+    @NonNull
     private static final String DATABASE_NAME_SUFFIX = "sensor-db";
 
     @NonNull
@@ -49,9 +33,9 @@ public class SensorDatabaseFacade {
     @NonNull
     private final DatabaseConnector mDatabaseHandler;
 
-    public SensorDatabaseFacade(@NonNull final Context context,
-                                @NonNull final SensorType sensorType,
-                                final int binSizeMilliseconds) {
+    public SensorDatabaseFacade(@NonNull Context context,
+                                @NonNull SensorType sensorType,
+                                int binSizeMilliseconds) {
         final String databaseName = String.format("%s-%s", sensorType.getSensorTypeName(), DATABASE_NAME_SUFFIX);
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
         mSensorEntityFacade = new SensorEntityFacade();
@@ -62,8 +46,7 @@ public class SensorDatabaseFacade {
     /**
      * Inserts into the database a sensor reading.
      */
-    public void insertSensorReading(@NonNull final Sensor sensor,
-                                    final float measurement) {
+    public void insertSensorReading(@NonNull final Sensor sensor, final float measurement) {
         final SensorEntity sensorEntity;
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
@@ -75,11 +58,11 @@ public class SensorDatabaseFacade {
     /**
      * Inserts into the database a sensor reading.
      */
-    public void insertSensorReading(final float measurement,
-                                    @NonNull final String sensorAddress,
-                                    @NonNull final SensorType sensorType,
-                                    @NonNull final String sensorUnit,
-                                    @NonNull final String sensorName) {
+    public void insertSensorReading(float measurement,
+                                    @NonNull String sensorAddress,
+                                    @NonNull SensorType sensorType,
+                                    @NonNull String sensorUnit,
+                                    @NonNull String sensorName) {
         final SensorEntity sensorEntity;
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
@@ -91,8 +74,7 @@ public class SensorDatabaseFacade {
     /**
      * Inserts into the database a sensor reading.
      */
-    private void storeReading(@NonNull final SensorEntity sensorEntity,
-                              final float measurement) {
+    private void storeReading(@NonNull final SensorEntity sensorEntity, final float measurement) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
             session.runInTx(new Runnable() {
@@ -134,7 +116,7 @@ public class SensorDatabaseFacade {
      * @return {@link String} with the serialized data JSON file - <code>null</code> if there is no data.
      */
     @Nullable
-    public JsonObject getSensorDataJson(@NonNull final JsonObject metadata) {
+    public JsonObject getSensorDataJson(@NonNull JsonObject metadata) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
             final JsonObject databaseJsonObject = new JsonObject();
@@ -161,8 +143,8 @@ public class SensorDatabaseFacade {
     }
 
     @Nullable
-    private JsonObject prepareSensorJson(@NonNull final DaoSession session,
-                                         @NonNull final SensorEntity sensor) {
+    private JsonObject prepareSensorJson(@NonNull DaoSession session,
+                                         @NonNull SensorEntity sensor) {
         Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing sensor %s with name: %s.", sensor.getId(), sensor.getSensorName()));
         final JsonObject sensorJsonObject = sensor.toJsonObject();
         final JsonArray sensorSeriesJsonArray = new JsonArray();
@@ -183,8 +165,8 @@ public class SensorDatabaseFacade {
     }
 
     @Nullable
-    private JsonObject prepareSeriesJson(@NonNull final DaoSession session,
-                                         @NonNull final SensorMeasurementSeriesEntity series) {
+    private JsonObject prepareSeriesJson(@NonNull DaoSession session,
+                                         @NonNull SensorMeasurementSeriesEntity series) {
         Log.d(TAG, String.format("prepareSeriesJson -> Preparing series id with name: %s.", series.getId()));
         final JsonObject seriesJsonObject = series.toJsonObject();
         final JsonArray seriesMeasurementsArray = new JsonArray();

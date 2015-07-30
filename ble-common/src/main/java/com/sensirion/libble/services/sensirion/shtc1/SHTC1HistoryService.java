@@ -82,7 +82,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
 
     private volatile boolean mDownloadInProgress = false;
 
-    public SHTC1HistoryService(@NonNull final Peripheral parent, @NonNull final BluetoothGattService bluetoothGattService) {
+    public SHTC1HistoryService(@NonNull Peripheral parent, @NonNull BluetoothGattService bluetoothGattService) {
         super(parent, bluetoothGattService);
         mStartStopCharacteristic = super.getCharacteristic(START_STOP_UUID);
         mIntervalCharacteristic = super.getCharacteristic(LOGGING_INTERVAL_UUID);
@@ -96,7 +96,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
         synchronizeService();
     }
 
-    private void addCharacteristicsTo(@NonNull final BluetoothGattService bluetoothGattService) {
+    private void addCharacteristicsTo(@NonNull BluetoothGattService bluetoothGattService) {
         bluetoothGattService.addCharacteristic(mStartStopCharacteristic);
         bluetoothGattService.addCharacteristic(mIntervalCharacteristic);
         bluetoothGattService.addCharacteristic(mCurrentPointerCharacteristic);
@@ -119,7 +119,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicUpdate(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public boolean onCharacteristicUpdate(@NonNull BluetoothGattCharacteristic characteristic) {
         super.onCharacteristicUpdate(characteristic);
 
         final String characteristicUUID = characteristic.getUuid().toString();
@@ -369,7 +369,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean setLoggingState(final boolean enable) {
+    public boolean setLoggingState(boolean enable) {
         if (mDownloadInProgress && enable) {
             Log.e(TAG, "setLoggingState -> We can't enable logging while a download its in progress.");
             return false;
@@ -385,7 +385,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean setDownloadInterval(final int intervalInMilliseconds) {
+    public boolean setDownloadInterval(int intervalInMilliseconds) {
         if (mLoggingIsEnabled != null && mLoggingIsEnabled) {
             Log.e(TAG, "setInterval -> We can't set the interval because logging it's enabled.");
             return false;
@@ -425,7 +425,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * @return <code>true</code> if the start pointer was set - <code>false</code> otherwise.
      * NOTE: This method shouldn't be called from the UI thread. The user has to call it from another thread (or creating one)
      */
-    public boolean setStartPointer(@Nullable final Integer userStartPoint) {
+    public boolean setStartPointer(@Nullable Integer userStartPoint) {
         mPeripheral.forceReadCharacteristic(mCurrentPointerCharacteristic, MAX_WAITING_TIME_BETWEEN_REQUEST_MS, MAX_CONSECUTIVE_TRIES);
         if (userStartPoint == null) {
             Log.d(TAG, "setStartPointer() -> userStartPoint == null, user wants all the data!");
@@ -470,7 +470,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
     }
 
     @Nullable
-    private Integer calculateStartPoint(@NonNull final Integer userStartPoint) {
+    private Integer calculateStartPoint(@NonNull Integer userStartPoint) {
         if (mEndPointer == null) {
             Log.e(TAG, "calculateStartPoint -> Service is not synchronized yet. ");
             return null;
@@ -506,7 +506,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * @return <code>true</code> if the end pointer was set - <code>false</code> otherwise.
      * NOTE: This method will block the calling thread.
      */
-    public boolean setEndPointer(@Nullable final Integer endPointer) {
+    public boolean setEndPointer(@Nullable Integer endPointer) {
         super.mPeripheral.forceReadCharacteristic(mCurrentPointerCharacteristic, MAX_WAITING_TIME_BETWEEN_REQUEST_MS, MAX_CONSECUTIVE_TRIES);
 
         if (mCurrentPointer != null && mCurrentPointer.equals(endPointer)) {
@@ -533,7 +533,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * @return <code>true</code> if the user data was set - <code>false</code> otherwise.
      * NOTE: This method will block the calling thread.
      */
-    public boolean setUserData(final int userData) {
+    public boolean setUserData(int userData) {
         mUserDataCharacteristic.setValue(userData, FORMAT_UINT32, 0);
         mPeripheral.forceWriteCharacteristic(mUserDataCharacteristic, MAX_WAITING_TIME_BETWEEN_REQUEST_MS, MAX_CONSECUTIVE_TRIES);
         mPeripheral.forceReadCharacteristic(mUserDataCharacteristic, MAX_WAITING_TIME_BETWEEN_REQUEST_MS, MAX_CONSECUTIVE_TRIES);
@@ -546,7 +546,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * @param enable <code>true</code> for enabling logging - <code>false</code> for disabling it.
      * @return <code>true</code> if the request succeeded - <code>false</code> in case of failure.
      */
-    public synchronized boolean setGadgetLoggingEnabled(final boolean enable) {
+    public synchronized boolean setGadgetLoggingEnabled(boolean enable) {
         Log.d(TAG, String.format("setGadgetLoggingEnabled -> Trying to %s logging service on the device %s", (enable ? "enable" : "disable"), getDeviceAddress()));
         if (enable == isGadgetLoggingEnabled()) {
             Log.e(TAG, String.format("setGadgetLoggingEnabled -> In the device %s logging is already %s.", getDeviceAddress(), (enable ? "enabled" : "disabled")));
@@ -631,12 +631,12 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public synchronized boolean startDataDownload(final long oldestTimestampToDownload) {
+    public synchronized boolean startDataDownload(long oldestTimestampToDownload) {
         //Partial data download is not supported on this device yet.
         return startDataDownload();
     }
 
-    private void prepareDeviceToDownload(final boolean wasDeviceLoggingEnabled) {
+    private void prepareDeviceToDownload(boolean wasDeviceLoggingEnabled) {
         //If the gadget logging is enabled it disables it for downloading the data.
         if (wasDeviceLoggingEnabled) {
             setGadgetLoggingEnabled(false);
@@ -693,7 +693,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * @param characteristic characteristic we want to parse.
      * @return <code>true</code> if it was able to parse it - <code>false</code> otherwise.
      */
-    private boolean parseLoggedData(@NonNull final BluetoothGattCharacteristic characteristic) {
+    private boolean parseLoggedData(@NonNull BluetoothGattCharacteristic characteristic) {
         final byte[] rhtRawData = characteristic.getValue();
 
         if (mUserData == null || mStartPointDownload == null || mInterval == null) {
@@ -768,7 +768,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean registerNotificationListener(@NonNull final NotificationListener newListener) {
+    public boolean registerNotificationListener(@NonNull NotificationListener newListener) {
         final boolean historyListenerFound = super.registerNotificationListener(newListener);
         boolean rhtListenerFound = false;
         boolean temperatureListenerFound = false;
@@ -796,7 +796,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean unregisterNotificationListener(@NonNull final NotificationListener listenerForRemoval) {
+    public boolean unregisterNotificationListener(@NonNull NotificationListener listenerForRemoval) {
         final boolean historyListener = super.unregisterNotificationListener(listenerForRemoval);
         boolean rhtListener = false;
         boolean temperatureListener = false;
@@ -824,14 +824,14 @@ public class SHTC1HistoryService extends AbstractHistoryService {
     /**
      * Notifies download progress to the listeners.
      */
-    private void onDatapointRead(@NonNull final RHTDataPoint dataPoint) {
+    private void onDatapointRead(@NonNull RHTDataPoint dataPoint) {
         notifyDatapointRead(dataPoint);
         notifyHistoricalHumidity(dataPoint);
         notifyHistoricalTemperature(dataPoint);
         super.notifyDownloadProgress(mExtractedDataPointsCounter);
     }
 
-    private void notifyDatapointRead(@NonNull final RHTDataPoint dataPoint) {
+    private void notifyDatapointRead(@NonNull RHTDataPoint dataPoint) {
         final Iterator<RHTListener> iterator = mRHTListeners.iterator();
         while (iterator.hasNext()) {
             try {
@@ -844,7 +844,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
         }
     }
 
-    private void notifyHistoricalTemperature(@NonNull final RHTDataPoint dataPoint) {
+    private void notifyHistoricalTemperature(@NonNull RHTDataPoint dataPoint) {
         final Iterator<TemperatureListener> iterator = mTemperatureListeners.iterator();
         while (iterator.hasNext()) {
             try {
@@ -857,7 +857,7 @@ public class SHTC1HistoryService extends AbstractHistoryService {
         }
     }
 
-    private void notifyHistoricalHumidity(@NonNull final RHTDataPoint dataPoint) {
+    private void notifyHistoricalHumidity(@NonNull RHTDataPoint dataPoint) {
         final Iterator<HumidityListener> iterator = mHumidityListeners.iterator();
         while (iterator.hasNext()) {
             try {

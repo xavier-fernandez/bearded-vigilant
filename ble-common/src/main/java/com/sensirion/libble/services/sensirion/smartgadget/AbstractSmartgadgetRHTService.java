@@ -9,7 +9,9 @@ import com.sensirion.libble.listeners.services.RHTListener;
 
 abstract class AbstractSmartgadgetRHTService<ListenerType extends NotificationListener> extends AbstractSmartgadgetService<ListenerType> {
 
-    protected AbstractSmartgadgetRHTService(@NonNull final Peripheral peripheral, @NonNull final BluetoothGattService gatt, @NonNull final String valueCharacteristicUUID) {
+    protected AbstractSmartgadgetRHTService(@NonNull Peripheral peripheral,
+                                            @NonNull BluetoothGattService gatt,
+                                            @NonNull String valueCharacteristicUUID) {
         super(peripheral, gatt, valueCharacteristicUUID);
         registerNotificationListener(SmartgadgetRHTNotificationCenter.getInstance());
     }
@@ -18,7 +20,7 @@ abstract class AbstractSmartgadgetRHTService<ListenerType extends NotificationLi
      * {@inheritDoc}
      */
     @Override
-    public boolean registerNotificationListener(@NonNull final NotificationListener listener) {
+    public boolean registerNotificationListener(@NonNull NotificationListener listener) {
         boolean rhtListener = false;
         if (listener instanceof RHTListener) {
             SmartgadgetRHTNotificationCenter.getInstance().registerDownloadListener((RHTListener) listener, mPeripheral);
@@ -32,7 +34,7 @@ abstract class AbstractSmartgadgetRHTService<ListenerType extends NotificationLi
      * {@inheritDoc}
      */
     @Override
-    public boolean unregisterNotificationListener(@NonNull final NotificationListener listener) {
+    public boolean unregisterNotificationListener(@NonNull NotificationListener listener) {
         if (listener instanceof RHTListener) {
             SmartgadgetRHTNotificationCenter.getInstance().unregisterDownloadListener((RHTListener) listener, mPeripheral);
         }

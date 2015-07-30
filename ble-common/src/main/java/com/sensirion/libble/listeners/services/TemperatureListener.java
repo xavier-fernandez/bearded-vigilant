@@ -22,8 +22,10 @@ public interface TemperatureListener extends NotificationListener {
      * @param sensorName  {@link String} of the sensor that reported the temperature data.
      * @param unit        {@link TemperatureUnit} of the reported temperature.
      */
-    void onNewTemperature(@NonNull BleDevice device, float temperature,
-                          @NonNull String sensorName, @NonNull TemperatureUnit unit);
+    void onNewTemperature(@NonNull BleDevice device,
+                          float temperature,
+                          @NonNull String sensorName,
+                          @NonNull TemperatureUnit unit);
 
     /**
      * Sends to the user the latest historical temperature.
@@ -34,7 +36,9 @@ public interface TemperatureListener extends NotificationListener {
      * @param sensorName      {@link String} of the sensor that reported the humidity.
      * @param unit            {@link TemperatureUnit} of the reported temperature.
      */
-    void onNewHistoricalTemperature(@NonNull BleDevice device, float temperature,
-                                    long timestampMillis, @NonNull String sensorName,
+    void onNewHistoricalTemperature(@NonNull BleDevice device,
+                                    float temperature,
+                                    long timestampMillis,
+                                    @NonNull String sensorName,
                                     @NonNull TemperatureUnit unit);
 }

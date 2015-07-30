@@ -28,7 +28,9 @@ abstract class AbstractSmartgadgetService<ListenerType extends NotificationListe
     protected String mSensorName = null;
     protected Float mLastValue = null;
 
-    protected AbstractSmartgadgetService(@NonNull final Peripheral peripheral, @NonNull final BluetoothGattService gatt, @NonNull final String liveValueCharacteristicUUID) {
+    protected AbstractSmartgadgetService(@NonNull Peripheral peripheral,
+                                         @NonNull BluetoothGattService gatt,
+                                         @NonNull String liveValueCharacteristicUUID) {
         super(peripheral, gatt);
         VALUE_NOTIFICATIONS_UUID = liveValueCharacteristicUUID;
         mValueCharacteristic = super.getCharacteristic(VALUE_NOTIFICATIONS_UUID);
@@ -50,7 +52,7 @@ abstract class AbstractSmartgadgetService<ListenerType extends NotificationListe
      * {@inheritDoc}
      */
     @Override
-    public boolean onDescriptorRead(@NonNull final BluetoothGattDescriptor descriptor) {
+    public boolean onDescriptorRead(@NonNull BluetoothGattDescriptor descriptor) {
         if (descriptor.getUuid().equals(USER_CHARACTERISTIC_DESCRIPTOR_UUID)) {
             if (descriptor.getCharacteristic().getUuid().equals(mValueCharacteristic.getUuid())) {
                 if (descriptor.getCharacteristic().getInstanceId() == mValueCharacteristic.getInstanceId()) {
@@ -74,7 +76,7 @@ abstract class AbstractSmartgadgetService<ListenerType extends NotificationListe
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicUpdate(@NonNull final BluetoothGattCharacteristic updatedCharacteristic) {
+    public boolean onCharacteristicUpdate(@NonNull BluetoothGattCharacteristic updatedCharacteristic) {
         final String characteristicUUID = updatedCharacteristic.getUuid().toString();
         if (characteristicUUID.equalsIgnoreCase(VALUE_NOTIFICATIONS_UUID)) {
             if (updatedCharacteristic.getValue().length <= 8) {
@@ -88,7 +90,7 @@ abstract class AbstractSmartgadgetService<ListenerType extends NotificationListe
         return false;
     }
 
-    private boolean parseLiveValue(@NonNull final BluetoothGattCharacteristic updatedValue) {
+    private boolean parseLiveValue(@NonNull BluetoothGattCharacteristic updatedValue) {
         if (mSensorName == null) {
             mPeripheral.readDescriptor(updatedValue.getDescriptor(USER_CHARACTERISTIC_DESCRIPTOR_UUID));
             return false;
@@ -98,7 +100,7 @@ abstract class AbstractSmartgadgetService<ListenerType extends NotificationListe
         return true;
     }
 
-    private boolean parseHistoryValue(@NonNull final BluetoothGattCharacteristic updatedValue) {
+    private boolean parseHistoryValue(@NonNull BluetoothGattCharacteristic updatedValue) {
         final byte[] historyValueBuffer = updatedValue.getValue();
         if (historyValueBuffer.length < DATAPOINT_SIZE * 2 || historyValueBuffer.length % DATAPOINT_SIZE > 0) {
             Log.e(TAG, "parseHistoryValue -> Received History value does not have a valid length.");
@@ -143,7 +145,7 @@ abstract class AbstractSmartgadgetService<ListenerType extends NotificationListe
         return true;
     }
 
-    private int extractSequenceNumber(@NonNull final byte[] byteBuffer) {
+    private int extractSequenceNumber(@NonNull byte[] byteBuffer) {
         final int[] wrappedSequenceNumber = new int[1];
         final byte[] sequenceNumberBuffer = new byte[4];
         System.arraycopy(byteBuffer, 0, sequenceNumberBuffer, 0, 4);
@@ -173,12 +175,12 @@ abstract class AbstractSmartgadgetService<ListenerType extends NotificationListe
     /**
      * Notifies the service listeners of the reading of a new historical value.
      */
-    abstract void notifyListenersNewHistoricalValue(final float value, final long timestamp);
+    abstract void notifyListenersNewHistoricalValue(float value, long timestamp);
 
     /**
      * Sends to the service implementation the extracted value unit.
      *
      * @param valueUnit {@link java.lang.String} with the value unit specified in the device.
      */
-    abstract void setValueUnit(@NonNull final String valueUnit);
+    abstract void setValueUnit(@NonNull String valueUnit);
 }

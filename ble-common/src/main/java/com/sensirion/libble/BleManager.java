@@ -43,17 +43,17 @@ public class BleManager {
          * {@inheritDoc}
          */
         @Override
-        public void onServiceConnected(final ComponentName name, final IBinder service) {
+        public void onServiceConnected(@NonNull ComponentName name, @NonNull IBinder service) {
             Log.i(TAG, "onServiceConnected() -> connected to BlePeripheralService");
             mBlePeripheralService = ((BlePeripheralService.LocalBinder) service).getService();
 
-            for (final DeviceStateListener listener : mDeviceStateListeners) {
+            for (DeviceStateListener listener : mDeviceStateListeners) {
                 mBlePeripheralService.registerPeripheralStateListener(listener);
             }
-            for (final ScanListener listener : mScanListeners) {
+            for (ScanListener listener : mScanListeners) {
                 mBlePeripheralService.registerScanListener(listener);
             }
-            for (final NotificationListener listener : mNotificationListeners) {
+            for (NotificationListener listener : mNotificationListeners) {
                 mBlePeripheralService.registerPeripheralListener(listener);
             }
 
@@ -71,7 +71,7 @@ public class BleManager {
          * {@inheritDoc}
          */
         @Override
-        public void onServiceDisconnected(final ComponentName name) {
+        public void onServiceDisconnected(@NonNull ComponentName name) {
             Log.w(TAG, "onServiceDisconnected() -> disconnected from BlePeripheralService");
             mBlePeripheralService = null;
         }
@@ -93,7 +93,7 @@ public class BleManager {
      *
      * @param context cannot be <code>null</code>
      */
-    public void init(@NonNull final Context context) {
+    public void init(@NonNull Context context) {
         Log.i(TAG, "init() -> binding to BlePeripheralService");
         final Intent intent = new Intent(context.getApplicationContext(), BlePeripheralService.class);
 
@@ -109,7 +109,7 @@ public class BleManager {
      *
      * @param context of the implementing application.
      */
-    public void release(@NonNull final Context context) {
+    public void release(@NonNull Context context) {
         try {
             Log.w(TAG, "release() -> unbinding mServiceConnection");
             context.getApplicationContext().unbindService(mServiceConnection);
@@ -133,7 +133,7 @@ public class BleManager {
      * @see BlePeripheralService#startLeScan(long)
      */
     @SuppressWarnings("SimplifiableIfStatement")
-    public synchronized boolean startScanning(final long scanDurationMs) {
+    public synchronized boolean startScanning(long scanDurationMs) {
         if (isReadyToScan()) {
             return mBlePeripheralService.startLeScan(scanDurationMs);
         }
@@ -144,7 +144,7 @@ public class BleManager {
      * @see BlePeripheralService#startLeScan(UUID...)
      */
     @SuppressWarnings("SimplifiableIfStatement")
-    public boolean startScanning(@NonNull final UUID[] deviceUUIDs) {
+    public boolean startScanning(@NonNull UUID[] deviceUUIDs) {
         if (isReadyToScan()) {
             return mBlePeripheralService.startLeScan(deviceUUIDs);
         }
@@ -155,7 +155,7 @@ public class BleManager {
      * @see BlePeripheralService#startLeScan(List of UUID))
      */
     @SuppressWarnings("SimplifiableIfStatement")
-    public boolean startScanning(@NonNull final List<UUID> deviceUUIDs) {
+    public boolean startScanning(@NonNull List<UUID> deviceUUIDs) {
         if (isReadyToScan()) {
             return mBlePeripheralService.startLeScan(deviceUUIDs);
         }
@@ -166,7 +166,7 @@ public class BleManager {
      * @see BlePeripheralService#startLeScan(long, List of UUID)
      */
     @SuppressWarnings("SimplifiableIfStatement")
-    public boolean startScanning(final long scanDurationMs, @NonNull final List<UUID> deviceUUIDs) {
+    public boolean startScanning(long scanDurationMs, @NonNull List<UUID> deviceUUIDs) {
         if (isReadyToScan()) {
             return mBlePeripheralService.startLeScan(scanDurationMs, deviceUUIDs);
         }
@@ -177,7 +177,7 @@ public class BleManager {
      * @see BlePeripheralService#startLeScan(long, UUID...)
      */
     @SuppressWarnings("SimplifiableIfStatement")
-    public boolean startScanning(final long scanDurationMs, @Nullable final UUID... deviceUUIDs) {
+    public boolean startScanning(long scanDurationMs, @Nullable UUID... deviceUUIDs) {
         if (isReadyToScan()) {
             return mBlePeripheralService.startLeScan(scanDurationMs, deviceUUIDs);
         }
@@ -244,7 +244,7 @@ public class BleManager {
      * @param validDeviceNames {@link java.util.List} of devices names.
      * @return Iterable with {@link com.sensirion.libble.devices.BleDevice}
      */
-    public Iterable<? extends BleDevice> getDiscoveredBleDevices(@Nullable final List<String> validDeviceNames) {
+    public Iterable<? extends BleDevice> getDiscoveredBleDevices(@Nullable List<String> validDeviceNames) {
         if (mBlePeripheralService == null) {
             Log.w(TAG, "getDiscoveredBleDevices(List<String>) -> not connected to BlePeripheralService");
             return new LinkedList<>();
@@ -284,7 +284,7 @@ public class BleManager {
      * @param deviceAddress MAC-Address of the desired {@link com.sensirion.libble.devices.BleDevice}
      * @return Connected device as {@link com.sensirion.libble.devices.BleDevice} or <code>null</code> if the device is not connected
      */
-    public BleDevice getConnectedDevice(@NonNull final String deviceAddress) {
+    public BleDevice getConnectedDevice(@NonNull String deviceAddress) {
         if (mBlePeripheralService == null) {
             Log.w(TAG, "getConnectedDevice() -> not connected to BlePeripheralService.");
             return null;
@@ -297,7 +297,7 @@ public class BleManager {
      *
      * @param deviceAddress of the device that should be connected
      */
-    public boolean connectDevice(@NonNull final String deviceAddress) {
+    public boolean connectDevice(@NonNull String deviceAddress) {
         if (mBlePeripheralService == null) {
             Log.e(TAG, String.format("connectDevice -> %s is null so peripheral can't be connected.", BlePeripheralService.class.getSimpleName()));
             return false;
@@ -312,7 +312,7 @@ public class BleManager {
      *
      * @param deviceAddress of the device that will be disconnected
      */
-    public void disconnectDevice(@NonNull final String deviceAddress) {
+    public void disconnectDevice(@NonNull String deviceAddress) {
         if (mBlePeripheralService == null) {
             Log.e(TAG, String.format("disconnectDevice -> %s is null so the device can't be disconnected.", BlePeripheralService.class.getSimpleName()));
         } else {
@@ -327,7 +327,7 @@ public class BleManager {
      * @param serviceName   name of the service.
      * @return {@link com.sensirion.libble.services.AbstractBleService}
      */
-    public BleService getServiceWithName(@NonNull final String deviceAddress, @NonNull final String serviceName) {
+    public BleService getServiceWithName(@NonNull String deviceAddress, @NonNull String serviceName) {
         final BleDevice device = getConnectedDevice(deviceAddress);
         if (device == null) {
             Log.e(TAG, String.format("getServiceWithName -> Device with address %s not found.", deviceAddress));
@@ -343,7 +343,7 @@ public class BleManager {
      * @param deviceAddress of the device we want to listen to - <code>null</code> if we want to register a listener to all connected devices.
      * @param listener      pretending to listen for notifications of a device.
      */
-    public void registerDeviceListener(@NonNull final NotificationListener listener, @Nullable final String deviceAddress) {
+    public void registerDeviceListener(@NonNull NotificationListener listener, @Nullable String deviceAddress) {
         for (final BleDevice device : getConnectedBleDevices()) {
             if (deviceAddress == null || device.getAddress().equals(deviceAddress)) {
                 device.registerDeviceListener(listener);
@@ -361,7 +361,7 @@ public class BleManager {
      * @param listener      that wants to unregister from the notifications of a device.
      * @param deviceAddress of the device you don't want to get notifications from anymore.
      */
-    public void unregisterDeviceListener(@NonNull final NotificationListener listener, @NonNull final String deviceAddress) {
+    public void unregisterDeviceListener(@NonNull NotificationListener listener, @NonNull String deviceAddress) {
         final BleDevice device = getConnectedDevice(deviceAddress);
         if (device == null) {
             Log.e(TAG, String.format("unregisterDeviceListener -> Device with address %s not found.", deviceAddress));
@@ -389,7 +389,7 @@ public class BleManager {
      *
      * @param context {@link android.content.Context} of the requesting activity.
      */
-    public void requestEnableBluetooth(@NonNull final Context context) {
+    public void requestEnableBluetooth(@NonNull Context context) {
         if (isBluetoothEnabled()) {
             Log.d(TAG, "requestEnableBluetooth -> Bluetooth is enabled");
         } else {
@@ -405,7 +405,7 @@ public class BleManager {
      * @param deviceAddress of the device.
      * @return <code>true</code> if connected - <code>false</code> otherwise.
      */
-    public boolean isDeviceConnected(@NonNull final String deviceAddress) {
+    public boolean isDeviceConnected(@NonNull String deviceAddress) {
         if (mBlePeripheralService == null) {
             Log.w(TAG, "isDeviceConnected -> not connected to BlePeripheralService");
             return false;
@@ -423,7 +423,7 @@ public class BleManager {
      *
      * @param enabled <code>true</code> for enabling notifications - <code>false</code> otherwise.
      */
-    public void setAllNotificationsEnabled(final boolean enabled) {
+    public void setAllNotificationsEnabled(boolean enabled) {
         Log.i(TAG, String.format("%s all the notifications in all the devices.", (enabled) ? "Enabled" : "Disabled"));
         for (final BleDevice device : getConnectedBleDevices()) {
             device.setAllNotificationsEnabled(enabled);
@@ -436,7 +436,7 @@ public class BleManager {
      * @param deviceAddress of the peripheral.
      * @return number of discovered services.
      */
-    public int getNumberOfDiscoveredServices(@NonNull final String deviceAddress) {
+    public int getNumberOfDiscoveredServices(@NonNull String deviceAddress) {
         final BleDevice device = getConnectedDevice(deviceAddress);
         if (device == null) {
             Log.e(TAG, String.format("getNumberServices -> Device with address %s not found.", deviceAddress));
@@ -451,7 +451,8 @@ public class BleManager {
      * @param deviceAddress of the peripheral.
      * @return {@link java.util.List} with the services names.
      */
-    public Iterable<String> getDiscoveredServicesNames(@NonNull final String deviceAddress) {
+    @NonNull
+    public Iterable<String> getDiscoveredServicesNames(@NonNull String deviceAddress) {
         final BleDevice device = getConnectedDevice(deviceAddress);
         if (device == null) {
             Log.e(TAG, String.format("getDiscoveredServicesNames -> Device with address %s not found.", deviceAddress));
@@ -466,7 +467,7 @@ public class BleManager {
      *
      * @param listener that wants to be added - Cannot be <code>null</code>
      */
-    public synchronized void registerNotificationListener(@NonNull final NotificationListener listener) {
+    public synchronized void registerNotificationListener(@NonNull NotificationListener listener) {
         if (mBlePeripheralService == null) {
             Log.w(TAG, "registerNotificationListener -> Peripheral Service is not enabled yet.");
             if (listener instanceof DeviceStateListener) {
@@ -492,7 +493,7 @@ public class BleManager {
      *
      * @param listener that wants to be removed - Cannot be <code>null</code>
      */
-    public synchronized void unregisterNotificationListener(@NonNull final NotificationListener listener) {
+    public synchronized void unregisterNotificationListener(@NonNull NotificationListener listener) {
         if (mBlePeripheralService == null) {
             if (listener instanceof DeviceStateListener) {
                 mDeviceStateListeners.remove(listener);

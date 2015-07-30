@@ -1,22 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
-
 package com.bearded.modules.sensor.ble;
 
 import android.content.Context;
@@ -56,9 +37,9 @@ abstract class AbstractBleSensorModule extends AbstractCloudModule implements De
 
     private byte mConsecutiveTimeouts = 0;
 
-    protected AbstractBleSensorModule(@NonNull final Context context,
-                                      @NonNull final SensorType sensorType,
-                                      final int binSizeMillis) {
+    protected AbstractBleSensorModule(@NonNull Context context,
+                                      @NonNull SensorType sensorType,
+                                      int binSizeMillis) {
         super(context);
         mSensorType = sensorType;
         mDatabaseFacade = new SensorDatabaseFacade(context, sensorType, binSizeMillis);
@@ -124,7 +105,7 @@ abstract class AbstractBleSensorModule extends AbstractCloudModule implements De
      * {@inheritDoc}
      */
     @Override
-    public void onUploadCompleted(final int code) {
+    public void onUploadCompleted(int code) {
         super.onUploadCompleted(code);
         Log.d(TAG, String.format("onUploadCompleted with code: %d", code));
         assert mDatabaseFacade != null;
@@ -135,7 +116,7 @@ abstract class AbstractBleSensorModule extends AbstractCloudModule implements De
      * {@inheritDoc}
      */
     @Override
-    public void onUploadFailure(@Nullable final String message) {
+    public void onUploadFailure(@Nullable String message) {
         Log.d(TAG, String.format("onUploadFailure with message: %s", message));
         if (message != null && message.startsWith("timeout")) {
             assert mDatabaseFacade != null;

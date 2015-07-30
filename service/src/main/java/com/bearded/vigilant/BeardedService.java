@@ -1,22 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
-
 package com.bearded.vigilant;
 
 import android.app.Service;
@@ -39,7 +20,7 @@ public class BeardedService extends Service {
      * {@inheritDoc}
      */
     @Override
-    public int onStartCommand(@NonNull final Intent intent, final int flags, final int startId) {
+    public int onStartCommand(@NonNull Intent intent, int flags, int startId) {
         final ModuleManager moduleManager = new ModuleManager(this.getApplicationContext());
         Log.d(TAG, String.format("onBind -> Service %s was binded successfully.", TAG));
         for (final Module module : moduleManager.getAvailableModules()) {
@@ -60,7 +41,7 @@ public class BeardedService extends Service {
                 });
     }
 
-    private void pushAllModuleDataToTheCloud(@NonNull final ModuleManager moduleManager) {
+    private void pushAllModuleDataToTheCloud(@NonNull ModuleManager moduleManager) {
         for (final Module module : moduleManager.getAvailableModules()) {
             if (module instanceof CloudModule) {
                 pushModuleDataToTheCloud((CloudModule) module);
@@ -68,7 +49,7 @@ public class BeardedService extends Service {
         }
     }
 
-    private void pushModuleDataToTheCloud(@NonNull final CloudModule module) {
+    private void pushModuleDataToTheCloud(@NonNull CloudModule module) {
         Log.i(TAG, String.format("pushModuleDataToTheCloud -> pushing data from the module %s to the cloud.", module.getModuleName()));
         module.pushCloudDataToTheCloud();
     }
@@ -77,7 +58,7 @@ public class BeardedService extends Service {
      * {@inheritDoc}
      */
     @Override
-    public IBinder onBind(@NonNull final Intent intent) {
+    public IBinder onBind(@NonNull Intent intent) {
         return null;
     }
 }

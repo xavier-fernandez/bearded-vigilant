@@ -112,7 +112,7 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
      */
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
-    public boolean equals(@Nullable final Object other) {
+    public boolean equals(@Nullable Object other) {
         if (other == null || !(other instanceof LocationEntity)) {
             return false;
         }
@@ -123,7 +123,7 @@ public class LocationEntity implements com.bearded.common.persistance.ParseableJ
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(@NonNull final LocationEntity other) {
+    public int compareTo(@NonNull LocationEntity other) {
         if (this.getLatitude() > other.getLatitude()) {
             return 1;
         } else if (this.getLatitude() < other.getLatitude()) {

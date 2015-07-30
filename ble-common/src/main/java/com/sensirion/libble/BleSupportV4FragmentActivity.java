@@ -28,7 +28,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * {@inheritDoc}
      */
     @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBleManager.init(getApplicationContext());
     }
@@ -84,7 +84,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see BleManager#startScanning(long)
      */
     @SuppressWarnings("unused")
-    public synchronized boolean startScanning(final long scanDurationMs) {
+    public synchronized boolean startScanning(long scanDurationMs) {
         return mBleManager.startScanning(scanDurationMs);
     }
 
@@ -92,7 +92,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see BleManager#startScanning(UUID...)
      */
     @SuppressWarnings("unused")
-    public boolean startScanning(@NonNull final UUID[] deviceUUIDs) {
+    public boolean startScanning(@NonNull UUID[] deviceUUIDs) {
         return mBleManager.startScanning(deviceUUIDs);
     }
 
@@ -100,7 +100,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see BleManager#startScanning(List of UUID))
      */
     @SuppressWarnings("unused")
-    public boolean startScanning(@NonNull final List<UUID> deviceUUIDs) {
+    public boolean startScanning(@NonNull List<UUID> deviceUUIDs) {
         return mBleManager.startScanning(deviceUUIDs);
     }
 
@@ -108,15 +108,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see BleManager#startScanning(long, List of UUID)
      */
     @SuppressWarnings("unused")
-    public boolean startScanning(final long scanDurationMs, @NonNull final List<UUID> deviceUUIDs) {
-        return mBleManager.startScanning(scanDurationMs, deviceUUIDs);
-    }
-
-    /**
-     * @see BleManager#startScanning(Long, UUID...)
-     */
-    @SuppressWarnings("unused")
-    public boolean startScanning(@Nullable final Long scanDurationMs, @Nullable final UUID... deviceUUIDs) {
+    public boolean startScanning(long scanDurationMs, @NonNull List<UUID> deviceUUIDs) {
         return mBleManager.startScanning(scanDurationMs, deviceUUIDs);
     }
 
@@ -140,7 +132,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#getDiscoveredBleDevices(java.util.List)
      */
     @SuppressWarnings("unused")
-    public Iterable<? extends BleDevice> getDiscoveredBleDevices(@NonNull final List<String> deviceNames) {
+    public Iterable<? extends BleDevice> getDiscoveredBleDevices(@NonNull List<String> deviceNames) {
         return mBleManager.getDiscoveredBleDevices(deviceNames);
     }
 
@@ -156,7 +148,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#getConnectedDevice(String)
      */
     @SuppressWarnings("unused")
-    public BleDevice getConnectedDevice(@NonNull final String deviceAddress) {
+    public BleDevice getConnectedDevice(@NonNull String deviceAddress) {
         return mBleManager.getConnectedDevice(deviceAddress);
     }
 
@@ -164,7 +156,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#connectDevice(String)
      */
     @SuppressWarnings("unused")
-    public boolean connectDevice(@NonNull final String deviceAddress) {
+    public boolean connectDevice(@NonNull String deviceAddress) {
         return mBleManager.connectDevice(deviceAddress);
     }
 
@@ -172,7 +164,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#disconnectDevice(String)
      */
     @SuppressWarnings("unused")
-    public void disconnectDevice(@NonNull final String deviceAddress) {
+    public void disconnectDevice(@NonNull String deviceAddress) {
         mBleManager.disconnectDevice(deviceAddress);
     }
 
@@ -188,7 +180,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#isDeviceConnected(String)
      */
     @SuppressWarnings("unused")
-    public boolean isDeviceConnected(@NonNull final String deviceAddress) {
+    public boolean isDeviceConnected(@NonNull String deviceAddress) {
         return mBleManager.isDeviceConnected(deviceAddress);
     }
 
@@ -196,7 +188,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#registerDeviceListener(com.sensirion.libble.listeners.NotificationListener, String)
      */
     @SuppressWarnings("unused")
-    public void registerDeviceListener(@NonNull final NotificationListener listener, @Nullable final String address) {
+    public void registerDeviceListener(@NonNull NotificationListener listener, @Nullable String address) {
         mBleManager.registerDeviceListener(listener, address);
     }
 
@@ -204,7 +196,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#unregisterDeviceListener(com.sensirion.libble.listeners.NotificationListener, String)
      */
     @SuppressWarnings("unused")
-    public void unregisterDeviceListener(@NonNull final String deviceAddress, @NonNull final NotificationListener listener) {
+    public void unregisterDeviceListener(@NonNull String deviceAddress, @NonNull NotificationListener listener) {
         mBleManager.unregisterDeviceListener(listener, deviceAddress);
     }
 
@@ -220,7 +212,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#requestEnableBluetooth(android.content.Context)
      */
     @SuppressWarnings("unused")
-    public void requestEnableBluetooth(@NonNull final Context context) {
+    public void requestEnableBluetooth(@NonNull Context context) {
         mBleManager.requestEnableBluetooth(context);
     }
 
@@ -228,7 +220,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#setAllNotificationsEnabled(boolean)
      */
     @SuppressWarnings("unused")
-    public void setAllNotificationsEnabled(final boolean enabled) {
+    public void setAllNotificationsEnabled(boolean enabled) {
         mBleManager.setAllNotificationsEnabled(enabled);
     }
 
@@ -236,7 +228,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#getNumberOfDiscoveredServices(String)
      */
     @SuppressWarnings("unused")
-    public int getNumberOfDiscoveredServices(final String deviceAddress) {
+    public int getNumberOfDiscoveredServices(@NonNull String deviceAddress) {
         return mBleManager.getNumberOfDiscoveredServices(deviceAddress);
     }
 
@@ -244,7 +236,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#getDiscoveredServicesNames(String)
      */
     @SuppressWarnings("unused")
-    public Iterable<String> getDiscoveredServicesNames(@NonNull final String address) {
+    public Iterable<String> getDiscoveredServicesNames(@NonNull String address) {
         return mBleManager.getDiscoveredServicesNames(address);
     }
 
@@ -252,7 +244,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#getServiceWithName(String, String)
      */
     @SuppressWarnings("unused")
-    public BleService getServiceWithName(@NonNull final String deviceAddress, @NonNull final String serviceName) {
+    public BleService getServiceWithName(@NonNull String deviceAddress, @NonNull String serviceName) {
         return mBleManager.getServiceWithName(deviceAddress, serviceName);
     }
 
@@ -260,7 +252,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#registerNotificationListener(com.sensirion.libble.listeners.NotificationListener)
      */
     @SuppressWarnings("unused")
-    public synchronized void registerNotificationListener(@NonNull final NotificationListener listener) {
+    public synchronized void registerNotificationListener(@NonNull NotificationListener listener) {
         mBleManager.registerNotificationListener(listener);
     }
 
@@ -268,7 +260,7 @@ public abstract class BleSupportV4FragmentActivity extends android.support.v4.ap
      * @see com.sensirion.libble.BleManager#unregisterNotificationListener(com.sensirion.libble.listeners.NotificationListener)
      */
     @SuppressWarnings("unused")
-    public synchronized void unregisterNotificationListener(@NonNull final NotificationListener listener) {
+    public synchronized void unregisterNotificationListener(@NonNull NotificationListener listener) {
         mBleManager.unregisterNotificationListener(listener);
     }
 }

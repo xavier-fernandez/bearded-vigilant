@@ -28,12 +28,12 @@ public interface UploadStateListener {
      *
      * @param code with the download state.
      */
-    void onUploadCompleted(final int code);
+    void onUploadCompleted(int code);
 
     /**
      * Notify a listener of a failed cloud upload.
      *
      * @param errorMessage describing the error when trying to upload data to the cloud.
      */
-    void onUploadFailure(@Nullable final String errorMessage);
+    void onUploadFailure(@Nullable String errorMessage);
 }

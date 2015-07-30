@@ -22,7 +22,7 @@ public class SmartgadgetHumidityService extends AbstractSmartgadgetRHTService<Hu
     //CLASS ATTRIBUTES.
     private HumidityUnit mValueUnit;
 
-    public SmartgadgetHumidityService(@NonNull final Peripheral peripheral, @NonNull final BluetoothGattService bluetoothGattService) {
+    public SmartgadgetHumidityService(@NonNull Peripheral peripheral, @NonNull BluetoothGattService bluetoothGattService) {
         super(peripheral, bluetoothGattService, HUMIDITY_NOTIFICATIONS_UUID);
     }
 
@@ -47,7 +47,7 @@ public class SmartgadgetHumidityService extends AbstractSmartgadgetRHTService<Hu
      * {@inheritDoc}
      */
     @Override
-    void notifyListenersNewHistoricalValue(final float value, final long timestamp) {
+    void notifyListenersNewHistoricalValue(float value, long timestamp) {
         Log.d(TAG, String.format("notifyListenersNewLiveValue -> Notifying humidity value: %f%s from sensor %s.", mLastValue, mValueUnit, mSensorName));
         final Iterator<HumidityListener> iterator = mListeners.iterator();
         while (iterator.hasNext()) {

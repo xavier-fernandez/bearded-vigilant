@@ -11,7 +11,7 @@ public abstract class TemperatureConverter {
      * @param unit        of the temperature. {@link com.sensirion.libble.utils.TemperatureUnit}
      * @return {@link java.lang.Float} with the temperature in Celsius.
      */
-    public static float convertTemperatureToCelsius(final float temperature, @NonNull final TemperatureUnit unit) {
+    public static float convertTemperatureToCelsius(float temperature, @NonNull TemperatureUnit unit) {
         switch (unit) {
             case CELSIUS:
                 return temperature;
@@ -31,7 +31,7 @@ public abstract class TemperatureConverter {
      * @param unit        of the temperature. {@link com.sensirion.libble.utils.TemperatureUnit}
      * @return {@link java.lang.Float} with the temperature in Fahrenheit.
      */
-    public static float convertTemperatureToFahrenheit(final float temperature, @NonNull final TemperatureUnit unit) {
+    public static float convertTemperatureToFahrenheit(float temperature, @NonNull TemperatureUnit unit) {
         switch (unit) {
             case CELSIUS:
                 return convertCelsiusToFahrenheit(temperature);
@@ -51,7 +51,7 @@ public abstract class TemperatureConverter {
      * @param unit        of the temperature. {@link com.sensirion.libble.utils.TemperatureUnit}
      * @return {@link java.lang.Float} with the temperature in Kelvin.
      */
-    public static float convertTemperatureToKelvin(final float temperature, @NonNull final TemperatureUnit unit) {
+    public static float convertTemperatureToKelvin(float temperature, @NonNull TemperatureUnit unit) {
         switch (unit) {
             case CELSIUS:
                 return convertCelsiusToKelvin(temperature);
@@ -70,7 +70,7 @@ public abstract class TemperatureConverter {
      * @param temperatureInCelsius that will be converted into Fahrenheit.
      * @return {@link java.lang.Float} with the temperature in Fahrenheit.
      */
-    public static float convertCelsiusToFahrenheit(final float temperatureInCelsius) {
+    public static float convertCelsiusToFahrenheit(float temperatureInCelsius) {
         return (temperatureInCelsius * 9f / 5f + 32f);
     }
 
@@ -80,7 +80,7 @@ public abstract class TemperatureConverter {
      * @param temperatureInCelsius that will be converted into Kelvin.
      * @return {@link java.lang.Float} with the temperature in Kelvin.
      */
-    public static float convertCelsiusToKelvin(final float temperatureInCelsius) {
+    public static float convertCelsiusToKelvin(float temperatureInCelsius) {
         return temperatureInCelsius + 273.15f;
     }
 
@@ -90,7 +90,7 @@ public abstract class TemperatureConverter {
      * @param tempInFahrenheit that will be converted into Celsius.
      * @return {@link java.lang.Float} with the temperature in Celsius.
      */
-    public static float convertFahrenheitToCelsius(final float tempInFahrenheit) {
+    public static float convertFahrenheitToCelsius(float tempInFahrenheit) {
         return (tempInFahrenheit - 32f) * 5f / 9f;
     }
 
@@ -100,7 +100,7 @@ public abstract class TemperatureConverter {
      * @param tempInFahrenheit that will be converted into Kelvin.
      * @return {@link java.lang.Float} with the temperature in Kelvin.
      */
-    public static float convertFahrenheitToKelvin(final float tempInFahrenheit) {
+    public static float convertFahrenheitToKelvin(float tempInFahrenheit) {
         return convertCelsiusToKelvin(convertFahrenheitToCelsius(tempInFahrenheit));
     }
 
@@ -110,7 +110,7 @@ public abstract class TemperatureConverter {
      * @param temperatureInKelvin that will be converted into Celsius.
      * @return {@link java.lang.Float} with the temperature in Celsius.
      */
-    public static float convertKelvinToCelsius(final float temperatureInKelvin) {
+    public static float convertKelvinToCelsius(float temperatureInKelvin) {
         return temperatureInKelvin - 273.15f;
     }
 
@@ -120,7 +120,7 @@ public abstract class TemperatureConverter {
      * @param temperatureInKelvin that will be converted into Fahrenheit.
      * @return {@link java.lang.Float} with the temperature in Fahrenheit.
      */
-    public static float convertKelvinToFahrenheit(final float temperatureInKelvin) {
+    public static float convertKelvinToFahrenheit(float temperatureInKelvin) {
         return convertCelsiusToFahrenheit(convertKelvinToCelsius(temperatureInKelvin));
     }
 }

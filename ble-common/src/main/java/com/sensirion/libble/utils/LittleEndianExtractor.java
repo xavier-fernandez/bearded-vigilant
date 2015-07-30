@@ -18,7 +18,8 @@ public abstract class LittleEndianExtractor {
      * @param longValue that is going to be converted into a byte array.
      * @return array of {@link java.lang.Byte} ordered using the little endian convention.
      */
-    public static byte[] extractLittleEndianByteArrayFromLong(final long longValue) {
+    @NonNull
+    public static byte[] extractLittleEndianByteArrayFromLong(long longValue) {
         final byte[] byteArray = longToByteArray(longValue);
         if (ByteOrder.nativeOrder() == LITTLE_ENDIAN) {
             return reverseByteArray(byteArray);
@@ -26,7 +27,8 @@ public abstract class LittleEndianExtractor {
         return byteArray;
     }
 
-    private static byte[] longToByteArray(final long value) {
+    @NonNull
+    private static byte[] longToByteArray(long value) {
         return new byte[]{
                 (byte) (value >> 56),
                 (byte) (value >> 48),
@@ -45,7 +47,8 @@ public abstract class LittleEndianExtractor {
      * @param intValue that is going to be converted into a byte array.
      * @return array of {@link java.lang.Byte} ordered using the little endian convention.
      */
-    public static byte[] extractLittleEndianByteArrayFromInteger(final int intValue) {
+    @NonNull
+    public static byte[] extractLittleEndianByteArrayFromInteger(int intValue) {
         final byte[] byteArray = intToByteArray(intValue);
         if (ByteOrder.nativeOrder() == LITTLE_ENDIAN) {
             return reverseByteArray(byteArray);
@@ -53,7 +56,8 @@ public abstract class LittleEndianExtractor {
         return byteArray;
     }
 
-    private static byte[] intToByteArray(final int value) {
+    @NonNull
+    private static byte[] intToByteArray(int value) {
         return new byte[]{
                 (byte) (value >> 24),
                 (byte) (value >> 16),
@@ -62,7 +66,8 @@ public abstract class LittleEndianExtractor {
         };
     }
 
-    private static byte[] reverseByteArray(@NonNull final byte[] array) {
+    @NonNull
+    private static byte[] reverseByteArray(@NonNull byte[] array) {
         final byte[] reversedArray = new byte[array.length];
         for (int i = 0; i < array.length; i++) {
             reversedArray[i] = array[array.length - i - 1];
@@ -77,7 +82,7 @@ public abstract class LittleEndianExtractor {
      * @param characteristic that contains the a 32 bit integer.
      * @return {@link java.lang.Float} with the extracted value.
      */
-    public static int extractLittleEndianIntegerFromCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public static int extractLittleEndianIntegerFromCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         int[] extractedValue = new int[1];
         ByteBuffer.wrap(characteristic.getValue()).order(LITTLE_ENDIAN).asIntBuffer().get(extractedValue);
         return extractedValue[0];
@@ -90,7 +95,7 @@ public abstract class LittleEndianExtractor {
      * @param characteristic that contains the little 64 bit integer.
      * @return {@link java.lang.Float} with the extracted value.
      */
-    public static long extractLittleEndianLongFromCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public static long extractLittleEndianLongFromCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         long[] extractedValue = new long[1];
         ByteBuffer.wrap(characteristic.getValue()).order(LITTLE_ENDIAN).asLongBuffer().get(extractedValue);
         return extractedValue[0];
@@ -102,7 +107,7 @@ public abstract class LittleEndianExtractor {
      * @param characteristic that contains the little endian Float.
      * @return {@link java.lang.Float} with the extracted value.
      */
-    public static float extractLittleEndianFloatFromCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public static float extractLittleEndianFloatFromCharacteristic(@NonNull BluetoothGattCharacteristic characteristic) {
         return extractLittleEndianFloatFromCharacteristic(characteristic, 0);
     }
 
@@ -113,7 +118,8 @@ public abstract class LittleEndianExtractor {
      * @param offset         of the float value inside the characteristic.
      * @return {@link java.lang.Float} with the extracted value.
      */
-    public static float extractLittleEndianFloatFromCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic, final int offset) {
+    public static float extractLittleEndianFloatFromCharacteristic(@NonNull BluetoothGattCharacteristic characteristic,
+                                                                   int offset) {
         final float[] wrappedFloatValue = new float[1];
         final byte[] valueBuffer = new byte[4];
         System.arraycopy(characteristic.getValue(), offset, valueBuffer, 0, 4);
@@ -128,7 +134,9 @@ public abstract class LittleEndianExtractor {
      * @param offset         number of bytes of offset.
      * @return {@link java.lang.Integer} with the short unsigned value.
      */
-    public static Integer extractUnsignedShortFromCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic, final int offset) {
+    @NonNull
+    public static Integer extractUnsignedShortFromCharacteristic(@NonNull BluetoothGattCharacteristic characteristic,
+                                                                 int offset) {
         final int lowerByte = characteristic.getIntValue(FORMAT_UINT8, offset);
         final int upperByte = characteristic.getIntValue(FORMAT_UINT8, offset + 1); // Note: interpret MSB as unsigned.
         return (upperByte << 8) + lowerByte;
@@ -141,7 +149,9 @@ public abstract class LittleEndianExtractor {
      * @param offset         number of bytes of offset.
      * @return {@link java.lang.Integer} with the short unsigned value.
      */
-    public static Integer extractSignedShortFromCharacteristic(@NonNull final BluetoothGattCharacteristic characteristic, final int offset) {
+    @NonNull
+    public static Integer extractSignedShortFromCharacteristic(@NonNull BluetoothGattCharacteristic characteristic,
+                                                               int offset) {
         final int lowerByte = characteristic.getIntValue(FORMAT_UINT8, offset);
         final int upperByte = characteristic.getIntValue(FORMAT_SINT8, offset + 1); // Note: interpret MSB as signed.
         return (upperByte << 8) + lowerByte;

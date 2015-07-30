@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
  */
 public class RHTDataPoint implements Comparable<RHTDataPoint> {
 
+    @NonNull
     private static final String TAG = RHTDataPoint.class.getSimpleName();
 
     private final float mTemperatureInCelsius;
@@ -20,7 +21,7 @@ public class RHTDataPoint implements Comparable<RHTDataPoint> {
      * @param relativeHumidity     of the datapoint.
      * @param timestamp            where this datapoint was obtained in milliseconds UTC.
      */
-    public RHTDataPoint(final float temperatureInCelsius, final float relativeHumidity, final long timestamp) {
+    public RHTDataPoint(float temperatureInCelsius, float relativeHumidity, long timestamp) {
         this(temperatureInCelsius, relativeHumidity, timestamp, TemperatureUnit.CELSIUS);
     }
 
@@ -32,7 +33,10 @@ public class RHTDataPoint implements Comparable<RHTDataPoint> {
      * @param timestamp        where this datapoint was obtained in milliseconds UTC.
      * @param temperatureUnit  can be TemperatureUnit.CELSIUS or TemperatureUnit.FAHRENHEIT or TemperatureUnit.KELVIN.
      */
-    public RHTDataPoint(final float temperature, final float relativeHumidity, final long timestamp, final TemperatureUnit temperatureUnit) {
+    public RHTDataPoint(float temperature,
+                        float relativeHumidity,
+                        long timestamp,
+                        @NonNull TemperatureUnit temperatureUnit) {
         switch (temperatureUnit) {
             case CELSIUS:
                 mTemperatureInCelsius = temperature;
@@ -97,8 +101,8 @@ public class RHTDataPoint implements Comparable<RHTDataPoint> {
      */
     @SuppressWarnings("unused")
     public float getDewPointCelsius() {
-        float h = (float) (Math.log((mRelativeHumidity / 100.0)) + (17.62 * mTemperatureInCelsius) / (243.12 + mTemperatureInCelsius));
-        return (float) (243.12 * h / (17.62 - h));
+        float h = (float) (Math.log((mRelativeHumidity / 100f)) + (17.62f * mTemperatureInCelsius) / (243.12f + mTemperatureInCelsius));
+        return (float) (243.12f * h / (17.62f - h));
     }
 
     /**
@@ -187,7 +191,7 @@ public class RHTDataPoint implements Comparable<RHTDataPoint> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(@NonNull final RHTDataPoint anotherDatapoint) {
+    public int compareTo(@NonNull RHTDataPoint anotherDatapoint) {
         if (anotherDatapoint.getTimestamp() - mTimestamp > 0) {
             return -1;
         }
@@ -232,7 +236,8 @@ public class RHTDataPoint implements Comparable<RHTDataPoint> {
          * @param t ambient temperature in Fahrenheit.
          * @return {@link java.lang.Float} with the Heat Index in Fahrenheit.
          */
-        private static float calcHeatIndexInFahrenheit(final float t, final float h) {
+        @NonNull
+        private static float calcHeatIndexInFahrenheit(float t, float h) {
 
             //Checks if the temperature and the humidity makes sense.
             if (t < LOW_BOUNDARY_FORMULA_FAHRENHEIT || t > UPPER_BOUNDARY_FORMULA_FAHRENHEIT || h < 0 || h > 100) {

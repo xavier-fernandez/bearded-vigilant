@@ -1,22 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
-
 package com.bearded.modules.ble.discovery;
 
 import android.content.Context;
@@ -52,7 +33,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
     @Nullable
     private DateTime mLastDataSentToCloud;
 
-    public BleDiscoveryModule(@NonNull final Context context) {
+    public BleDiscoveryModule(@NonNull Context context) {
         super(context);
         mDatabaseFacade = new BleDiscoveryDatabaseFacade(context, DATA_BIN_TIME_MS);
         mCloudUploader = new BluetoothDiscoveryCloudUploader();
@@ -125,7 +106,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
      * {@inheritDoc}
      */
     @Override
-    public void onScanStateChanged(final boolean isScanEnabled) {
+    public void onScanStateChanged(boolean isScanEnabled) {
         if (!isScanEnabled) {
             BleManager.getInstance().startScanning();
             Log.d(TAG, "onScanStateChanged -> Scan disabled, ");
@@ -142,7 +123,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceConnected(@NonNull final BleDevice device) {
+    public void onDeviceConnected(@NonNull BleDevice device) {
         // Do nothing
     }
 
@@ -150,7 +131,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceDisconnected(@NonNull final BleDevice device) {
+    public void onDeviceDisconnected(@NonNull BleDevice device) {
         // Do nothing
     }
 
@@ -159,7 +140,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceDiscovered(@NonNull final BleDevice device) {
+    public void onDeviceDiscovered(@NonNull BleDevice device) {
         Log.i(TAG, String.format("onDeviceDiscovered -> Discovered device %s with RSSI %d.", device.getAddress(), device.getRSSI()));
         mDatabaseFacade.insertBleEvent(device);
         mLastDataReceived = DateTime.now();
@@ -169,7 +150,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceAllServicesDiscovered(@NonNull final BleDevice device) {
+    public void onDeviceAllServicesDiscovered(@NonNull BleDevice device) {
         // Do nothing
     }
 
@@ -177,7 +158,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
      * {@inheritDoc}
      */
     @Override
-    public void onUploadCompleted(final int code) {
+    public void onUploadCompleted(int code) {
         Log.d(TAG, String.format("onUploadCompleted -> Upload completed with code: %d", code));
         mDatabaseFacade.purgeAllUploadedBleEvents();
         mLastDataSentToCloud = DateTime.now();
@@ -187,7 +168,7 @@ public class BleDiscoveryModule extends AbstractCloudModule implements ScanListe
      * {@inheritDoc}
      */
     @Override
-    public void onUploadFailure(@Nullable final String message) {
+    public void onUploadFailure(@Nullable String message) {
         Log.d(TAG, String.format("onUploadFailure with message: %s", message));
         if (message != null && message.startsWith("timeout")) {
             synchronized (this) {

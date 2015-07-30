@@ -30,7 +30,7 @@ public enum DeviceBluetoothType {
      * @return the found {@link DeviceBluetoothType} - {@see DEVICE_TYPE_UNKNOWN} if the id is unknown.
      */
     @NonNull
-    static DeviceBluetoothType getDeviceBluetoothDeviceTypeFromId(final int id) {
+    static DeviceBluetoothType getDeviceBluetoothDeviceTypeFromId(int id) {
         for (final DeviceBluetoothType deviceBluetoothType : values()) {
             if (id == deviceBluetoothType.mId) {
                 return deviceBluetoothType;

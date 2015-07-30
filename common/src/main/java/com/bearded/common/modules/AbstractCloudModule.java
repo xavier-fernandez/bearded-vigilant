@@ -44,7 +44,7 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
     @Nullable
     private DateTime mLastCloudUpload;
 
-    protected AbstractCloudModule(@NonNull final Context context) {
+    protected AbstractCloudModule(@NonNull Context context) {
         final WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         while (!manager.isWifiEnabled()) {
             manager.setWifiEnabled(true);
@@ -61,7 +61,7 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
      * {@inheritDoc}
      */
     @Override
-    public void onUploadCompleted(final int code) {
+    public void onUploadCompleted(int code) {
         Log.d(TAG, String.format("onUploadCompleted -> Upload completed with code: %d", code));
         mLastCloudUpload = DateTime.now();
     }
@@ -79,7 +79,7 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
      * {@inheritDoc}
      */
     @Override
-    public void onUploadFailure(@Nullable final String errorMessage) {
+    public void onUploadFailure(@Nullable String errorMessage) {
         Log.d(TAG, String.format("onUploadCompleted -> The following error was thrown when uploading the data to the cloud: %s", errorMessage));
     }
 

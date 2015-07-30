@@ -73,7 +73,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
     private BluetoothCrashResolver mBluetoothSharingCrashResolver;
 
     @Override
-    public synchronized void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+    public synchronized void onLeScan(@NonNull BluetoothDevice device, int rssi, @Nullable byte[] scanRecord) {
         final String deviceAddress = device.getAddress();
         final Peripheral peripheral;
 
@@ -91,7 +91,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
         notifyDiscoveredPeripheralChanged(peripheral);
     }
 
-    public synchronized void onPeripheralConnectionChanged(@NonNull final Peripheral peripheral) {
+    public synchronized void onPeripheralConnectionChanged(@NonNull Peripheral peripheral) {
         final String address = peripheral.getAddress();
         if (peripheral.isConnected()) {
             if (mDiscoveredPeripherals.containsKey(address)) {
@@ -110,7 +110,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
         notifyPeripheralConnectionChanged(peripheral);
     }
 
-    public synchronized void onPeripheralServiceDiscovery(@NonNull final Peripheral peripheral) {
+    public synchronized void onPeripheralServiceDiscovery(@NonNull Peripheral peripheral) {
         Log.i(TAG, String.format("onPeripheralServiceDiscovery -> Peripheral %s discovered %d services.", peripheral.getAddress(), peripheral.getNumberServices()));
         sendLocalBroadcast(ACTION_PERIPHERAL_SERVICE_DISCOVERY, EXTRA_PERIPHERAL_ADDRESS, peripheral.getAddress());
         notifyPeripheralServiceDiscovery(peripheral);
@@ -119,7 +119,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
         }
     }
 
-    private void notifyPeripheralConnectionChanged(@NonNull final Peripheral peripheral) {
+    private void notifyPeripheralConnectionChanged(@NonNull Peripheral peripheral) {
         final Iterator<DeviceStateListener> itr = mPeripheralStateListeners.iterator();
         while (itr.hasNext()) {
             final DeviceStateListener listener = itr.next();
@@ -136,7 +136,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
         }
     }
 
-    private void notifyDiscoveredPeripheralChanged(@NonNull final Peripheral peripheral) {
+    private void notifyDiscoveredPeripheralChanged(@NonNull Peripheral peripheral) {
         final Iterator<DeviceStateListener> itr = mPeripheralStateListeners.iterator();
         while (itr.hasNext()) {
             final DeviceStateListener listener = itr.next();
@@ -149,7 +149,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
         }
     }
 
-    private void notifyPeripheralServiceDiscovery(@NonNull final Peripheral peripheral) {
+    private void notifyPeripheralServiceDiscovery(@NonNull Peripheral peripheral) {
         final Iterator<DeviceStateListener> itr = mPeripheralStateListeners.iterator();
         while (itr.hasNext()) {
             final DeviceStateListener listener = itr.next();
@@ -182,12 +182,12 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
     }
 
     @Override
-    public IBinder onBind(final Intent intent) {
+    public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
     @Override
-    public boolean onUnbind(final Intent intent) {
+    public boolean onUnbind(Intent intent) {
         closeAll();
         return super.onUnbind(intent);
     }
@@ -219,7 +219,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @see BlePeripheralService#startLeScan(long, UUID...)
      */
-    public synchronized boolean startLeScan(final long scanDurationMs) {
+    public synchronized boolean startLeScan(long scanDurationMs) {
         return startLeScan(scanDurationMs, (UUID[]) null);
     }
 
@@ -228,7 +228,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @see BlePeripheralService#startLeScan(UUID...)
      */
-    public synchronized boolean startLeScan(@NonNull final List<UUID> UUIDs) {
+    public synchronized boolean startLeScan(@NonNull List<UUID> UUIDs) {
         return startLeScan(DEFAULT_SCAN_DURATION_MS, (UUID[]) UUIDs.toArray());
     }
 
@@ -237,14 +237,14 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @see BlePeripheralService#startLeScan(long, UUID...)
      */
-    public synchronized boolean startLeScan(@Nullable final UUID... UUIDs) {
+    public synchronized boolean startLeScan(@Nullable UUID... UUIDs) {
         return startLeScan(DEFAULT_SCAN_DURATION_MS, UUIDs);
     }
 
     /**
      * @see BlePeripheralService#startLeScan(long, UUID...)
      */
-    public synchronized boolean startLeScan(final long mScanDurationMs, @NonNull final List<UUID> UUIDs) {
+    public synchronized boolean startLeScan(long mScanDurationMs, @NonNull List<UUID> UUIDs) {
         return startLeScan(mScanDurationMs, (UUID[]) UUIDs.toArray());
     }
 
@@ -256,7 +256,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      * @param UUIDs          that will be retrieved in case some of them are found. <code>null</code> if all devices needs to be retrieved.
      * @return <code>true</code> if scan has been started. <code>false</code> otherwise.
      */
-    public synchronized boolean startLeScan(final long scanDurationMs, @Nullable final UUID... UUIDs) {
+    public synchronized boolean startLeScan(long scanDurationMs, @Nullable UUID... UUIDs) {
         if (scanDurationMs <= 0) {
             throw new IllegalArgumentException(String.format("%s: startLeScan -> Scan duration needs to be a positive number.", TAG));
         }
@@ -311,14 +311,14 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
         sendLocalBroadcast(action, null);
     }
 
-    private void sendLocalBroadcast(@NonNull final String action, @NonNull final String extraKey, @NonNull final String extraValue) {
+    private void sendLocalBroadcast(@NonNull String action, @NonNull String extraKey, @NonNull String extraValue) {
         final Pair<String, String> peripheralExtra = new Pair<>(extraKey, extraValue);
         final List<Pair<String, String>> broadcastExtras = new LinkedList<>();
         broadcastExtras.add(peripheralExtra);
         sendLocalBroadcast(action, broadcastExtras);
     }
 
-    private void sendLocalBroadcast(@NonNull final String action, @Nullable final List<Pair<String, String>> extras) {
+    private void sendLocalBroadcast(@NonNull String action, @Nullable List<Pair<String, String>> extras) {
         final Intent intent = new Intent(action);
         if (extras != null) {
             for (final Pair<String, String> extra : extras) {
@@ -391,7 +391,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      * @param validDeviceNames List of devices names.
      * @return Iterable of {@link com.sensirion.libble.devices.BleDevice}
      */
-    public synchronized Iterable<? extends BleDevice> getDiscoveredPeripherals(@Nullable final List<String> validDeviceNames) {
+    public synchronized Iterable<? extends BleDevice> getDiscoveredPeripherals(@Nullable List<String> validDeviceNames) {
         final Set<BleDevice> discoveredPeripherals = new HashSet<BleDevice>(mDiscoveredPeripherals.values());
         if (validDeviceNames == null) { // returns all the devices.
             return discoveredPeripherals;
@@ -431,7 +431,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      * @param address MAC-Address of the desired {@link BleDevice}
      * @return Connected device as {@link com.sensirion.libble.devices.BleDevice} - <code>null</code> if the device is not connected
      */
-    public BleDevice getConnectedDevice(@NonNull final String address) {
+    public BleDevice getConnectedDevice(@NonNull String address) {
         return mConnectedPeripherals.get(address);
     }
 
@@ -442,7 +442,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      * @return <code>true</code> if the connection is initiated successfully. The connection result is reported asynchronously
      * through the {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)} callback.
      */
-    public synchronized boolean connect(@NonNull final String address) {
+    public synchronized boolean connect(@NonNull String address) {
         checkBluetooth();
         if (address.trim().isEmpty()) {
             Log.e(TAG, "connect() -> unspecified address.");
@@ -469,7 +469,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @param listener that wants to be added - Cannot be <code>null</code>
      */
-    public synchronized void registerPeripheralStateListener(@NonNull final DeviceStateListener listener) {
+    public synchronized void registerPeripheralStateListener(@NonNull DeviceStateListener listener) {
         if (mPeripheralStateListeners.contains(listener)) {
             Log.w(TAG, String.format("registerPeripheralStateListener -> Listener %s was already added to the listener list", listener));
         } else {
@@ -482,7 +482,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @param listener that wants to be added - Cannot be <code>null</code>
      */
-    public synchronized void registerScanListener(@NonNull final ScanListener listener) {
+    public synchronized void registerScanListener(@NonNull ScanListener listener) {
         if (mPeripheralScanListeners.contains(listener)) {
             Log.w(TAG, String.format("registerScanListener -> Listener %s was already added to the listener list", listener));
         } else {
@@ -495,7 +495,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @param listener that wants to be removed - Cannot be <code>null</code>
      */
-    public synchronized void unregisterPeripheralStateListener(@NonNull final DeviceStateListener listener) {
+    public synchronized void unregisterPeripheralStateListener(@NonNull DeviceStateListener listener) {
         if (mPeripheralStateListeners.contains(listener)) {
             mPeripheralStateListeners.remove(listener);
             Log.i(TAG, String.format("unregisterPeripheralStateListener -> Listener %s was removed from the list.", listener));
@@ -509,7 +509,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @param listener that wants to be removed - Cannot be <code>null</code>
      */
-    public synchronized void unregisterScanListener(@NonNull final ScanListener listener) {
+    public synchronized void unregisterScanListener(@NonNull ScanListener listener) {
         if (mPeripheralScanListeners.contains(listener)) {
             mPeripheralScanListeners.remove(listener);
             Log.i(TAG, String.format("unregisterScanListener -> Listener %s was removed from the list.", listener));
@@ -523,7 +523,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      * disconnection result is reported asynchronously through the
      * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)} callback.
      */
-    public synchronized void disconnect(@NonNull final String deviceAddress) {
+    public synchronized void disconnect(@NonNull String deviceAddress) {
         checkBluetooth();
         if (deviceAddress.trim().isEmpty()) {
             Log.w(TAG, "disconnect() -> unspecified address.");
@@ -543,7 +543,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @param listener that wants to listen for notifications.
      */
-    public void registerPeripheralListener(@NonNull final NotificationListener listener) {
+    public void registerPeripheralListener(@NonNull NotificationListener listener) {
         mPeripheralNotificationListeners.add(listener);
         for (final Peripheral peripheral : mConnectedPeripherals.values()) {
             peripheral.registerDeviceListener(listener);
@@ -555,7 +555,7 @@ public class BlePeripheralService extends Service implements BluetoothAdapter.Le
      *
      * @param listener that doesn't want to register automatically for notifications on new connected devices.
      */
-    public void unregisterPeripheralListenerToAllConnected(@NonNull final NotificationListener listener) {
+    public void unregisterPeripheralListenerToAllConnected(@NonNull NotificationListener listener) {
         for (final Peripheral peripheral : mConnectedPeripherals.values()) {
             peripheral.unregisterDeviceListener(listener);
         }

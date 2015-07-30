@@ -1,21 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
 package com.bearded.modules.sensor.persistence;
 
 import android.support.annotation.NonNull;
@@ -57,8 +39,8 @@ class SensorMeasurementSeriesEntityFacade {
      * @return {@link SensorMeasurementSeriesEntity} with the measurement series.
      */
     @NonNull
-    public SensorMeasurementSeriesEntity getActiveMeasurementSeries(@NonNull final DaoSession session,
-                                                                    @NonNull final SensorEntity sensorEntity) {
+    public SensorMeasurementSeriesEntity getActiveMeasurementSeries(@NonNull DaoSession session,
+                                                                    @NonNull SensorEntity sensorEntity) {
         if (mSensorMeasurementSeries.get(sensorEntity) != null) {
             return mSensorMeasurementSeries.get(sensorEntity);
         }
@@ -83,8 +65,8 @@ class SensorMeasurementSeriesEntityFacade {
      * @return {@link SensorMeasurementSeriesEntity} with the measurement series.
      */
     @NonNull
-    public List<SensorMeasurementSeriesEntity> getAllClosedMeasurementSeriesFromSensor(@NonNull final DaoSession session,
-                                                                                       @NonNull final SensorEntity sensorEntity) {
+    public List<SensorMeasurementSeriesEntity> getAllClosedMeasurementSeriesFromSensor(@NonNull DaoSession session,
+                                                                                       @NonNull SensorEntity sensorEntity) {
         final SensorMeasurementSeriesEntityDao dao = session.getSensorMeasurementSeriesEntityDao();
         final QueryBuilder<SensorMeasurementSeriesEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(SensorMeasurementSeriesEntityDao.Properties.Sensor_id.eq(sensorEntity.getId()));
@@ -100,8 +82,8 @@ class SensorMeasurementSeriesEntityFacade {
      * @return {@link SensorMeasurementSeriesEntity} with the measurement series.
      */
     @NonNull
-    private SensorMeasurementSeriesEntity insertMeasurementSeries(@NonNull final DaoSession session,
-                                                                  @NonNull final SensorEntity sensorEntity) {
+    private SensorMeasurementSeriesEntity insertMeasurementSeries(@NonNull DaoSession session,
+                                                                  @NonNull SensorEntity sensorEntity) {
         final SensorMeasurementSeriesEntity measurementSeries = new SensorMeasurementSeriesEntity();
         measurementSeries.setStartTimestamp(TimeUtils.nowToISOString());
         measurementSeries.setSensorEntity(sensorEntity);
@@ -116,7 +98,7 @@ class SensorMeasurementSeriesEntityFacade {
      *
      * @param session needed to update measurement series.
      */
-    public void updateAllMeasurementSeriesEndTimestamp(@NonNull final DaoSession session) {
+    public void updateAllMeasurementSeriesEndTimestamp(@NonNull DaoSession session) {
         synchronized (this) {
             final SensorMeasurementSeriesEntityDao seriesDao = session.getSensorMeasurementSeriesEntityDao();
             final QueryBuilder<SensorMeasurementSeriesEntity> queryBuilder = seriesDao.queryBuilder();
@@ -135,8 +117,8 @@ class SensorMeasurementSeriesEntityFacade {
      * @param session needed to update measurement series.
      * @param series  which timestamp is going to be updated.
      */
-    private void updateMeasurementSeriesEndTimestamp(@NonNull final DaoSession session,
-                                                     @NonNull final SensorMeasurementSeriesEntity series) {
+    private void updateMeasurementSeriesEndTimestamp(@NonNull DaoSession session,
+                                                     @NonNull SensorMeasurementSeriesEntity series) {
         final SensorMeasurementEntityDao measurementDao = session.getSensorMeasurementEntityDao();
         final QueryBuilder<SensorMeasurementEntity> measurementQuery = measurementDao.queryBuilder();
         measurementQuery.where(SensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));

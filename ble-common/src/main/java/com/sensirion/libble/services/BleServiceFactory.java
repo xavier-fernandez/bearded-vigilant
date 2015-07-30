@@ -81,10 +81,16 @@ public class BleServiceFactory {
         try {
             final Constructor<? extends AbstractBleService> constructor = serviceClass.getDeclaredConstructor(Peripheral.class, BluetoothGattService.class);
             return constructor.newInstance(parent, service);
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            Log.e(TAG, "createServiceFor -> During the creation of a service the following exception was thrown -> ", e);
-            return null;
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "createServiceFor -> During the creation of a service the following NoSuchMethodException was thrown -> ", e);
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, "createServiceFor -> During the creation of a service the following InvocationTargetException was thrown -> ", e);
+        } catch (InstantiationException e){
+            Log.e(TAG, "createServiceFor -> During the creation of a service the following InstantiationException was thrown -> ", e);
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, "createServiceFor -> During the creation of a service the following IllegalAccessException was thrown -> ", e);
         }
+        return null;
     }
 
     /**
@@ -94,7 +100,7 @@ public class BleServiceFactory {
      * @param uuid       of the service.
      * @param newService class that is going to be instantiate.
      */
-    public void registerServiceImplementation(@NonNull final String uuid, @NonNull final Class<? extends BleService> newService) {
+    public void registerServiceImplementation(@NonNull String uuid, @NonNull Class<? extends BleService> newService) {
         if (mServiceLookUp.containsKey(uuid)) {
             Log.w(TAG, String.format("registerServiceImplementation -> The service with UUID %s was replaced by another service version.", uuid));
             mServiceLookUp.remove(uuid);

@@ -20,8 +20,10 @@ public interface HumidityListener extends NotificationListener {
      * @param sensorName {@link String} of the sensor that reported the humidity data.
      * @param unit       {@link HumidityUnit} of the reported humidity.
      */
-    void onNewHumidity(@NonNull BleDevice device, float humidity,
-                       @NonNull String sensorName, @NonNull HumidityUnit unit);
+    void onNewHumidity(@NonNull BleDevice device,
+                       float humidity,
+                       @NonNull String sensorName,
+                       @NonNull HumidityUnit unit);
 
     /**
      * Sends to the user the latest historical humidity.
@@ -32,7 +34,9 @@ public interface HumidityListener extends NotificationListener {
      * @param sensorName            {@link String} of the sensor that reported the humidity.
      * @param unit                  {@link HumidityUnit} of the reported humidity.
      */
-    void onNewHistoricalHumidity(@NonNull BleDevice device, float relativeHumidity,
-                                 long timestampMilliseconds, @NonNull String sensorName,
+    void onNewHistoricalHumidity(@NonNull BleDevice device,
+                                 float relativeHumidity,
+                                 long timestampMilliseconds,
+                                 @NonNull String sensorName,
                                  @NonNull HumidityUnit unit);
 }

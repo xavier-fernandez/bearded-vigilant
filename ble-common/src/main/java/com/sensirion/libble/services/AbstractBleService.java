@@ -55,7 +55,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
     private final Class<ListenerType> mNotificationClassType;
     private boolean mIsRequestingNotifications = false;
 
-    public AbstractBleService(@NonNull final Peripheral servicePeripheral, @NonNull final BluetoothGattService bluetoothGattService) {
+    public AbstractBleService(@NonNull Peripheral servicePeripheral, @NonNull BluetoothGattService bluetoothGattService) {
         mPeripheral = servicePeripheral;
         mBluetoothGattService = bluetoothGattService;
         mNotificationClassType = getListenerClassType();
@@ -105,7 +105,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * @return {@link android.bluetooth.BluetoothGattCharacteristic} requested by the user - <code>null</code> if no service is found.
      */
     @Nullable
-    protected BluetoothGattCharacteristic getCharacteristic(@NonNull final String uuid) {
+    protected BluetoothGattCharacteristic getCharacteristic(@NonNull String uuid) {
         return mBluetoothGattService.getCharacteristic(UUID.fromString(uuid.trim().toLowerCase()));
     }
 
@@ -113,7 +113,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicUpdate(@NonNull final BluetoothGattCharacteristic updatedCharacteristic) {
+    public boolean onCharacteristicUpdate(@NonNull BluetoothGattCharacteristic updatedCharacteristic) {
         return mBluetoothGattService.getCharacteristics().contains(updatedCharacteristic);
     }
 
@@ -121,7 +121,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicWrite(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public boolean onCharacteristicWrite(@NonNull BluetoothGattCharacteristic characteristic) {
         return mBluetoothGattService.getCharacteristics().contains(characteristic);
     }
 
@@ -129,7 +129,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
     @Override
-    public boolean onDescriptorRead(@NonNull final BluetoothGattDescriptor descriptor) {
+    public boolean onDescriptorRead(@NonNull BluetoothGattDescriptor descriptor) {
         return false; // This method needs to be overridden in order to do something with the descriptor.
     }
 
@@ -137,7 +137,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
     @Override
-    public boolean onDescriptorWrite(@NonNull final BluetoothGattDescriptor descriptor) {
+    public boolean onDescriptorWrite(@NonNull BluetoothGattDescriptor descriptor) {
         if (mNotifyCharacteristics.contains(descriptor.getCharacteristic())) {
             mRegisteredNotifyCharacteristics.add(descriptor.getCharacteristic());
             return true;
@@ -158,7 +158,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
 
-    public boolean isExplicitService(@NonNull final String serviceDescription) {
+    public boolean isExplicitService(@NonNull String serviceDescription) {
         return this.getClass().getSimpleName().equals(serviceDescription);
     }
 
@@ -172,7 +172,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
         return mPeripheral.getAddress();
     }
 
-    protected void registerNotification(@NonNull final BluetoothGattCharacteristic characteristic) {
+    protected void registerNotification(@NonNull BluetoothGattCharacteristic characteristic) {
         final int properties = characteristic.getProperties();
 
         if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
@@ -203,7 +203,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * @param characteristic of notifications.
      * @param enabled        <code>true</code> if notifications have to be enabled - <code>false</code> otherwise.
      */
-    private void setCharacteristicNotification(@NonNull final BluetoothGattCharacteristic characteristic, final boolean enabled) {
+    private void setCharacteristicNotification(@NonNull BluetoothGattCharacteristic characteristic, boolean enabled) {
         Log.i(TAG, String.format("setCharacteristicNotification -> Setting notification state to %b in characteristic with UUID %s on device %s.", enabled, characteristic.getUuid(), getDeviceAddress()));
         mPeripheral.setCharacteristicNotification(characteristic, enabled);
 
@@ -229,7 +229,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
     @Override
-    public void setNotificationsEnabled(final boolean enabled) {
+    public void setNotificationsEnabled(boolean enabled) {
         mIsRequestingNotifications = enabled;
         if (enabled) {
             registerDeviceCharacteristicNotifications();
@@ -263,7 +263,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
     @Override
-    public boolean registerNotificationListener(@NonNull final NotificationListener listener) {
+    public boolean registerNotificationListener(@NonNull NotificationListener listener) {
         if (mNotificationClassType == null || mListeners == null) {
             if (mIsRequestingNotifications) {
                 setNotificationsEnabled(true);
@@ -291,7 +291,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      */
     @Override
     @SuppressWarnings("SuspiciousMethodCalls") //It's checked with isAssignableFrom
-    public boolean unregisterNotificationListener(@NonNull final NotificationListener listener) {
+    public boolean unregisterNotificationListener(@NonNull NotificationListener listener) {
         if (mListeners == null || mNotificationClassType == null) {
             return false; //This service does not manage listeners automatically.
         }
@@ -308,7 +308,7 @@ public abstract class AbstractBleService<ListenerType extends NotificationListen
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(@Nullable final Object otherService) {
+    public boolean equals(@Nullable Object otherService) {
         if (otherService == null) {
             return false;
         } else if (otherService instanceof AbstractBleService) {

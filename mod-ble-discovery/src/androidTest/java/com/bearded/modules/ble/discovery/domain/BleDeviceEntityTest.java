@@ -29,7 +29,7 @@ public class BleDeviceEntityTest extends AbstractDaoTestLongPk<BleDeviceEntityDa
      */
     @Override
     @NonNull
-    protected BleDeviceEntity createEntity(@Nullable final Long key) {
+    protected BleDeviceEntity createEntity(@Nullable Long key) {
         final BleDeviceEntity entity = new BleDeviceEntity();
         entity.setId(key);
         entity.setDeviceAddress(TEST_DEVICE_ADDRESS);

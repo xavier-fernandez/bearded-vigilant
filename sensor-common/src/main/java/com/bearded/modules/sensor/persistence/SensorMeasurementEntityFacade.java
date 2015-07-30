@@ -46,7 +46,7 @@ class SensorMeasurementEntityFacade {
     @NonNull
     private final Integer mTimeoutMillis;
 
-    public SensorMeasurementEntityFacade(final int timeoutMillis) {
+    public SensorMeasurementEntityFacade(int timeoutMillis) {
         mSensorMeasurements = Collections.synchronizedMap(
                 new HashMap<SensorMeasurementSeriesEntity, SensorMeasurementsBuffer>());
         if (timeoutMillis <= 0) {
@@ -63,9 +63,9 @@ class SensorMeasurementEntityFacade {
      * @param series      of the measurement.
      * @param measurement that will be stored.
      */
-    public synchronized void addMeasurement(@NonNull final DaoSession session,
-                                            @NonNull final SensorMeasurementSeriesEntity series,
-                                            final float measurement) {
+    public synchronized void addMeasurement(@NonNull DaoSession session,
+                                            @NonNull SensorMeasurementSeriesEntity series,
+                                            float measurement) {
         SensorMeasurementsBuffer measurements = mSensorMeasurements.get(series);
         if (measurements == null) {
             //The first inserted element will be written inside the database.
@@ -81,9 +81,9 @@ class SensorMeasurementEntityFacade {
         }
     }
 
-    private void storeMeasurement(@NonNull final DaoSession session,
-                                  @NonNull final SensorMeasurementSeriesEntity series,
-                                  @NonNull final SensorMeasurementsBuffer measurements) {
+    private void storeMeasurement(@NonNull DaoSession session,
+                                  @NonNull SensorMeasurementSeriesEntity series,
+                                  @NonNull SensorMeasurementsBuffer measurements) {
         final SensorMeasurementEntity measurementEntity = new SensorMeasurementEntity();
         measurementEntity.setStartTimestamp(TimeUtils.timestampToISOString(measurements.firstElementTime));
         measurementEntity.setEndTimestamp(TimeUtils.nowToISOString());
@@ -101,7 +101,7 @@ class SensorMeasurementEntityFacade {
      *
      * @param session needed to insert all open measurements inside the database.
      */
-    void storeAllOpenMeasurements(@NonNull final DaoSession session) {
+    void storeAllOpenMeasurements(@NonNull DaoSession session) {
         for (final SensorMeasurementSeriesEntity seriesEntity : mSensorMeasurements.keySet()) {
             final SensorMeasurementsBuffer measurementsBuffer = mSensorMeasurements.get(seriesEntity);
             if (measurementsBuffer.getBinSize() > 0) {
@@ -117,8 +117,8 @@ class SensorMeasurementEntityFacade {
      * @param series  that needs to retrieve all its measurements.
      * @return {@link List} of {@link SensorMeasurementEntity}
      */
-    List<SensorMeasurementEntity> getAllMeasurementsFromSeries(@NonNull final DaoSession session,
-                                                               @NonNull final SensorMeasurementSeriesEntity series) {
+    List<SensorMeasurementEntity> getAllMeasurementsFromSeries(@NonNull DaoSession session,
+                                                               @NonNull SensorMeasurementSeriesEntity series) {
         final SensorMeasurementEntityDao dao = session.getSensorMeasurementEntityDao();
         final QueryBuilder<SensorMeasurementEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(SensorMeasurementEntityDao.Properties.Measurement_series_id.eq(series.getId()));
@@ -137,7 +137,7 @@ class SensorMeasurementEntityFacade {
             this.firstElementTime = DateTime.now();
         }
 
-        private void addMeasurement(final float measurement) {
+        private void addMeasurement(float measurement) {
             if (measurements.isEmpty()) {
                 firstElementTime = DateTime.now();
             }

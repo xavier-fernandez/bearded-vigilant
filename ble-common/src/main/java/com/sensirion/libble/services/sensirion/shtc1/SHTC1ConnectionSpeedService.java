@@ -28,7 +28,7 @@ public class SHTC1ConnectionSpeedService extends AbstractBleService {
     //NOTIFICATION SPEED LEVEL
     private Byte mNotificationSpeedLevel = null;
 
-    public SHTC1ConnectionSpeedService(@NonNull final Peripheral peripheral, @NonNull final BluetoothGattService bluetoothGattService) {
+    public SHTC1ConnectionSpeedService(@NonNull Peripheral peripheral, @NonNull BluetoothGattService bluetoothGattService) {
         super(peripheral, bluetoothGattService);
         mNotificationSpeedCharacteristic = getCharacteristic(NOTIFICATION_CHARACTERISTIC_UUID);
     }
@@ -61,7 +61,7 @@ public class SHTC1ConnectionSpeedService extends AbstractBleService {
      * @return <code>true</code> if the connection speed was set in the device - <code>false</code> otherwise.
      */
     @SuppressWarnings("unused")
-    public boolean setNotificationSpeed(@NonNull final CONNECTION_SPEED connectionSpeed) {
+    public boolean setNotificationSpeed(@NonNull CONNECTION_SPEED connectionSpeed) {
         switch (connectionSpeed) {
             case HIGH:
                 return setConnectionSpeed(true);
@@ -79,7 +79,7 @@ public class SHTC1ConnectionSpeedService extends AbstractBleService {
      * @param connectionSpeed <code>true</code> for high notification speed - <code>false</code> for low notification speed.
      * @return <code>true</code> if the notification speed was set correctly - <code>false</code> otherwise.
      */
-    public boolean setConnectionSpeed(final boolean connectionSpeed) {
+    public boolean setConnectionSpeed(boolean connectionSpeed) {
         if (!isServiceReady()) {
             Log.e(TAG, "setConnectionSpeed -> Service is not synchronized. (HINT -> Use synchronize()).");
             return false;
@@ -118,14 +118,14 @@ public class SHTC1ConnectionSpeedService extends AbstractBleService {
     }
 
     //CONNECTION SPEED SETTINGS
-    public static enum CONNECTION_SPEED {
+    public enum CONNECTION_SPEED {
         LOW((byte) 1),
         HIGH((byte) 0),
         DEFAULT(HIGH.value);
 
         private final byte value;
 
-        private CONNECTION_SPEED(final byte value) {
+        CONNECTION_SPEED(final byte value) {
             this.value = value;
         }
     }

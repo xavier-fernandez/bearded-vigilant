@@ -35,7 +35,7 @@ public abstract class TimeUtils {
      * @param dateTime that will be used to calculate the difference.
      * @return {@link long} with the number of milliseconds.
      */
-    public static long millisecondsFromNow(@NonNull final DateTime dateTime) {
+    public static long millisecondsFromNow(@NonNull DateTime dateTime) {
         return millisecondsFromNow(dateTime.getMillis());
     }
 
@@ -45,7 +45,7 @@ public abstract class TimeUtils {
      * @param timestamp in UTC.
      * @return {@link long} with the number of milliseconds.
      */
-    public static long millisecondsFromNow(final long timestamp) {
+    public static long millisecondsFromNow(long timestamp) {
         return DateTime.now().getMillis() - timestamp;
     }
 
@@ -66,7 +66,7 @@ public abstract class TimeUtils {
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
     @NonNull
-    public static String timestampToISOString(@NonNull final DateTime datetime) {
+    public static String timestampToISOString(@NonNull DateTime datetime) {
         return timestampToISOString(datetime.getMillis());
     }
 
@@ -77,7 +77,7 @@ public abstract class TimeUtils {
      * @return {@link java.lang.String} with the date in seconds following the ISO 8601 conventions.
      */
     @NonNull
-    public static String timestampToISOString(final long timestamp) {
+    public static String timestampToISOString(long timestamp) {
         if (timestamp < 0) {
             throw new IllegalArgumentException(String.format("%s: timestampToISOString -> Received a negative timestamp", TAG));
         }

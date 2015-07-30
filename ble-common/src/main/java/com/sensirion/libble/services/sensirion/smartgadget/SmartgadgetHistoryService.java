@@ -61,7 +61,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
     private Integer mUserInterval = null;
 
 
-    public SmartgadgetHistoryService(@NonNull final Peripheral parent, @NonNull final BluetoothGattService bluetoothGattService) {
+    public SmartgadgetHistoryService(@NonNull Peripheral parent, @NonNull BluetoothGattService bluetoothGattService) {
         super(parent, bluetoothGattService);
         mSyncTimeCharacteristic = super.getCharacteristic(SYNC_TIME_UUID);
         mOldestSampleTimestampMsCharacteristic = super.getCharacteristic(READ_BACK_TO_TIME_MS_UUID);
@@ -72,7 +72,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
         syncTimestamps();
     }
 
-    private static long calcSecondsSince(final long timestamp) {
+    private static long calcSecondsSince(long timestamp) {
         return (System.currentTimeMillis() - timestamp) / ONE_SECOND_MS;
     }
 
@@ -80,7 +80,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicUpdate(@NonNull final BluetoothGattCharacteristic updatedCharacteristic) {
+    public boolean onCharacteristicUpdate(@NonNull BluetoothGattCharacteristic updatedCharacteristic) {
         if (mNewestSampleTimestampMsCharacteristic.equals(updatedCharacteristic)) {
             return onNewestTimestampRead(updatedCharacteristic);
         } else if (mOldestSampleTimestampMsCharacteristic.equals(updatedCharacteristic)) {
@@ -102,7 +102,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicWrite(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public boolean onCharacteristicWrite(@NonNull BluetoothGattCharacteristic characteristic) {
         if (characteristic.equals(mSyncTimeCharacteristic)) {
             Log.d(TAG, String.format("onCharacteristicWrite -> Time was synced successfully in the device %s.", getDeviceAddress()));
             mAreDeviceTimestampsSynchronized = true;
@@ -173,7 +173,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
         }
     }
 
-    private boolean onNewestTimestampRead(@NonNull final BluetoothGattCharacteristic newestTimestampCharacteristic) {
+    private boolean onNewestTimestampRead(@NonNull BluetoothGattCharacteristic newestTimestampCharacteristic) {
         final long newestTimestampToDownload = LittleEndianExtractor.extractLittleEndianLongFromCharacteristic(newestTimestampCharacteristic);
         if (newestTimestampToDownload == 0) {
             syncTimestamps();
@@ -191,7 +191,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
         return true;
     }
 
-    private boolean onOldestTimestampRead(@NonNull final BluetoothGattCharacteristic oldestTimestampCharacteristic) {
+    private boolean onOldestTimestampRead(@NonNull BluetoothGattCharacteristic oldestTimestampCharacteristic) {
         final long oldestTimestampToDownload = LittleEndianExtractor.extractLittleEndianLongFromCharacteristic(oldestTimestampCharacteristic);
         if (oldestTimestampToDownload == 0) {
             syncTimestamps();
@@ -273,7 +273,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean startDataDownload(final long oldestTimestampToDownload) {
+    public boolean startDataDownload(long oldestTimestampToDownload) {
         mUserOldestTimestampToDownloadMs = oldestTimestampToDownload;
         startDataDownload();
         return true;
@@ -283,7 +283,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean setDownloadInterval(final int loggerIntervalInMilliseconds) {
+    public boolean setDownloadInterval(int loggerIntervalInMilliseconds) {
         Log.d(TAG, String.format("setDownloadInterval -> Setting the download interval to %d.", loggerIntervalInMilliseconds));
         mLoggerIntervalMsCharacteristic.setValue(LittleEndianExtractor.extractLittleEndianByteArrayFromInteger(loggerIntervalInMilliseconds));
         mUserInterval = loggerIntervalInMilliseconds;
@@ -340,7 +340,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
      * {@inheritDoc}
      */
     @Override
-    public boolean setLoggingState(final boolean enabled) {
+    public boolean setLoggingState(boolean enabled) {
         Log.e(TAG, String.format("setLoggingState -> In the device %s logging can never be enabled or disabled.", getDeviceAddress()));
         return false;
     }
@@ -433,7 +433,7 @@ public class SmartgadgetHistoryService extends AbstractHistoryService {
      *
      * @param sequenceNumber that has been downloaded by the user.
      */
-    void setLastSequenceNumberDownloaded(final int sequenceNumber) {
+    void setLastSequenceNumberDownloaded(int sequenceNumber) {
         Log.d(TAG, String.format("setLastSequenceNumberDownloaded -> Received sequence number %d in device %s.", sequenceNumber, getDeviceAddress()));
         if (sequenceNumber > mLastSequenceNumberDownloaded) {
             mLastSequenceNumberDownloaded = sequenceNumber;

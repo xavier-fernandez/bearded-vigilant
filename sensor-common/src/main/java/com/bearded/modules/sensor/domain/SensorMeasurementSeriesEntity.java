@@ -176,7 +176,7 @@ public class SensorMeasurementSeriesEntity implements com.bearded.common.persist
      * NOTE: This implementation compares the two elements comparing its start timestamp.
      */
     @Override
-    public int compareTo(@NonNull final SensorMeasurementSeriesEntity another) {
+    public int compareTo(@NonNull SensorMeasurementSeriesEntity another) {
         return this.startTimestamp.compareTo(another.startTimestamp);
     }
 

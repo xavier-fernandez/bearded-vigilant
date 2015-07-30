@@ -35,7 +35,7 @@ public class SensorTagRHTService extends AbstractRHTService {
     @Nullable
     private RHTDataPoint mLastDatapoint = null;
 
-    public SensorTagRHTService(@NonNull final Peripheral peripheral, @NonNull final BluetoothGattService bluetoothGattService) {
+    public SensorTagRHTService(@NonNull Peripheral peripheral, @NonNull BluetoothGattService bluetoothGattService) {
         super(peripheral, bluetoothGattService);
         mRHTCharacteristic = getCharacteristic(RHT_CHARACTERISTIC_UUID);
         bluetoothGattService.addCharacteristic(mRHTCharacteristic);
@@ -44,7 +44,7 @@ public class SensorTagRHTService extends AbstractRHTService {
     }
 
     @Override
-    public boolean onCharacteristicUpdate(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public boolean onCharacteristicUpdate(@NonNull BluetoothGattCharacteristic characteristic) {
         if (characteristic.equals(mRHTCharacteristic)) {
             Log.d(TAG, String.format("onCharacteristicUpdate -> Received characteristic with UUID: %s.", characteristic.getUuid()));
             final float temperature = extractTemperatureData(characteristic);
@@ -57,13 +57,13 @@ public class SensorTagRHTService extends AbstractRHTService {
         return false;
     }
 
-    private float extractTemperatureData(@NonNull final BluetoothGattCharacteristic characteristic) {
+    private float extractTemperatureData(@NonNull BluetoothGattCharacteristic characteristic) {
         int a = LittleEndianExtractor.extractSignedShortFromCharacteristic(characteristic, 0);
         a = a - (a % 4);
         return 175.72f / 65536f * a - 46.85f;
     }
 
-    private float extractHumidityData(@NonNull final BluetoothGattCharacteristic characteristic) {
+    private float extractHumidityData(@NonNull BluetoothGattCharacteristic characteristic) {
         int a = LittleEndianExtractor.extractUnsignedShortFromCharacteristic(characteristic, 2);
         a = a - (a % 4);
         return 125f * (a / 65535f) - 6f;

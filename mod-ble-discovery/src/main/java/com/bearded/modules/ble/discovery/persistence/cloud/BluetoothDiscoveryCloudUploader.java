@@ -17,7 +17,7 @@ public class BluetoothDiscoveryCloudUploader extends RestApiClass {
     /**
      * @see BluetoothDiscoveryCloudUploader#uploadBluetoothDiscoveryData
      */
-    public void uploadBluetoothDiscoveryData(@NonNull final String jsonString,
+    public void uploadBluetoothDiscoveryData(@NonNull String jsonString,
                                              @NonNull final UploadStateListener callback) {
 
         final BluetoothDiscoveryAPI apiService = getRestAdapter().create(BluetoothDiscoveryAPI.class);
@@ -26,7 +26,7 @@ public class BluetoothDiscoveryCloudUploader extends RestApiClass {
              * {@inheritDoc}
              */
             @Override
-            public void success(@NonNull final Integer code, @NonNull final Response response) {
+            public void success(@NonNull Integer code, @NonNull Response response) {
                 Log.d(TAG, "uploadBluetoothDiscoveryData -> The data have been sent successfully with the code: " + response.getStatus());
                 callback.onUploadCompleted(response.getStatus());
             }
@@ -35,7 +35,7 @@ public class BluetoothDiscoveryCloudUploader extends RestApiClass {
              * {@inheritDoc}
              */
             @Override
-            public void failure(@NonNull final RetrofitError error) {
+            public void failure(@NonNull RetrofitError error) {
                 Log.e(TAG, "uploadBluetoothDiscoveryData -> The data sending produced the following error " + error);
                 callback.onUploadFailure(error.getMessage());
             }

@@ -50,7 +50,7 @@ public class DeviceInformationService extends AbstractBleService {
     @Nullable
     private String mSoftwareRevision;
 
-    public DeviceInformationService(@NonNull final Peripheral parent, @NonNull final BluetoothGattService bluetoothGattService) {
+    public DeviceInformationService(@NonNull Peripheral parent, @NonNull BluetoothGattService bluetoothGattService) {
         super(parent, bluetoothGattService);
         mManufacturerNameCharacteristic = getCharacteristic(MANUFACTURER_NAME_CHARACTERISTIC_UUID);
         if (mManufacturerNameCharacteristic != null) {
@@ -132,7 +132,7 @@ public class DeviceInformationService extends AbstractBleService {
      * {@inheritDoc}
      */
     @Override
-    public boolean onCharacteristicUpdate(@NonNull final BluetoothGattCharacteristic characteristic) {
+    public boolean onCharacteristicUpdate(@NonNull BluetoothGattCharacteristic characteristic) {
         if (mManufacturerNameCharacteristic != null && mManufacturerNameCharacteristic.equals(characteristic)) {
             mManufacturerName = characteristic.getStringValue(0);
             Log.d(TAG, String.format("onCharacteristicUpdate -> Manufacturer name is %s in device with address %s.", mManufacturerName, getDeviceAddress()));

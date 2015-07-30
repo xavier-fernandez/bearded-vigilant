@@ -2,6 +2,7 @@ package com.sensirion.libble.services;
 
 import android.bluetooth.BluetoothGattService;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.sensirion.libble.devices.Peripheral;
@@ -20,11 +21,14 @@ import java.util.Set;
 
 public abstract class AbstractRHTService extends AbstractBleService<RHTListener> {
 
+    @NonNull
     private static final Set<RHTListener> mRHTListeners = Collections.synchronizedSet(new HashSet<RHTListener>());
+    @NonNull
     private static final Set<TemperatureListener> mTemperatureListeners = Collections.synchronizedSet(new HashSet<TemperatureListener>());
+    @NonNull
     private static final Set<HumidityListener> mHumidityListeners = Collections.synchronizedSet(new HashSet<HumidityListener>());
 
-    public AbstractRHTService(@NonNull final Peripheral servicePeripheral, @NonNull final BluetoothGattService bluetoothGattService) {
+    public AbstractRHTService(@NonNull Peripheral servicePeripheral, @NonNull BluetoothGattService bluetoothGattService) {
         super(servicePeripheral, bluetoothGattService);
     }
 
@@ -34,7 +38,7 @@ public abstract class AbstractRHTService extends AbstractBleService<RHTListener>
      * @param temperature that the device retrieved.
      * @param timestamp   when the temperature was obtained. <code>null</code> if it's live data.
      */
-    protected void notifyTemperature(final float temperature, final Long timestamp, final TemperatureUnit unit) {
+    protected void notifyTemperature(float temperature, @Nullable Long timestamp, @NonNull TemperatureUnit unit) {
         final Iterator<TemperatureListener> iterator = mTemperatureListeners.iterator();
         while (iterator.hasNext()) {
             try {
@@ -57,7 +61,7 @@ public abstract class AbstractRHTService extends AbstractBleService<RHTListener>
      * @param humidity  that the device retrieved.
      * @param timestamp when the temperature was obtained. <code>null</code> if it's live data.
      */
-    protected void notifyHumidity(final float humidity, final Long timestamp, final HumidityUnit unit) {
+    protected void notifyHumidity(float humidity, @Nullable Long timestamp, @NonNull HumidityUnit unit) {
         final Iterator<HumidityListener> iterator = mHumidityListeners.iterator();
         while (iterator.hasNext()) {
             try {
@@ -80,7 +84,7 @@ public abstract class AbstractRHTService extends AbstractBleService<RHTListener>
      * @param datapoint     that the device retrieved.
      * @param isFromHistory <code>true</code> if the data came from the historical values of the device - <code>false</code> otherwise.
      */
-    protected void notifyRHTDatapoint(@NonNull final RHTDataPoint datapoint, final boolean isFromHistory) {
+    protected void notifyRHTDatapoint(@NonNull RHTDataPoint datapoint, boolean isFromHistory) {
         final Long timestamp = (isFromHistory) ? datapoint.getTimestamp() : null;
         notifyTemperature(datapoint.getTemperatureCelsius(), timestamp, TemperatureUnit.CELSIUS);
         notifyHumidity(datapoint.getRelativeHumidity(), timestamp, HumidityUnit.RELATIVE_HUMIDITY);
@@ -104,7 +108,7 @@ public abstract class AbstractRHTService extends AbstractBleService<RHTListener>
      * {@inheritDoc}
      */
     @Override
-    public boolean registerNotificationListener(@NonNull final NotificationListener newListener) {
+    public boolean registerNotificationListener(@NonNull NotificationListener newListener) {
         boolean listenerFound = false;
         if (newListener instanceof RHTListener) {
             mRHTListeners.add((RHTListener) newListener);
@@ -128,7 +132,7 @@ public abstract class AbstractRHTService extends AbstractBleService<RHTListener>
      * {@inheritDoc}
      */
     @Override
-    public boolean unregisterNotificationListener(@NonNull final NotificationListener listenerForRemoval) {
+    public boolean unregisterNotificationListener(@NonNull NotificationListener listenerForRemoval) {
         boolean listenerFound = false;
         if (listenerForRemoval instanceof RHTListener) {
             mRHTListeners.remove(listenerForRemoval);

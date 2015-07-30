@@ -53,7 +53,7 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
     /**
      * Obtains a map key using the sensor name and the device.
      */
-    private static String getMapKey(@NonNull final BleDevice device, @NonNull final String sensorName) {
+    private static String getMapKey(@NonNull BleDevice device, @NonNull String sensorName) {
         return String.format("%s - %s", device.getAddress(), sensorName);
     }
 
@@ -61,7 +61,10 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
      * {@inheritDoc}
      */
     @Override
-    public void onNewHumidity(@NonNull final BleDevice device, final float humidity, @NonNull final String sensorName, @NonNull final HumidityUnit unit) {
+    public void onNewHumidity(@NonNull BleDevice device,
+                              float humidity,
+                              @NonNull String sensorName,
+                              @NonNull HumidityUnit unit) {
         Log.i(TAG, String.format("onNewHumidity -> Received humidity %f%s from sensor %s on device %s.", humidity, unit, sensorName, device.getAddress()));
         final String mapKey = getMapKey(device, sensorName);
         final RHTValue value = mLastHumidityAndTemperature.get(mapKey);
@@ -83,7 +86,10 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
      * {@inheritDoc}
      */
     @Override
-    public void onNewTemperature(@NonNull final BleDevice device, final float temperature, @NonNull final String sensorName, @NonNull final TemperatureUnit unit) {
+    public void onNewTemperature(@NonNull BleDevice device,
+                                 float temperature,
+                                 @NonNull String sensorName,
+                                 @NonNull TemperatureUnit unit) {
         Log.i(TAG, String.format("onNewTemperature -> Received temperature %f%s from sensor %s on device %s.", temperature, unit, sensorName, device.getAddress()));
         final String mapKey = getMapKey(device, sensorName);
         final RHTValue value = mLastHumidityAndTemperature.get(mapKey);
@@ -102,7 +108,10 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
         }
     }
 
-    private void notifyListeners(@NonNull final BleDevice device, @NonNull final String sensorName, final RHTDataPoint datapoint, final boolean comesFromHistory) {
+    private void notifyListeners(@NonNull BleDevice device,
+                                 @NonNull String sensorName,
+                                 @NonNull RHTDataPoint datapoint,
+                                 boolean comesFromHistory) {
         Log.i(TAG, String.format("notifyListenersNewLiveValue -> Notifying relativeHumidity %f%%RH temperatureInCelsius %fºC from sensor %s in device %s.", datapoint.getRelativeHumidity(), datapoint.getTemperatureCelsius(), sensorName, device.getAddress()));
         final List<RHTListener> listeners = mListeners.get(device);
         if (listeners == null) {
@@ -131,7 +140,7 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
      * @param listener that wants to listener for notifications anymore.
      * @param device   that will send the RHT notifications.
      */
-    void registerDownloadListener(@NonNull final RHTListener listener, @NonNull final BleDevice device) {
+    void registerDownloadListener(@NonNull RHTListener listener, @NonNull BleDevice device) {
         List<RHTListener> listenerList = mListeners.get(device);
         if (listenerList == null) {
             listenerList = new LinkedList<>();
@@ -151,7 +160,7 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
      * @param listener to unregister.
      * @param device   that will not send RHT notifications to the {@param listener} until it's registered again.
      */
-    void unregisterDownloadListener(@NonNull final RHTListener listener, @NonNull final BleDevice device) {
+    void unregisterDownloadListener(@NonNull RHTListener listener, @NonNull BleDevice device) {
         final List<RHTListener> listenerList = mListeners.get(device);
         if (listenerList == null) {
             Log.w(TAG, String.format("unregisterNotificationListener -> No listeners found for the device %s", device));
@@ -164,7 +173,11 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
      * {@inheritDoc}
      */
     @Override
-    public void onNewHistoricalTemperature(@NonNull final BleDevice device, final float temperature, final long timestampMillis, @NonNull final String sensorName, @NonNull final TemperatureUnit unit) {
+    public void onNewHistoricalTemperature(@NonNull BleDevice device,
+                                           float temperature,
+                                           long timestampMillis,
+                                           @NonNull String sensorName,
+                                           @NonNull TemperatureUnit unit) {
         Log.i(TAG, String.format("onNewHistoricalHumidity -> Received new historical relativeHumidity %f%s from sensor %s in device %s.", temperature, unit, sensorName, device.getAddress()));
         getDownloadDataManager(device, sensorName).newHistoricalTemperatureValue(timestampMillis, temperature);
     }
@@ -173,12 +186,16 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
      * {@inheritDoc}
      */
     @Override
-    public void onNewHistoricalHumidity(@NonNull final BleDevice device, final float relativeHumidity, final long timestampMilliseconds, @NonNull final String sensorName, @NonNull final HumidityUnit unit) {
+    public void onNewHistoricalHumidity(@NonNull BleDevice device,
+                                        float relativeHumidity,
+                                        long timestampMilliseconds,
+                                        @NonNull String sensorName,
+                                        @NonNull HumidityUnit unit) {
         Log.i(TAG, String.format("onNewHistoricalHumidity -> Received new historical relativeHumidity %f%s from sensor %s in device %s.", relativeHumidity, unit, sensorName, device.getAddress()));
         getDownloadDataManager(device, sensorName).newHistoricalHumidityValue(timestampMilliseconds, relativeHumidity);
     }
 
-    private HistoricalRHTValues getDownloadDataManager(@NonNull final BleDevice device, @NonNull final String sensorName) {
+    private HistoricalRHTValues getDownloadDataManager(@NonNull BleDevice device, @NonNull String sensorName) {
         final String mapKey = getMapKey(device, sensorName);
         HistoricalRHTValues downloadDataManager = mRHTDownloadManagers.get(mapKey);
         if (downloadDataManager == null) {
@@ -195,7 +212,7 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
         private Float temperatureInCelsius;
         private Float relativeHumidity;
 
-        private RHTValue(@Nullable final Float temperatureInCelsius, @Nullable final Float relativeHumidity) {
+        private RHTValue(@Nullable Float temperatureInCelsius, @Nullable Float relativeHumidity) {
             this.temperatureInCelsius = temperatureInCelsius;
             this.relativeHumidity = relativeHumidity;
         }
@@ -210,12 +227,12 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
 
         private final LongSparseArray<RHTValue> mRHTValues = new LongSparseArray<>();
 
-        private HistoricalRHTValues(@NonNull final BleDevice device, @NonNull final String sensorName) {
+        private HistoricalRHTValues(@NonNull BleDevice device, @NonNull String sensorName) {
             this.device = device;
             this.sensorName = sensorName;
         }
 
-        private void newHistoricalHumidityValue(final long timestamp, final float relativeHumidity) {
+        private void newHistoricalHumidityValue(long timestamp, float relativeHumidity) {
             RHTValue rhtValue = mRHTValues.get(timestamp);
             if (rhtValue == null) {
                 rhtValue = new RHTValue(null, relativeHumidity);
@@ -230,7 +247,7 @@ class SmartgadgetRHTNotificationCenter implements TemperatureListener, HumidityL
             }
         }
 
-        private void newHistoricalTemperatureValue(final long timestamp, final float temperatureInCelsius) {
+        private void newHistoricalTemperatureValue(long timestamp, float temperatureInCelsius) {
             RHTValue rhtValue = mRHTValues.get(timestamp);
             if (rhtValue == null) {
                 rhtValue = new RHTValue(temperatureInCelsius, null);

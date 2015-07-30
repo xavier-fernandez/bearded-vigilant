@@ -1,21 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
 package com.bearded.database_schema_generator;
 
 import android.support.annotation.NonNull;
@@ -82,7 +64,7 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     @NonNull
-    private static Entity createSensorEntity(@NonNull final Schema dbSchema) {
+    private static Entity createSensorEntity(@NonNull Schema dbSchema) {
         final Entity sensorEntity = createEntity(dbSchema, "Sensor");
         /**
          * The sensor name as a {@link String}.
@@ -165,8 +147,8 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * );
      */
     @NonNull
-    private static Entity createSensorMeasurementSeriesEntity(@NonNull final Schema dbSchema,
-                                                              @NonNull final Entity sensorEntity) {
+    private static Entity createSensorMeasurementSeriesEntity(@NonNull Schema dbSchema,
+                                                              @NonNull Entity sensorEntity) {
         final Entity seriesEntity = createEntity(dbSchema, "SensorMeasurementSeries");
         final Property sensorFK = seriesEntity.addLongProperty("sensor_id").notNull().getProperty();
         seriesEntity.addToOne(sensorEntity, sensorFK);
@@ -186,9 +168,9 @@ class SensorDbSchemaGenerator extends AbstractDbSchemaGenerator {
      * bin_size               INTEGER    NOT NULL
      * );
      */
-    private static void createSensorMeasurementEntity(@NonNull final Schema dbSchema,
-                                                      @NonNull final Entity seriesEntity,
-                                                      @NonNull final Entity locationEntity) {
+    private static void createSensorMeasurementEntity(@NonNull Schema dbSchema,
+                                                      @NonNull Entity seriesEntity,
+                                                      @NonNull Entity locationEntity) {
         final Entity entity = createEntity(dbSchema, "SensorMeasurement");
         final Property seriesFK = entity.addLongProperty("measurement_series_id").notNull().getProperty();
         entity.addToOne(seriesEntity, seriesFK);

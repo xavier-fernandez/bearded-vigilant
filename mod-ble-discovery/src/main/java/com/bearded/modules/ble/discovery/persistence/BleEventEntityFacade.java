@@ -1,21 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
 package com.bearded.modules.ble.discovery.persistence;
 
 import android.support.annotation.NonNull;
@@ -47,7 +29,7 @@ class BleEventEntityFacade {
     @NonNull
     private final Integer mTimeoutMillis;
 
-    public BleEventEntityFacade(final int timeoutMillis) {
+    public BleEventEntityFacade(int timeoutMillis) {
         mEventBuffers = Collections.synchronizedMap(
                 new HashMap<BleEventSeriesEntity, EventBuffer>());
         if (timeoutMillis <= 0) {
@@ -64,9 +46,9 @@ class BleEventEntityFacade {
      * @param series  of the measurement.
      * @param rssi    received.
      */
-    public synchronized void addMeasurement(@NonNull final DaoSession session,
-                                            @NonNull final BleEventSeriesEntity series,
-                                            final byte rssi) {
+    public synchronized void addMeasurement(@NonNull DaoSession session,
+                                            @NonNull BleEventSeriesEntity series,
+                                            byte rssi) {
         EventBuffer buffer = mEventBuffers.get(series);
         if (buffer == null) {
             //The first inserted element will be written inside the database.
@@ -82,9 +64,9 @@ class BleEventEntityFacade {
         }
     }
 
-    private void storeEvent(@NonNull final DaoSession session,
-                            @NonNull final BleEventSeriesEntity series,
-                            @NonNull final EventBuffer buffer) {
+    private void storeEvent(@NonNull DaoSession session,
+                            @NonNull BleEventSeriesEntity series,
+                            @NonNull EventBuffer buffer) {
         final BleEventEntity eventEntity = new BleEventEntity();
         eventEntity.setStartTimestamp(TimeUtils.timestampToISOString(buffer.firstElementTime));
         eventEntity.setEndTimestamp(TimeUtils.nowToISOString());
@@ -102,7 +84,7 @@ class BleEventEntityFacade {
      *
      * @param session needed to insert all open events into the database.
      */
-    void storeAllOpenEvents(@NonNull final DaoSession session) {
+    void storeAllOpenEvents(@NonNull DaoSession session) {
         for (final BleEventSeriesEntity seriesEntity : mEventBuffers.keySet()) {
             final EventBuffer buffer = mEventBuffers.get(seriesEntity);
             if (buffer.getBinSize() > 0) {
@@ -119,8 +101,8 @@ class BleEventEntityFacade {
      * @return {@link List} of {@link BleEventEntity}
      */
     @Nullable
-    List<BleEventEntity> getAllEventsFromSeries(@NonNull final DaoSession session,
-                                                @NonNull final BleEventSeriesEntity series) {
+    List<BleEventEntity> getAllEventsFromSeries(@NonNull DaoSession session,
+                                                @NonNull BleEventSeriesEntity series) {
         final BleEventEntityDao dao = session.getBleEventEntityDao();
         final QueryBuilder<BleEventEntity> queryBuilder = dao.queryBuilder();
         queryBuilder.where(BleEventEntityDao.Properties.EventSeriesId.eq(series.getId()));
@@ -139,7 +121,7 @@ class BleEventEntityFacade {
             this.firstElementTime = DateTime.now();
         }
 
-        private void addReceivedSignalStrength(final byte rssi) {
+        private void addReceivedSignalStrength(byte rssi) {
             if (mRssiBuffer.isEmpty()) {
                 firstElementTime = DateTime.now();
             }

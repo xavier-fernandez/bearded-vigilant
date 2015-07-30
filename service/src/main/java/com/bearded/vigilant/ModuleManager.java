@@ -1,22 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
-
 package com.bearded.vigilant;
 
 import android.content.Context;
@@ -39,7 +20,7 @@ public class ModuleManager {
     @NonNull
     private final List<Module> mModules = new ArrayList<>();
 
-    public ModuleManager(@NonNull final Context context) {
+    public ModuleManager(@NonNull Context context) {
         Log.d(TAG, String.format("Constructor(Context) -> Initializing modules for flavor %s.", BuildConfig.FLAVOR));
         loadFlavorModules(context);
     }
@@ -57,7 +38,7 @@ public class ModuleManager {
     /**
      * Loads and instantiates all the modules from the running flavor into memory.
      */
-    private void loadFlavorModules(@NonNull final Context context) {
+    private void loadFlavorModules(@NonNull Context context) {
         final String[] flavorModules = context.getResources().getStringArray(R.array.modules_list);
         Log.i(TAG, String.format("loadFlavorModules -> Loading %d from flavor %s.", flavorModules.length, BuildConfig.FLAVOR));
         for (final String moduleClassLocation : flavorModules) {
@@ -75,7 +56,7 @@ public class ModuleManager {
      * @return {@link com.bearded.common.modules.Module} if it was loaded succesfully - <code>null</code> otherwise.
      */
     @Nullable
-    private Module loadModule(@NonNull final Context context, @NonNull final String moduleClassLocation) {
+    private Module loadModule(@NonNull Context context, @NonNull String moduleClassLocation) {
         Log.d(TAG, String.format("loadModule -> Loading module %s.", moduleClassLocation));
         final Class<?> moduleClass;
         try {

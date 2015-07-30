@@ -34,7 +34,7 @@ public class BleEventSeriesEntityTest extends AbstractDaoTestLongPk<BleEventSeri
      */
     @Override
     @NonNull
-    protected BleEventSeriesEntity createEntity(@Nullable final Long key) {
+    protected BleEventSeriesEntity createEntity(@Nullable Long key) {
         final BleEventSeriesEntity entity = new BleEventSeriesEntity();
         entity.setId(key);
         entity.setEndTimestamp(TEST_END_TIMESTAMP);

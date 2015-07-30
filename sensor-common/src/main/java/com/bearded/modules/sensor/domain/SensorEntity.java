@@ -228,7 +228,7 @@ public class SensorEntity implements com.bearded.common.persistance.ParseableJso
      * NOTE: This implementation compares the two elements comparing its sensor name.
      */
     @Override
-    public int compareTo(@NonNull final SensorEntity anotherSensorEntity) {
+    public int compareTo(@NonNull SensorEntity anotherSensorEntity) {
         return this.sensorName.compareTo(anotherSensorEntity.getSensorName());
     }
 

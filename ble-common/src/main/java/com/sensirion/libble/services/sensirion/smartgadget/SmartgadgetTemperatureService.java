@@ -25,7 +25,7 @@ public class SmartgadgetTemperatureService extends AbstractSmartgadgetRHTService
 
     private TemperatureUnit mValueUnit = null;
 
-    public SmartgadgetTemperatureService(@NonNull final Peripheral peripheral, @NonNull final BluetoothGattService bluetoothGattService) {
+    public SmartgadgetTemperatureService(@NonNull Peripheral peripheral, @NonNull BluetoothGattService bluetoothGattService) {
         super(peripheral, bluetoothGattService, TEMPERATURE_NOTIFICATIONS_UUID);
     }
 
@@ -50,7 +50,7 @@ public class SmartgadgetTemperatureService extends AbstractSmartgadgetRHTService
      * {@inheritDoc}
      */
     @Override
-    void notifyListenersNewHistoricalValue(final float value, final long timestamp) {
+    void notifyListenersNewHistoricalValue(float value, long timestamp) {
         Log.d(TAG, String.format("notifyListenersNewLiveValue -> Notifying historical temperature value: %f%s from sensor %s.", mLastValue, mValueUnit, mSensorName));
         final Iterator<TemperatureListener> iterator = mListeners.iterator();
         while (iterator.hasNext()) {
@@ -67,7 +67,7 @@ public class SmartgadgetTemperatureService extends AbstractSmartgadgetRHTService
      * {@inheritDoc}
      */
     @Override
-    void setValueUnit(@NonNull final String valueUnit) {
+    void setValueUnit(@NonNull String valueUnit) {
         if (valueUnit.endsWith("C")) {
             mValueUnit = TemperatureUnit.CELSIUS;
         } else if (valueUnit.endsWith("F")) {

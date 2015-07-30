@@ -33,7 +33,7 @@ public class LocationEntityTest extends AbstractDaoTestLongPk<LocationEntityDao,
      */
     @Override
     @NonNull
-    protected LocationEntity createEntity(@Nullable final Long key) {
+    protected LocationEntity createEntity(@Nullable Long key) {
         final LocationEntity entity = new LocationEntity();
         entity.setId(key);
         entity.setLatitude(TEST_LATITUDE);

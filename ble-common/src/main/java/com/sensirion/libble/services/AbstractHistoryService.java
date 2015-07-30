@@ -45,7 +45,7 @@ public abstract class AbstractHistoryService extends AbstractBleService<HistoryL
         }
     };
 
-    public AbstractHistoryService(@NonNull final Peripheral parent, @NonNull final BluetoothGattService bluetoothGattService) {
+    public AbstractHistoryService(@NonNull Peripheral parent, @NonNull BluetoothGattService bluetoothGattService) {
         super(parent, bluetoothGattService);
         try {
             Looper.prepare();
@@ -59,7 +59,7 @@ public abstract class AbstractHistoryService extends AbstractBleService<HistoryL
      *
      * @param downloadProgress with the number of downloaded elements.
      */
-    protected void notifyDownloadProgress(final int downloadProgress) {
+    protected void notifyDownloadProgress(int downloadProgress) {
         mLastDownloadProgress = downloadProgress;
         resetDownloadTimer();
         final Iterator<HistoryListener> iterator = mListeners.iterator();
@@ -79,7 +79,7 @@ public abstract class AbstractHistoryService extends AbstractBleService<HistoryL
      *
      * @param numberElementsToDownload number of elements to download.
      */
-    protected void notifyTotalNumberElements(final int numberElementsToDownload) {
+    protected void notifyTotalNumberElements(int numberElementsToDownload) {
         mNumberElementsToDownload = numberElementsToDownload;
         final Iterator<HistoryListener> iterator = mListeners.iterator();
         while (iterator.hasNext()) {

@@ -1,21 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
 package com.bearded.modules.sensor.ble;
 
 import android.content.Context;
@@ -53,7 +35,7 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
-    public BleAmbientTemperatureModule(@NonNull final Context context) {
+    public BleAmbientTemperatureModule(@NonNull Context context) {
         super(context, SensorType.AMBIENT_TEMPERATURE, DATA_BIN_TIME_MS);
         mApplicationContext = context.getApplicationContext();
     }
@@ -88,10 +70,10 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
      * {@inheritDoc}
      */
     @Override
-    public void onNewTemperature(@NonNull final BleDevice device,
-                                 final float temperature,
-                                 @NonNull final String sensorName,
-                                 @NonNull final TemperatureUnit unit) {
+    public void onNewTemperature(@NonNull BleDevice device,
+                                 float temperature,
+                                 @NonNull String sensorName,
+                                 @NonNull TemperatureUnit unit) {
         if (getDatabaseFacade() != null) {
             Log.d(TAG, String.format("onNewTemperature -> Received temperature %f from sensor %s from the device %s.", temperature, sensorName, device.getAddress()));
             final SensorEntity bleSensor = new SensorEntity();
@@ -106,11 +88,11 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
      * {@inheritDoc}
      */
     @Override
-    public void onNewHistoricalTemperature(@NonNull final BleDevice device,
-                                           final float temperature,
-                                           final long timestampMillis,
-                                           @NonNull final String sensorName,
-                                           @NonNull final TemperatureUnit unit) {
+    public void onNewHistoricalTemperature(@NonNull BleDevice device,
+                                           float temperature,
+                                           long timestampMillis,
+                                           @NonNull String sensorName,
+                                           @NonNull TemperatureUnit unit) {
         // TODO: Implement
     }
 
@@ -118,7 +100,7 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceConnected(@NonNull final BleDevice device) {
+    public void onDeviceConnected(@NonNull BleDevice device) {
         device.registerDeviceListener(this);
     }
 
@@ -126,7 +108,7 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceDisconnected(@NonNull final BleDevice device) {
+    public void onDeviceDisconnected(@NonNull BleDevice device) {
         // TODO: Implement
     }
 
@@ -134,7 +116,7 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceDiscovered(@NonNull final BleDevice device) {
+    public void onDeviceDiscovered(@NonNull BleDevice device) {
         if (KnownDevices.TEMPERATURE_GADGETS.getAdvertisedNames().contains(device.getAdvertisedName())) {
             if (!device.isConnected()) {
                 synchronized (this) {
@@ -153,7 +135,7 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceAllServicesDiscovered(@NonNull final BleDevice device) {
+    public void onDeviceAllServicesDiscovered(@NonNull BleDevice device) {
         Log.d(TAG, String.format("onDeviceAllServicesDiscovered -> Device %s has all its services available.  ", device.getAddress()));
         device.registerDeviceListener(this);
     }
@@ -162,7 +144,7 @@ public class BleAmbientTemperatureModule extends AbstractBleSensorModule impleme
      * {@inheritDoc}
      */
     @Override
-    public void onScanStateChanged(final boolean isScanEnabled) {
+    public void onScanStateChanged(boolean isScanEnabled) {
         if (!isScanEnabled) {
             BleManager.getInstance().startScanning();
         }

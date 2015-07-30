@@ -1,22 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
-
 package com.bearded.modules.ble.discovery.persistence;
 
 import android.content.Context;
@@ -50,8 +31,7 @@ public class BleDiscoveryDatabaseFacade {
     @NonNull
     private final DatabaseConnector mDatabaseHandler;
 
-    public BleDiscoveryDatabaseFacade(@NonNull final Context context,
-                                      final int binSizeMilliseconds) {
+    public BleDiscoveryDatabaseFacade(@NonNull Context context, int binSizeMilliseconds) {
         final String databaseName = String.format("%s-%s", TAG, DATABASE_NAME_SUFFIX);
         mDatabaseHandler = new DatabaseConnector(context, databaseName);
         mSensorEntityFacade = new BleDeviceEntityFacade();
@@ -64,7 +44,7 @@ public class BleDiscoveryDatabaseFacade {
      *
      * @param device of the BleEvent.
      */
-    public void insertBleEvent(@NonNull final BleDevice device) {
+    public void insertBleEvent(@NonNull BleDevice device) {
         synchronized (mDatabaseHandler) {
             final String deviceAddress = device.getAddress();
             if (deviceAddress == null) {
@@ -95,7 +75,7 @@ public class BleDiscoveryDatabaseFacade {
      * @return {@link String} with the serialized data JSON file - <code>null</code> if there is no data.
      */
     @Nullable
-    public JsonObject getBleDiscoveryDataJson(@NonNull final JsonObject metadata) {
+    public JsonObject getBleDiscoveryDataJson(@NonNull JsonObject metadata) {
         synchronized (mDatabaseHandler) {
             final DaoSession session = mDatabaseHandler.getSession();
             final JsonObject databaseJsonObject = new JsonObject();
@@ -122,8 +102,8 @@ public class BleDiscoveryDatabaseFacade {
     }
 
     @Nullable
-    private JsonObject prepareBleDeviceJson(@NonNull final DaoSession session,
-                                            @NonNull final BleDeviceEntity sensor) {
+    private JsonObject prepareBleDeviceJson(@NonNull DaoSession session,
+                                            @NonNull BleDeviceEntity sensor) {
         Log.d(TAG, String.format("prepareDataForCloudUpload -> Preparing sensor %s with name: %s.", sensor.getId(), sensor.getDeviceAddress()));
         final JsonObject sensorJsonObject = sensor.toJsonObject();
         final JsonArray sensorSeriesJsonArray = new JsonArray();
@@ -144,8 +124,8 @@ public class BleDiscoveryDatabaseFacade {
     }
 
     @Nullable
-    private JsonObject prepareSeriesJson(@NonNull final DaoSession session,
-                                         @NonNull final BleEventSeriesEntity series) {
+    private JsonObject prepareSeriesJson(@NonNull DaoSession session,
+                                         @NonNull BleEventSeriesEntity series) {
         Log.d(TAG, String.format("prepareSeriesJson -> Preparing series id with name: %s.", series.getId()));
         final JsonObject seriesJsonObject = series.toJsonObject();
         final JsonArray seriesMeasurementsArray = new JsonArray();

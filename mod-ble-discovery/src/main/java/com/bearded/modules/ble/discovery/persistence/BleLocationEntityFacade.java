@@ -1,22 +1,3 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
-
 package com.bearded.modules.ble.discovery.persistence;
 
 import android.location.Location;
@@ -55,7 +36,7 @@ class BleLocationEntityFacade {
      * @return {@link LocationEntity} if an up to date location is found.
      */
     @Nullable
-    LocationEntity getActiveLocation(@NonNull final DaoSession session) {
+    LocationEntity getActiveLocation(@NonNull DaoSession session) {
         final TimedLocation lastLocation = LocationDataManager.getInstance().getLastTimedLocation();
         if (lastLocation == null) {
             return null;
@@ -83,8 +64,8 @@ class BleLocationEntityFacade {
      * @return the inserted {@link LocationEntity}
      */
     @NonNull
-    private LocationEntity insertLocation(@NonNull final DaoSession session,
-                                          @NonNull final TimedLocation timedLocation) {
+    private LocationEntity insertLocation(@NonNull DaoSession session,
+                                          @NonNull TimedLocation timedLocation) {
         Log.d(TAG, String.format("insertLocation -> Inserting location %s.", timedLocation));
         final LocationEntity locationEntity = new LocationEntity();
         final Location location = timedLocation.getLocation();
@@ -102,7 +83,7 @@ class BleLocationEntityFacade {
      *
      * @param session needed to purge all the outdated locations from the database.
      */
-    void purgeAllOutdatedLocationEntities(@NonNull final DaoSession session) {
+    void purgeAllOutdatedLocationEntities(@NonNull DaoSession session) {
         final LocationEntityDao dao = session.getLocationEntityDao();
         final QueryBuilder<LocationEntity> queryBuilder = dao.queryBuilder();
         if (mLastInsertedLocationEntity != null) {
