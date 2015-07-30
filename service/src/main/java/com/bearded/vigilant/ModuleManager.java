@@ -53,7 +53,7 @@ public class ModuleManager {
      * Loads and instantiates a given module into memory.
      *
      * @param moduleClassLocation of the module we want to instantiate.
-     * @return {@link com.bearded.common.modules.Module} if it was loaded succesfully - <code>null</code> otherwise.
+     * @return {@link com.bearded.common.modules.Module} if it was loaded successfully - <code>null</code> otherwise.
      */
     @Nullable
     private Module loadModule(@NonNull Context context, @NonNull String moduleClassLocation) {
@@ -61,7 +61,7 @@ public class ModuleManager {
         final Class<?> moduleClass;
         try {
             moduleClass = Class.forName(moduleClassLocation);
-        } catch (final ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             Log.e(TAG, String.format("loadModule -> When obtaining the module class %s the following error was thrown ->", moduleClassLocation), e);
             return null;
         }
@@ -75,13 +75,13 @@ public class ModuleManager {
         final Module module;
         try {
             module = (Module) moduleConstructor.newInstance(context);
-        } catch (final InstantiationException ie) {
+        } catch (InstantiationException ie) {
             Log.e(TAG, String.format("loadModule -> The following error instantiation exception was thrown when instantiating the module %s -> ", moduleClassLocation), ie);
             return null;
-        } catch (final IllegalAccessException ia) {
+        } catch (IllegalAccessException ia) {
             Log.e(TAG, String.format("loadModule -> The following error illegal access exception was thrown when instantiating the module %s -> ", moduleClassLocation), ia);
             return null;
-        } catch (final InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             Log.e(TAG, String.format("loadModule -> The following invocation target exception was thrown when instantiating the module %s -> ", moduleClassLocation), e);
             return null;
         }

@@ -25,7 +25,7 @@ public class AmbientTemperatureInternalSensorModule extends AbstractInternalSens
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
-    public AmbientTemperatureInternalSensorModule(@NonNull final Context context) {
+    public AmbientTemperatureInternalSensorModule(@NonNull Context context) {
         super(context, SensorType.AMBIENT_TEMPERATURE, DATA_BIN_TIME_MS);
     }
 

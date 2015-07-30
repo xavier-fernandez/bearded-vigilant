@@ -18,16 +18,16 @@ public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
     private static final String TAG = LightInternalSensorModule.class.getSimpleName();
 
-    private static final int DATA_BIN_TIME_MS = 1000; // 1 SECOND
+    private static final short DATA_BIN_TIME_MS = 1000; // 1 SECOND
 
-    private static final int LIGHT_SENSOR_MODULE_VERSION = 1;
+    private static final byte LIGHT_SENSOR_MODULE_VERSION = 1;
 
     private static final SensorType SENSOR_TYPE = SensorType.LIGHT;
 
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
-    public LightInternalSensorModule(@NonNull final Context context) {
+    public LightInternalSensorModule(@NonNull Context context) {
         super(context, SENSOR_TYPE, DATA_BIN_TIME_MS);
     }
 
