@@ -14,6 +14,12 @@ android {
         compile 'de.greenrobot:greendao-generator:1.3.1'
     }
 
+    lintOptions {
+        // GreenDao-generator uses some type of Java RMI
+        // libraries that is not compatible with Android
+        disable 'InvalidPackage'
+    }
+
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
