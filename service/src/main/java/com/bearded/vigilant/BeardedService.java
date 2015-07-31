@@ -12,8 +12,10 @@ import com.bearded.common.modules.Module;
 
 public class BeardedService extends Service {
 
+    @NonNull
     private static final String TAG = BeardedService.class.getSimpleName();
     private static long ONE_MINUTE_MS = 60 * 1000l;
+    @NonNull
     private final Handler mHandler = new Handler();
 
     /**
