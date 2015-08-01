@@ -1,5 +1,6 @@
 package com.bearded.common.device;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static android.content.Context.TELEPHONY_SERVICE;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public abstract class DeviceIdentifierManager {
 
@@ -31,8 +33,9 @@ public abstract class DeviceIdentifierManager {
     /**
      * Obtains a unique device identifier.
      * Tries to obtain the ethernet adapter Mac Address, if it is not possible it fallbacks to the
-     * Wifi interface mac address, otherwise it will use the Android ID. If none of this is
-     * available it will generate a random UUID.
+     * Wifi interface mac address, otherwise it will use the bluetooth adapter one. In case none of
+     * them is available use the Android ID. If this is bugged, it will generate a random UUID.
+     *
      * @param context needed to obtain and/or store the obtained id to a persisted preference file.
      * @return {@link String} with the preference file.
      */
@@ -48,8 +51,8 @@ public abstract class DeviceIdentifierManager {
 
     /**
      * Use Ethernet Mac Address if available, if it is not possible use the wifi mac address.
-     * Otherwise use the Android ID unless it's broken, in which case callback on deviceId, unless
-     * it's not available, then fallback on a random UUID number.
+     * In case the WIFI mac address is not available, use the Bluetooth adapter address instead.
+     * Otherwise use the Android ID unless it's broken, then fallback on a random UUID number.
      *
      * @return {@link String} with the device unique identifier.
      */
@@ -67,6 +70,10 @@ public abstract class DeviceIdentifierManager {
         if (wifiMacAddress != null) {
             return wifiMacAddress;
         }
+        final String bluetoothMacAddress = getBluetoothMacAddress(context);
+        if (bluetoothMacAddress != null) {
+            return bluetoothMacAddress;
+        }
         final String androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
         if (isValidAndroidId(androidId)) {
             return androidId;
@@ -83,6 +90,7 @@ public abstract class DeviceIdentifierManager {
 
     /**
      * Obtains an ID from an stored preference file, if available.
+     *
      * @param context needed for reading the preference file.
      * @return {@link String} with the device ID, if it is available.
      */
@@ -94,7 +102,8 @@ public abstract class DeviceIdentifierManager {
 
     /**
      * Stores a device ID into a preference file.
-     * @param context needed to store the file into the preference file.
+     *
+     * @param context  needed to store the file into the preference file.
      * @param deviceId that will be stored into preferences.
      */
     private static void storeIdIntoPreferences(@NonNull Context context, @NonNull String deviceId) {
@@ -123,10 +132,11 @@ public abstract class DeviceIdentifierManager {
 
     /**
      * Tries to obtain a valid Mac Address from an Ethernet connection, if available.
+     *
      * @return {@link String} with the mac address. <code>null</code> if it is not available.
      */
     @Nullable
-    private static String getEthernetMacAddress(){
+    private static String getEthernetMacAddress() {
         FileReader fileReader = null;
         BufferedReader reader = null;
         try {
@@ -135,7 +145,7 @@ public abstract class DeviceIdentifierManager {
             reader = new BufferedReader(fileReader);
             char[] buf = new char[1024];
             int numRead;
-            while((numRead=reader.read(buf)) != -1){
+            while ((numRead = reader.read(buf)) != -1) {
                 String readData = String.valueOf(buf, 0, numRead);
                 fileData.append(readData);
             }
@@ -149,18 +159,21 @@ public abstract class DeviceIdentifierManager {
             if (fileReader != null) {
                 try {
                     fileReader.close();
-                } catch (IOException ignored){}
+                } catch (IOException ignored) {
+                }
             }
             if (reader != null) {
                 try {
                     reader.close();
-                } catch (IOException ignored){}
+                } catch (IOException ignored) {
+                }
             }
         }
     }
 
     /**
      * Tries to obtain a valid Mac Address from a the Wifi peripheral.
+     *
      * @param context used for obtaining the system service.
      * @return {@link String} with the mac address. <code>null</code> if it is not available.
      */
@@ -186,5 +199,25 @@ public abstract class DeviceIdentifierManager {
         }
         Log.d(TAG, "getWifiMacAddress -> It was impossible to obtain a valid Wifi mac address.");
         return null;
+    }
+
+    /**
+     * Tries to obtain the bluetooth adapter MAC address
+     *
+     * @return {@link String} with the mac address if available. <code>null</code> otherwise.
+     */
+    @Nullable
+    public static String getBluetoothMacAddress(@NonNull Context context) {
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        final String bluetoothPermission = "android.permission.BLUETOOTH";
+        if (context.checkCallingPermission(bluetoothPermission) != PERMISSION_GRANTED) {
+            Log.i(TAG, "getBluetoothMacAddress -> Don't have android permission to use Bluetooth.");
+            return null;
+        }
+        if (bluetoothAdapter == null) {
+            Log.d(TAG, "getBluetoothMacAddress -> Device does not support bluetooth");
+            return null;
+        }
+        return bluetoothAdapter.getAddress();
     }
 }
