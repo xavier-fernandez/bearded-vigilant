@@ -35,7 +35,7 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 
-    public BleRelativeHumidityModule(@NonNull final Context context) {
+    public BleRelativeHumidityModule(@NonNull Context context) {
         super(context, SensorType.RELATIVE_HUMIDITY, DATA_BIN_TIME_MS);
         mApplicationContext = context.getApplicationContext();
     }
@@ -70,10 +70,10 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
      * {@inheritDoc}
      */
     @Override
-    public void onNewHumidity(@NonNull final BleDevice device,
-                              final float humidity,
-                              @NonNull final String sensorName,
-                              @NonNull final HumidityUnit unit) {
+    public void onNewHumidity(@NonNull BleDevice device,
+                              float humidity,
+                              @NonNull String sensorName,
+                              @NonNull HumidityUnit unit) {
         if (getDatabaseFacade() != null) {
             Log.d(TAG, String.format("onNewHumidity -> Received humidity %f from sensor %s from the device %s.", humidity, sensorName, device.getAddress()));
             final SensorEntity bleSensor = new SensorEntity();
@@ -88,11 +88,11 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
      * {@inheritDoc}
      */
     @Override
-    public void onNewHistoricalHumidity(@NonNull final BleDevice device,
-                                        final float relativeHumidity,
-                                        final long timestampMilliseconds,
-                                        @NonNull final String sensorName,
-                                        @NonNull final HumidityUnit unit) {
+    public void onNewHistoricalHumidity(@NonNull BleDevice device,
+                                        float relativeHumidity,
+                                        long timestampMilliseconds,
+                                        @NonNull String sensorName,
+                                        @NonNull HumidityUnit unit) {
         // TODO: Implement
     }
 
@@ -100,7 +100,7 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceConnected(@NonNull final BleDevice device) {
+    public void onDeviceConnected(@NonNull BleDevice device) {
         device.registerDeviceListener(this);
     }
 
@@ -108,7 +108,7 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceDisconnected(@NonNull final BleDevice device) {
+    public void onDeviceDisconnected(@NonNull BleDevice device) {
         // TODO: Implement
     }
 
@@ -116,7 +116,7 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceDiscovered(@NonNull final BleDevice device) {
+    public void onDeviceDiscovered(@NonNull BleDevice device) {
         if (KnownDevices.TEMPERATURE_GADGETS.getAdvertisedNames().contains(device.getAdvertisedName())) {
             if (!device.isConnected()) {
                 synchronized (this) {
@@ -135,7 +135,7 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
      * {@inheritDoc}
      */
     @Override
-    public void onDeviceAllServicesDiscovered(@NonNull final BleDevice device) {
+    public void onDeviceAllServicesDiscovered(@NonNull BleDevice device) {
         Log.d(TAG, String.format("onDeviceAllServicesDiscovered -> Device %s has all its services available.  ", device.getAddress()));
         device.registerDeviceListener(this);
     }
@@ -144,7 +144,7 @@ public class BleRelativeHumidityModule extends AbstractBleSensorModule implement
      * {@inheritDoc}
      */
     @Override
-    public void onScanStateChanged(final boolean isScanEnabled) {
+    public void onScanStateChanged(boolean isScanEnabled) {
         if (!isScanEnabled) {
             BleManager.getInstance().startScanning();
         }

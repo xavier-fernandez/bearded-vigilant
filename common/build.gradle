@@ -23,7 +23,7 @@ android {
         compile 'joda-time:joda-time:2.8.1'
         compile 'com.jakewharton:butterknife:7.0.1'
         compile 'com.squareup.retrofit:retrofit:1.9.0'
-        compile ('com.squareup.okhttp:okhttp:2.4.0') {
+        compile('com.squareup.okhttp:okhttp:2.4.0') {
             // The Okio library has several references to 'java.rmi.*', this
             // references produces a lint error.
             exclude group: 'com.squareup.okio', module: 'okio'

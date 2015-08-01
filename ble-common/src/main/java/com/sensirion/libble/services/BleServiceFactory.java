@@ -85,7 +85,7 @@ public class BleServiceFactory {
             Log.e(TAG, "createServiceFor -> During the creation of a service the following NoSuchMethodException was thrown -> ", e);
         } catch (InvocationTargetException e) {
             Log.e(TAG, "createServiceFor -> During the creation of a service the following InvocationTargetException was thrown -> ", e);
-        } catch (InstantiationException e){
+        } catch (InstantiationException e) {
             Log.e(TAG, "createServiceFor -> During the creation of a service the following InstantiationException was thrown -> ", e);
         } catch (IllegalAccessException e) {
             Log.e(TAG, "createServiceFor -> During the creation of a service the following IllegalAccessException was thrown -> ", e);
