@@ -1,33 +1,13 @@
-/*
- * (C) Copyright 2015 Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *      Xavier Fernández Salas (xavier.fernandez.salas@gmail.com)
- */
-
 package com.bearded.common.modules;
 
 import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bearded.common.cloud.UploadStateListener;
+import com.bearded.common.device.DeviceIdentifierManager;
 import com.google.gson.JsonObject;
 
 import org.joda.time.DateTime;
@@ -40,21 +20,12 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
     private final String TAG = this.getClass().getSimpleName();
 
     @NonNull
-    private final String mDeviceMacAddress;
+    private final String mDeviceId;
     @Nullable
     private DateTime mLastCloudUpload;
 
     protected AbstractCloudModule(@NonNull Context context) {
-        final WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        while (!manager.isWifiEnabled()) {
-            manager.setWifiEnabled(true);
-            try {
-                Thread.sleep(400);
-            } catch (final InterruptedException ignored) {
-            }
-        }
-        final WifiInfo info = manager.getConnectionInfo();
-        mDeviceMacAddress = info.getMacAddress().toUpperCase();
+        mDeviceId = DeviceIdentifierManager.getDeviceId(context);
     }
 
     /**
@@ -80,7 +51,8 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
      */
     @Override
     public void onUploadFailure(@Nullable String errorMessage) {
-        Log.d(TAG, String.format("onUploadCompleted -> The following error was thrown when uploading the data to the cloud: %s", errorMessage));
+        Log.d(TAG, String.format("onUploadCompleted -> The following error was" +
+                " thrown when uploading the data to the cloud: %s", errorMessage));
     }
 
     /**
@@ -91,10 +63,11 @@ public abstract class AbstractCloudModule implements CloudModule, UploadStateLis
     @NonNull
     protected JsonObject getDeviceMetadataJson() {
         final JsonObject databaseJsonObject = new JsonObject();
-        databaseJsonObject.addProperty("MacAddress", mDeviceMacAddress);
+        databaseJsonObject.addProperty("DeviceIdentifier", mDeviceId);
         databaseJsonObject.addProperty("DeviceManufacturer", Build.MANUFACTURER);
         databaseJsonObject.addProperty("DeviceModel", Build.MODEL);
-        databaseJsonObject.addProperty("OperatingSystem", String.format("Android %s", Build.VERSION.RELEASE));
+        final String androidRelease = String.format("Android %s", Build.VERSION.RELEASE);
+        databaseJsonObject.addProperty("OperatingSystem", androidRelease);
         return databaseJsonObject;
     }
 }
