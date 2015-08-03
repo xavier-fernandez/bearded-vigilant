@@ -16,12 +16,10 @@ import org.joda.time.DateTime;
 @SuppressWarnings("unused")
 public class RelativeHumidityInternalSensorModule extends AbstractInternalSensorManager {
 
+    @NonNull
     private static final String TAG = RelativeHumidityInternalSensorModule.class.getSimpleName();
-
-    private static final int RELATIVE_HUMIDITY_INTERNAL_SENSOR_MODULE_VERSION = 1;
-
-    private static final int DATA_BIN_TIME_MS = 1000; // 1 SECOND
-
+    private static final byte RELATIVE_HUMIDITY_INTERNAL_SENSOR_MODULE_VERSION = 1;
+    private static final short DATA_BIN_TIME_MS = 1000; // 1 SECOND
     @Nullable
     private DateTime mLastSensorValueReceivedTime;
 

@@ -16,10 +16,9 @@ import org.joda.time.DateTime;
 @SuppressWarnings("unused")
 public class AmbientTemperatureInternalSensorModule extends AbstractInternalSensorManager {
 
+    @NonNull
     private static final String TAG = AmbientTemperatureInternalSensorModule.class.getSimpleName();
-
     private static final int DATA_BIN_TIME_MS = 1000; // 1 SECOND
-
     private static final int AMBIENT_TEMPERATURE_INTERNAL_SENSOR_MODULE_VERSION = 1;
 
     @Nullable

@@ -16,12 +16,11 @@ import org.joda.time.DateTime;
 @SuppressWarnings("unused")
 public class LightInternalSensorModule extends AbstractInternalSensorManager {
 
+    @NonNull
     private static final String TAG = LightInternalSensorModule.class.getSimpleName();
-
     private static final short DATA_BIN_TIME_MS = 1000; // 1 SECOND
-
     private static final byte LIGHT_SENSOR_MODULE_VERSION = 1;
-
+    @NonNull
     private static final SensorType SENSOR_TYPE = SensorType.LIGHT;
 
     @Nullable
